@@ -93,7 +93,8 @@ export function useTreeCamera({
   const velocity = useRef({ x: 0, y: 0 });
   const inertia = useRef<number | null>(null);
   const tween = useRef<number | null>(null);
-  const captured = useRef(false);
+  /** Ushlab turilgan pointer — chiqarib yuborish aynan o'sha id bilan bo'lishi shart. */
+  const captured = useRef<number | null>(null);
   const onDensity = useRef(onDensityChange);
   onDensity.current = onDensityChange;
 
@@ -241,13 +242,25 @@ export function useTreeCamera({
     const wrap = wrapRef.current;
     if (!wrap) return undefined;
 
+    const capture = (pointerId: number) => {
+      if (captured.current !== null) return;
+      try {
+        wrap.setPointerCapture(pointerId);
+        captured.current = pointerId;
+      } catch {
+        /* ba'zi brauzerlarda capture rad etiladi */
+      }
+    };
+
     const onPointerDown = (event: PointerEvent) => {
+      // Faqat chap tugma. O'ng/o'rta bosishdan keyin `pointerup` kelmaydi
+      // (kontekst menyusi uni yutadi) va kamera bosilgan holatda qotib qolardi.
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
       stopInertia();
       stopTween();
       pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
       drag.current = { dist: 0, time: performance.now() };
       velocity.current = { x: 0, y: 0 };
-      captured.current = false;
       if (pointers.current.size === 2) {
         const [a, b] = [...pointers.current.values()];
         pinch.current = {
@@ -255,12 +268,7 @@ export function useTreeCamera({
           cx: (a.x + b.x) / 2,
           cy: (a.y + b.y) / 2,
         };
-        try {
-          wrap.setPointerCapture(event.pointerId);
-          captured.current = true;
-        } catch {
-          /* ba'zi brauzerlarda capture rad etiladi */
-        }
+        capture(event.pointerId);
       }
       wrap.style.cursor = 'grabbing';
     };
@@ -268,6 +276,13 @@ export function useTreeCamera({
     const onPointerMove = (event: PointerEvent) => {
       const previous = pointers.current.get(event.pointerId);
       if (!previous) return;
+      // Sichqoncha oyna tashqarisida qo'yib yuborilgan bo'lsa `pointerup`
+      // umuman kelmaydi — tugma bo'shligini shu yerda ushlaymiz, aks holda
+      // kursor bosilmagan holda ham daraxtni sudrab yurardi.
+      if (event.pointerType === 'mouse' && event.buttons === 0) {
+        finish(event.pointerId, false);
+        return;
+      }
       pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
 
       if (pointers.current.size === 2 && pinch.current) {
@@ -297,33 +312,26 @@ export function useTreeCamera({
         drag.current.dist += Math.abs(dx) + Math.abs(dy);
         // Pointer faqat haqiqiy surishda ushlanadi — aks holda kartaga
         // bosish hodisasi yetib bormaydi.
-        if (!captured.current && drag.current.dist > 6) {
-          try {
-            wrap.setPointerCapture(event.pointerId);
-            captured.current = true;
-          } catch {
-            /* e'tiborsiz */
-          }
-        }
+        if (drag.current.dist > 6) capture(event.pointerId);
       }
       panBy(dx, dy);
     };
 
-    const onPointerUp = (event: PointerEvent) => {
-      pointers.current.delete(event.pointerId);
-      if (captured.current) {
+    const finish = (pointerId: number, withInertia: boolean) => {
+      pointers.current.delete(pointerId);
+      if (captured.current === pointerId) {
         try {
-          wrap.releasePointerCapture(event.pointerId);
+          wrap.releasePointerCapture(pointerId);
         } catch {
           /* e'tiborsiz */
         }
-        captured.current = false;
+        captured.current = null;
       }
       if (pointers.current.size < 2) pinch.current = null;
       wrap.style.cursor = 'grab';
 
       const moved = (drag.current?.dist ?? 0) > 8;
-      if (pointers.current.size === 0 && moved && !reducedMotionRef.current) {
+      if (withInertia && pointers.current.size === 0 && moved && !reducedMotionRef.current) {
         let v = { ...velocity.current };
         const speed = Math.hypot(v.x, v.y);
         if (speed > 3.2) v = { x: (v.x / speed) * 3.2, y: (v.y / speed) * 3.2 };
@@ -344,6 +352,23 @@ export function useTreeCamera({
       }
     };
 
+    const onPointerUp = (event: PointerEvent) => {
+      if (!pointers.current.has(event.pointerId)) return;
+      finish(event.pointerId, event.type === 'pointerup');
+    };
+
+    // Capture'ni brauzer tortib olsa (native drag, kontekst menyusi, tizim
+    // ishorasi) `pointerup` kelmaydi — holatni shu yerda bo'shatamiz.
+    const onLostCapture = (event: PointerEvent) => {
+      if (captured.current === event.pointerId) captured.current = null;
+      if (pointers.current.has(event.pointerId)) finish(event.pointerId, false);
+    };
+
+    // Kartadagi matn yoki avatar sudralganda brauzer o'zining "drag and drop"
+    // rejimiga o'tib, kursorni taqiqlangan belgisiga almashtirar va surishni
+    // uzib qo'yardi.
+    const onDragStart = (event: Event) => event.preventDefault();
+
     const onWheel = (event: WheelEvent) => {
       event.preventDefault();
       stopInertia();
@@ -355,18 +380,25 @@ export function useTreeCamera({
 
     wrap.addEventListener('pointerdown', onPointerDown);
     wrap.addEventListener('pointermove', onPointerMove);
-    wrap.addEventListener('pointerup', onPointerUp);
-    wrap.addEventListener('pointercancel', onPointerUp);
+    wrap.addEventListener('lostpointercapture', onLostCapture);
+    wrap.addEventListener('dragstart', onDragStart);
     wrap.addEventListener('wheel', onWheel, { passive: false });
     wrap.addEventListener('dblclick', onDoubleClick);
+    // Barmoq yoki kursor kanvasdan chiqib ketib qo'yib yuborilsa, `pointerup`
+    // wrap'ga yetib bormaydi va eski pointer xaritada qolib ketardi — keyingi
+    // surish uni ikkinchi barmoq deb o'ylab, chimchilash rejimiga tushardi.
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerUp);
 
     return () => {
       wrap.removeEventListener('pointerdown', onPointerDown);
       wrap.removeEventListener('pointermove', onPointerMove);
-      wrap.removeEventListener('pointerup', onPointerUp);
-      wrap.removeEventListener('pointercancel', onPointerUp);
+      wrap.removeEventListener('lostpointercapture', onLostCapture);
+      wrap.removeEventListener('dragstart', onDragStart);
       wrap.removeEventListener('wheel', onWheel);
       wrap.removeEventListener('dblclick', onDoubleClick);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', onPointerUp);
       stopInertia();
       stopTween();
     };

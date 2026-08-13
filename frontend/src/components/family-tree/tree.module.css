@@ -5,6 +5,10 @@
   overflow: hidden;
   touch-action: none;
   cursor: grab;
+  /* Surish paytida matn belgilanib qolmasin — belgilangan matn brauzerning
+     "drag and drop" rejimini uyg'otib, kamerani uzib qo'yadi. */
+  user-select: none;
+  -webkit-user-select: none;
   background:
     radial-gradient(ellipse 70% 55% at 50% -10%, var(--canvas-glow) 0%, transparent 65%),
     radial-gradient(ellipse 60% 50% at 15% 110%, var(--canvas-ink) 0%, transparent 60%),
