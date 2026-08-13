@@ -129,6 +129,20 @@ export function TopBar(): JSX.Element {
         </div>
       ) : null}
 
+      {/* Mobil versiyada Sozlamalar pastki navigatsiyada — bu yerda takrorlanmaydi. */}
+      {!isMobile ? (
+        <NavLink
+          to={ROUTES.settings}
+          className={({ isActive }) =>
+            [ui.iconBtn, isActive ? styles.iconLinkActive : ''].filter(Boolean).join(' ')
+          }
+          aria-label={format.t('Sozlamalar')}
+          title={format.t('Sozlamalar')}
+        >
+          <Icon name="gear" size={16} />
+        </NavLink>
+      ) : null}
+
       <button
         type="button"
         className={ui.iconBtn}
