@@ -1,7 +1,6 @@
 import { familyTreeService, personService, realtimeService } from '@/services';
 import { toUserMessage } from '@/services/apiError';
 import {
-  ancestorsOf,
   buildTreeIndex,
   carrierOf,
   isDescendantOf,
@@ -64,16 +63,6 @@ const store = createStore<FamilyTreeState>({
 
 let focusToken = 0;
 
-/** Boshlanish holati: faqat "men"gacha bo'lgan chiziq ochiq turadi. */
-function collapsedForLine(index: TreeIndex, meId: PersonId | null): Set<PersonId> {
-  const open = new Set<PersonId>();
-  if (meId) {
-    open.add(meId);
-    for (const ancestor of ancestorsOf(index, meId)) open.add(ancestor);
-  }
-  return new Set(Object.keys(index.childrenOf).filter((id) => !open.has(id)));
-}
-
 function reindex(people: Person[]): Pick<FamilyTreeState, 'people' | 'index'> {
   return { people, index: buildTreeIndex(people) };
 }
@@ -100,7 +89,8 @@ export const familyTreeStore = {
         people: snapshot.people,
         index,
         meId: snapshot.meId,
-        collapsed: collapsedForLine(index, snapshot.meId),
+        // Boshlanish holati — butun shajara ochiq.
+        collapsed: new Set(),
       });
     } catch (error) {
       store.setState({ status: 'error', error: toUserMessage(error) });
@@ -158,9 +148,10 @@ export const familyTreeStore = {
     store.setState({ collapsed: new Set() });
   },
 
-  collapseToLine() {
-    const { index, meId } = store.getState();
-    store.setState({ collapsed: collapsedForLine(index, meId) });
+  /** Farzandi bor har bir kartani yig'adi — ochiq faqat ildiz qoladi. */
+  collapseAll() {
+    const { index } = store.getState();
+    store.setState({ collapsed: new Set(Object.keys(index.childrenOf)) });
   },
 
   setViewMode(viewMode: TreeViewMode) {

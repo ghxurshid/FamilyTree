@@ -504,6 +504,41 @@
   border-block: 1px solid var(--hair);
 }
 
+.branchGroup {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.branchButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 38px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.branchButton + .branchButton {
+  border-top: 1px solid var(--hair);
+}
+
+.branchButton:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.branchButton:disabled {
+  color: color-mix(in srgb, var(--color-text) 34%, transparent);
+  cursor: default;
+}
+
 .controlButton {
   display: flex;
   align-items: center;

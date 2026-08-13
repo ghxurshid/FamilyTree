@@ -9,6 +9,12 @@ interface TreeControlsProps {
   showHomeLabel: boolean;
   onFit(): void;
   onHome(): void;
+  onExpandAll(): void;
+  onCollapseAll(): void;
+  /** Yig'ilgan shox bormi — yo'q bo'lsa "ochish" tugmasi so'nadi. */
+  canExpandAll: boolean;
+  /** Ochiq shox bormi — yo'q bo'lsa "yig'ish" tugmasi so'nadi. */
+  canCollapseAll: boolean;
   bottom: number | string;
   minimap?: ReactNode;
   labels: {
@@ -16,16 +22,22 @@ interface TreeControlsProps {
     zoomOut: string;
     fit: string;
     home: string;
+    expandAll: string;
+    collapseAll: string;
   };
 }
 
-/** Zoom, "butun daraxt" va "menga qaytish" boshqaruvlari. */
+/** Zoom, shoxlarni ochish/yig'ish, "butun daraxt" va "menga qaytish" boshqaruvlari. */
 export function TreeControls({
   camera,
   homeLabel,
   showHomeLabel,
   onFit,
   onHome,
+  onExpandAll,
+  onCollapseAll,
+  canExpandAll,
+  canCollapseAll,
   bottom,
   minimap,
   labels,
@@ -62,6 +74,29 @@ export function TreeControls({
           onClick={() => camera.zoomOut()}
         >
           <Icon name="minus" size={15} />
+        </button>
+      </div>
+
+      <div className={styles.branchGroup}>
+        <button
+          type="button"
+          className={styles.branchButton}
+          aria-label={labels.expandAll}
+          title={`${labels.expandAll} (E)`}
+          disabled={!canExpandAll}
+          onClick={onExpandAll}
+        >
+          <Icon name="expand-all" size={16} />
+        </button>
+        <button
+          type="button"
+          className={styles.branchButton}
+          aria-label={labels.collapseAll}
+          title={`${labels.collapseAll} (C)`}
+          disabled={!canCollapseAll}
+          onClick={onCollapseAll}
+        >
+          <Icon name="collapse-all" size={16} />
         </button>
       </div>
 

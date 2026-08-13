@@ -85,7 +85,7 @@ export function AuthPage({ mode }: AuthPageProps): JSX.Element {
         return;
       }
 
-      familyTreeStore.collapseToLine();
+      familyTreeStore.expandAll();
       const me = meId ? index.byId[meId] : null;
       toast.success(
         me

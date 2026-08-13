@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useCurrentPersonId } from '@/features/auth/useCurrentPerson';
 import { useFamilyTree } from '@/stores/familyTreeStore';
 import { layoutTree, type TreeLayout } from '../lib/layout';
 
@@ -10,7 +11,8 @@ export function useTreeLayout(): TreeLayout {
   const index = useFamilyTree((state) => state.index);
   const collapsed = useFamilyTree((state) => state.collapsed);
   const mode = useFamilyTree((state) => state.viewMode);
-  const meId = useFamilyTree((state) => state.meId);
+  // Ma'lumotdagi `meId` emas — "men"ga bog'liq rejimlar faqat kirgan foydalanuvchida.
+  const meId = useCurrentPersonId();
   const selectedId = useFamilyTree((state) => state.selectedId);
 
   // "branch" rejimidan boshqa holatda tanlov joylashuvga ta'sir qilmaydi.

@@ -57,7 +57,6 @@ export function FamilyTreeCanvas(): JSX.Element {
   const panelOpen = useFamilyTree((state) => state.panelOpen);
   const collapsed = useFamilyTree((state) => state.collapsed);
   const viewMode = useFamilyTree((state) => state.viewMode);
-  const dataMeId = useFamilyTree((state) => state.meId);
   const focusRequest = useFamilyTree((state) => state.focusRequest);
   const savingIds = useFamilyTree((state) => state.savingIds);
 
@@ -116,12 +115,22 @@ export function FamilyTreeCanvas(): JSX.Element {
     [camera, pointOf],
   );
 
+  /**
+   * Boshlang'ich langar. "Men" faqat kirgan foydalanuvchida bo'ladi; kirilmagan
+   * bo'lsa shajaraning ildiziga tushamiz — butun daraxt MIN_ZOOM'ga ham sig'maydi
+   * va `fitAll` ildizni ekrandan chiqarib yuboradi.
+   */
+  const homeAnchor = meId ?? index.rootId;
+
   const homeView = useCallback(() => {
-    const id = meId ?? dataMeId;
-    const point = id ? pointOf(id) : null;
+    const point = homeAnchor ? pointOf(homeAnchor) : null;
     if (point) camera.homeView(point.x, point.y);
     else camera.fitAll();
-  }, [camera, dataMeId, meId, pointOf]);
+  }, [camera, homeAnchor, pointOf]);
+
+  // Kechiktirilgan chaqiruvlar eski `layout.positions` ustida yopilib qolmasligi uchun.
+  const homeViewRef = useRef(homeView);
+  homeViewRef.current = homeView;
 
   // Boshlang'ich ko'rinish — daraxt tayyor bo'lgach.
   const introDone = useRef(false);
@@ -270,15 +279,33 @@ export function FamilyTreeCanvas(): JSX.Element {
   const handleAdd = useCallback((id: PersonId) => actions.add(id, 'child'), [actions]);
 
   const goHome = useCallback(() => {
-    const id = meId ?? dataMeId;
-    if (id) familyTreeStore.select(id);
+    if (homeAnchor) familyTreeStore.select(homeAnchor);
     else camera.fitAll();
-  }, [camera, dataMeId, meId]);
+  }, [camera, homeAnchor]);
 
   const hasSpouses = useMemo(
     () => Object.keys(index.spouseOf).length > 0,
     [index.spouseOf],
   );
+
+  // Yig'ish tugmasi faqat farzandi bor kartalarda bo'ladi — chegara shular soni.
+  const branchCount = useMemo(() => Object.keys(index.childrenOf).length, [index.childrenOf]);
+  const canExpandAll = collapsed.size > 0;
+  const canCollapseAll = collapsed.size < branchCount;
+
+  // Ommaviy ochish/yig'ishda joylashuv keskin siljiydi — kamera bo'sh maydonda
+  // qolmasligi uchun yangi layout hisoblangach (setTimeout 0) qayta yo'naltiriladi.
+  // Ochilganda butun daraxt MIN_ZOOM'ga ham sig'maydi, shuning uchun "menga"
+  // qaytamiz; yig'ilganda esa bitta ildiz qoladi va u to'liq sig'adi.
+  const expandAll = useCallback(() => {
+    familyTreeStore.expandAll();
+    window.setTimeout(() => homeViewRef.current(), 0);
+  }, []);
+
+  const collapseAll = useCallback(() => {
+    familyTreeStore.collapseAll();
+    window.setTimeout(() => camera.fitAll(), 0);
+  }, [camera]);
 
   return (
     <>
@@ -388,22 +415,29 @@ export function FamilyTreeCanvas(): JSX.Element {
           value={viewMode}
           onChange={familyTreeStore.setViewMode}
           showMarriage={hasSpouses}
+          showMine={Boolean(meId)}
           t={format.t}
         />
       ) : null}
 
       <TreeControls
         camera={camera}
-        homeLabel={format.t(meId ? 'Menga' : 'Markaz')}
+        homeLabel={format.t(meId ? 'Menga' : 'Boshiga')}
         showHomeLabel={!isMobile}
         onFit={() => camera.fitAll()}
         onHome={goHome}
+        onExpandAll={expandAll}
+        onCollapseAll={collapseAll}
+        canExpandAll={canExpandAll}
+        canCollapseAll={canCollapseAll}
         bottom={isMobile && panelOpen ? '60%' : 14}
         labels={{
           zoomIn: format.t('Kattalashtirish'),
           zoomOut: format.t('Kichraytirish'),
           fit: format.t('Butun daraxt'),
-          home: format.t(meId ? 'Menga qaytish' : 'Markazga'),
+          home: format.t(meId ? 'Menga qaytish' : 'Shajara boshiga'),
+          expandAll: format.t('Barcha shoxlarni ochish'),
+          collapseAll: format.t("Barcha shoxlarni yig'ish"),
         }}
         minimap={
           showMinimap && !isMobile ? (
@@ -418,18 +452,27 @@ export function FamilyTreeCanvas(): JSX.Element {
         }
       />
 
-      <TreeKeyboard camera={camera} onHome={goHome} />
+      <TreeKeyboard
+        camera={camera}
+        onHome={goHome}
+        onExpandAll={expandAll}
+        onCollapseAll={collapseAll}
+      />
     </>
   );
 }
 
-/** Klaviatura yorliqlari: +/-, 0, F va o'q tugmalari bilan navigatsiya. */
+/** Klaviatura yorliqlari: +/-, 0, F, E/C va o'q tugmalari bilan navigatsiya. */
 function TreeKeyboard({
   camera,
   onHome,
+  onExpandAll,
+  onCollapseAll,
 }: {
   camera: ReturnType<typeof useTreeCamera>;
   onHome(): void;
+  onExpandAll(): void;
+  onCollapseAll(): void;
 }): null {
   const index = useFamilyTree((state) => state.index);
   const selectedId = useFamilyTree((state) => state.selectedId);
@@ -444,6 +487,8 @@ function TreeKeyboard({
       else if (event.key === '-') camera.zoomOut();
       else if (event.key === '0') onHome();
       else if (event.key.toLowerCase() === 'f') camera.fitAll();
+      else if (event.key.toLowerCase() === 'e') onExpandAll();
+      else if (event.key.toLowerCase() === 'c') onCollapseAll();
 
       if (!selectedId) return;
       if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return;
@@ -473,7 +518,7 @@ function TreeKeyboard({
 
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [camera, index, onHome, selectedId]);
+  }, [camera, index, onCollapseAll, onExpandAll, onHome, selectedId]);
 
   return null;
 }

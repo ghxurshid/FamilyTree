@@ -133,32 +133,6 @@ export function SettingsPage(): JSX.Element {
         </div>
 
         <div className={styles.section}>
-          <div className={styles.groupTitle}>{format.t('Daraxt')}</div>
-          <div className={styles.buttonRow}>
-            <button
-              type="button"
-              className={ui.btn}
-              onClick={() => {
-                familyTreeStore.expandAll();
-                navigate(ROUTES.tree);
-              }}
-            >
-              {format.t('Barcha shoxlarni ochish')}
-            </button>
-            <button
-              type="button"
-              className={ui.btn}
-              onClick={() => {
-                familyTreeStore.collapseToLine();
-                navigate(ROUTES.tree);
-              }}
-            >
-              {format.t("Faqat mening chizig'im")}
-            </button>
-          </div>
-        </div>
-
-        <div className={styles.section}>
           <div className={styles.groupTitle}>{format.t('Hisob')}</div>
           {authenticated ? (
             <button

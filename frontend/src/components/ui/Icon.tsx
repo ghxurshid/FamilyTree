@@ -14,6 +14,8 @@ export type IconName =
   | 'minus'
   | 'close'
   | 'fit'
+  | 'expand-all'
+  | 'collapse-all'
   | 'users'
   | 'heart'
   | 'gear'
@@ -61,6 +63,10 @@ const ICONS: Record<IconName, IconDef> = {
   minus: { stroke: 'M56 128H200' },
   close: { stroke: 'M200 56 56 200M56 56 200 200' },
   fit: { stroke: 'M168 40h48v48M88 40H40v48M168 216h48v-48M88 216H40v-48' },
+  // Chiziqdan tashqariga qaragan strelkalar — shoxlarni yoyish.
+  'expand-all': { stroke: 'M40 128h176M96 72l32-32 32 32M96 184l32 32 32-32' },
+  // Chiziq tomon qaragan strelkalar — shoxlarni yig'ish.
+  'collapse-all': { stroke: 'M40 128h176M96 40l32 32 32-32M96 216l32-32 32 32' },
   users: {
     fill: 'M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z',
   },
