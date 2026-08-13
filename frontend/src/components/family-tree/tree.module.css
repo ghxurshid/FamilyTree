@@ -29,7 +29,7 @@
 
 .link {
   stroke: var(--connector);
-  stroke-width: 2.2;
+  stroke-width: 3.4;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -39,20 +39,15 @@
   opacity: 0.22;
 }
 
-/* — avlod chiziqlari — */
+/* — avlod sektorlari — */
 .band {
   position: absolute;
   left: 0;
-  border-top: 1px solid var(--hair);
   pointer-events: none;
 }
 
 .bandAlt {
   background: color-mix(in srgb, var(--color-text) 3%, transparent);
-}
-
-.bandFirst {
-  border-top-color: transparent;
 }
 
 .bandLabel {

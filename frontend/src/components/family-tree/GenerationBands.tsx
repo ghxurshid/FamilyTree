@@ -30,9 +30,7 @@ function GenerationBandsImpl({
       {rows.map((row, i) => (
         <div
           key={row.depth}
-          className={[styles.band, i % 2 ? styles.bandAlt : '', i === 0 ? styles.bandFirst : '']
-            .filter(Boolean)
-            .join(' ')}
+          className={[styles.band, i % 2 ? styles.bandAlt : ''].filter(Boolean).join(' ')}
           style={{
             top: row.y - (ROW_H - CARD_H) / 2,
             width,

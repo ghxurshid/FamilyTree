@@ -32,7 +32,7 @@ function TreeConnectorsImpl({
         <g key={link.key} fill="none" strokeLinecap="round" strokeLinejoin="round">
           <path d={link.d} stroke="var(--color-accent)" strokeWidth={18} opacity={0.24} />
           <path d={link.d} stroke="var(--color-accent-400)" strokeWidth={9} opacity={0.55} />
-          <path d={link.d} stroke="var(--glow-core)" strokeWidth={4.2} />
+          <path d={link.d} stroke="var(--glow-core)" strokeWidth={5.4} />
         </g>
       ))}
     </svg>
