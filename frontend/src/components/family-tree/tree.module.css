@@ -33,7 +33,7 @@
 
 .link {
   stroke: var(--connector);
-  stroke-width: 3.4;
+  stroke-width: 6.8;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;

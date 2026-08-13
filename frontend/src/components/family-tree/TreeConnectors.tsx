@@ -30,9 +30,9 @@ function TreeConnectorsImpl({
       </g>
       {glow.map((link) => (
         <g key={link.key} fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <path d={link.d} stroke="var(--color-accent)" strokeWidth={18} opacity={0.24} />
-          <path d={link.d} stroke="var(--color-accent-400)" strokeWidth={9} opacity={0.55} />
-          <path d={link.d} stroke="var(--glow-core)" strokeWidth={5.4} />
+          <path d={link.d} stroke="var(--color-accent)" strokeWidth={26} opacity={0.24} />
+          <path d={link.d} stroke="var(--color-accent-400)" strokeWidth={14} opacity={0.55} />
+          <path d={link.d} stroke="var(--glow-core)" strokeWidth={8.8} />
         </g>
       ))}
     </svg>
