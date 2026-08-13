@@ -1,0 +1,4 @@
+{
+  // Workspace root'da .sln yo'q — C# extension'ga qaysi solution'ni yuklashni ko'rsatadi.
+  "dotnet.defaultSolution": "backend/FamilyTreeBackend.sln"
+}

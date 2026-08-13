@@ -1,0 +1,1064 @@
+{ "name": "Shayvali halfa", "gender": "male", "childs":
+    [
+        { "name": "Tursun halfa", "gender": "male", "childs":
+            [
+                { "name": "Tovoshar", "gender": "male", "childs":
+                    [
+                        { "name": "Boyabiz", "gender": "male", "childs": [] },
+                        { "name": "Kulabiz", "gender": "male", "childs":
+                            [
+                                { "name": "Xolmat", "gender": "male", "childs": [] },
+                                { "name": "Karim", "gender": "male", "childs": [] },
+                                { "name": "Yuzboy", "gender": "male", "childs": [] },
+                                { "name": "Boybul", "gender": "male", "childs":
+                                    [
+                                        { "name": "Ochil", "gender": "male", "childs": [] },
+                                        { "name": "Ramat", "gender": "male", "childs": [] },
+                                        { "name": "Asat", "gender": "male", "childs": [] },
+                                        { "name": "Qurbon", "gender": "male", "childs": [] },
+                                        { "name": "Olloyer", "gender": "male", "childs":
+                                            [
+                                                { "name": "Tashatboy", "gender": "male", "childs":
+                                                    [
+                                                        { "name": "Quybogar", "gender": "male", "childs":
+                                                            [
+                                                                { "name": "Mamadior", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Guzorboy", "gender": "male", "childs":
+                                                                            [
+                                                                                { "name": "Zebin", "gender": "female", "childs": [] },
+                                                                                { "name": "Gulnora", "gender": "female", "childs": [] },
+                                                                                { "name": "Gulsara", "gender": "female", "childs": [] },
+                                                                                { "name": "Erkin", "gender": "male", "childs":
+                                                                                    [
+                                                                                        { "name": "Dildora", "gender": "female", "childs": [] },
+                                                                                        { "name": "Chingiz", "gender": "male", "childs": [] },
+                                                                                        { "name": "Eldor", "gender": "male", "childs": [] },
+                                                                                        { "name": "Azzam", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Olim", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                { "name": "Xilol", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Abduvali", "gender": "male", "childs": [] },
+                                                                        { "name": "Abduvasi", "gender": "male", "childs": [] }
+                                                                    ]
+                                                                },
+                                                                { "name": "Noroy", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Sala", "gender": "male", "childs": [] },
+                                                                        { "name": "Kunduz", "gender": "female", "childs": [] },
+                                                                        { "name": "Tuygul", "gender": "female", "childs": [] },
+                                                                        { "name": "Roxmon", "gender": "male", "childs": [] },
+                                                                        { "name": "Ismoil", "gender": "male", "childs": [] },
+                                                                        { "name": "Isroil", "gender": "male", "childs": [] }
+                                                                    ]
+                                                                },
+                                                                { "name": "Bozorboy", "gender": "male", "childs": [] },
+                                                                { "name": "Zaynab", "gender": "female", "childs": [] },
+                                                                { "name": "Oyjomol", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Sanobar", "gender": "female", "childs": [] }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        { "name": "Jumagul", "gender": "female", "childs":
+                                                            [
+                                                                { "name": "Qizlaroy", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Xidoyat", "gender": "female", "childs": [] },
+                                                                        { "name": "Quvon", "gender": "male", "childs": [] }
+                                                                    ]
+                                                                },
+                                                                { "name": "Ulbusin", "gender": "female", "childs": [] },
+                                                                { "name": "Qanoat", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Fayzulla", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Moxiya", "gender": "female", "childs": [] },
+                                                                                { "name": "Ra'no", "gender": "female", "childs": [] },
+                                                                                { "name": "Zulayxo", "gender": "female", "childs": [] },
+                                                                                { "name": "Mexriniso", "gender": "female", "childs": [] },
+                                                                                { "name": "Maxmud", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Dilnoza", "gender": "female", "childs": [] },
+                                                                                        { "name": "Guzal", "gender": "female", "childs": [] },
+                                                                                        { "name": "Mashxura", "gender": "female", "childs": [] },
+                                                                                        { "name": "Yulduz", "gender": "female", "childs": [] },
+                                                                                        { "name": "Ergash", "gender": "male", "childs": 
+                                                                                            [
+                                                                                                { "name": "Muhammadali", "gender": "male", "childs": [] }
+                                                                                            ] 
+                                                                                        },
+                                                                                        { "name": "Umid", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Xomit", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Choros", "gender": "female", "childs": [] },
+                                                                                        { "name": "Ruxshona", "gender": "female", "childs": [] },
+                                                                                        { "name": "Forrux", "gender": "male", "childs": [] },
+                                                                                        { "name": "Ulugbek", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Ilxom", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Komola", "gender": "female", "childs": [] },
+                                                                                        { "name": "Dilso`z", "gender": "female", "childs": [] },
+                                                                                        { "name": "Azizbek", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Omon", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Munira", "gender": "female", "childs": [] },
+                                                                                { "name": "Umida", "gender": "female", "childs": [] },
+                                                                                { "name": "Sobir", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Sanjar", "gender": "male", "childs": [] },
+                                                                                        { "name": "Samandar", "gender": "male", "childs": [] }                                                                                        
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Botir", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Barchinoy", "gender": "female", "childs": [] },
+                                                                                        { "name": "Bobur", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Zokir", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Ozoda", "gender": "female", "childs": [] },
+                                                                                        { "name": "Barno", "gender": "female", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Shokir", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Azim", "gender": "male", "childs": [] },
+                                                                                        { "name": "Sardor", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                }
+                                                                            ] 
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                { "name": "Musallam", "gender": "male", "childs": [] },
+                                                                { "name": "Tuksuluv", "gender": "male", "childs":
+                                                                    [
+                                                                        { "name": "Qoyim", "gender": "male", "childs": [] },
+                                                                        { "name": "Rustam", "gender": "male", "childs": [] },
+                                                                        { "name": "Nurilla", "gender": "male", "childs": [] },
+                                                                        { "name": "Abduraim", "gender": "male", "childs": [] }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        { "name": "Xujmat", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Nusrat", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Oysaat", "gender": "female", "childs": [] },
+                                                                        { "name": "Ibraim", "gender": "male", "childs": 
+                                                                            [                                                                                
+                                                                                { "name": "Xajar", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilorom", "gender": "female", "childs": [] },
+                                                                                { "name": "Maxbuba", "gender": "female", "childs": [] },
+                                                                                { "name": "Uraloy", "gender": "female", "childs": [] },
+                                                                                { "name": "Farxod", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Moxigul", "gender": "female", "childs": [] },
+                                                                                        { "name": "Gulmira", "gender": "female", "childs": [] },
+                                                                                        { "name": "Adolat", "gender": "female", "childs": [] },
+                                                                                        { "name": "Baxriddin", "gender": "male", "childs": 
+                                                                                            [
+                                                                                                { "name": "Temurbek", "gender": "male", "childs": [] },
+                                                                                                { "name": "Mashxurbek", "gender": "male", "childs": [] }
+                                                                                            ] 
+                                                                                        },
+                                                                                        { "name": "Gulboxor", "gender": "female", "childs": [] },
+                                                                                        { "name": "Shoxista", "gender": "female", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Uktam", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Zulfizar", "gender": "female", "childs": [] },
+                                                                                        { "name": "Utkir", "gender": "male", "childs": [] },
+                                                                                        { "name": "Isomidd", "gender": "male", "childs": [] },
+                                                                                        { "name": "Xusnidd", "gender": "male", "childs": [] },
+                                                                                        { "name": "Ilxom", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Nuriddin", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Saodat", "gender": "female", "childs": [] },
+                                                                                        { "name": "Guzal", "gender": "female", "childs": [] },
+                                                                                        { "name": "Komol", "gender": "male", "childs": [] },
+                                                                                        { "name": "Xoxongir", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Siroj", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Laylo", "gender": "female", "childs": [] },
+                                                                                        { "name": "Abbos", "gender": "male", "childs": [] },
+                                                                                        { "name": "Ulugbek", "gender": "male", "childs": [] },
+                                                                                        { "name": "Asatbek", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                }                                                                                  
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Mamaraim", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Iroda", "gender": "female", "childs": [] },
+                                                                                { "name": "Lola", "gender": "female", "childs": [] },
+                                                                                { "name": "Komola", "gender": "female", "childs": [] },
+                                                                                { "name": "Maftuna", "gender": "female", "childs": [] },
+                                                                                { "name": "Baxtiyer", "gender": "male", "childs": [] },
+                                                                                { "name": "Dilshod", "gender": "male", "childs": [] },
+                                                                                { "name": "Bobosher", "gender": "male", "childs": [] }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Abduraim", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Zulxumor", "gender": "female", "childs": [] },
+                                                                                { "name": "Shoxida", "gender": "female", "childs": [] },
+                                                                                { "name": "Ravshan", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Dilnoza", "gender": "female", "childs": [] },
+                                                                                        { "name": "Asliddin", "gender": "male", "childs": [] },
+                                                                                        { "name": "Fazliddin", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Rabbim", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Islom", "gender": "male", "childs": [] },
+                                                                                        { "name": "Baxrom", "gender": "male", "childs": [] },
+                                                                                        { "name": "Ikrom", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Rasul", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Gulzoda", "gender": "female", "childs": [] },
+                                                                                        { "name": "Shoxnoza", "gender": "female", "childs": [] },
+                                                                                        { "name": "Saida", "gender": "female", "childs": [] },
+                                                                                        { "name": "Boxora", "gender": "female", "childs": [] },
+                                                                                        { "name": "Dilnura", "gender": "female", "childs": [] },
+                                                                                        { "name": "Xujamat", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Najmidd", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Moxnur", "gender": "female", "childs": [] },
+                                                                                        { "name": "Nodira", "gender": "female", "childs": [] },
+                                                                                        { "name": "Sabina", "gender": "female", "childs": [] },
+                                                                                        { "name": "Bexruz", "gender": "male", "childs": [] },
+                                                                                        { "name": "Mexridd", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Maxsimoy", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Masuva", "gender": "female", "childs": [] },
+                                                                        { "name": "Oyjibak", "gender": "female", "childs": [] },
+                                                                        { "name": "Muso", "gender": "male", "childs": [] },
+                                                                        { "name": "Iso", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Ibot", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Sanobar", "gender": "female", "childs": [] },
+                                                                        { "name": "Shorovon", "gender": "female", "childs": [] },
+                                                                        { "name": "Musharraf", "gender": "female", "childs": [] },
+                                                                        { "name": "Axmat", "gender": "male", "childs":
+                                                                            [
+                                                                                { "name": "Lola", "gender": "female", "childs": [] },
+                                                                                { "name": "Moxira", "gender": "female", "childs": [] },
+                                                                                { "name": "Shoira", "gender": "female", "childs": [] },
+                                                                                { "name": "Mavluda", "gender": "female", "childs": [] },
+                                                                                { "name": "Gulchexra", "gender": "female", "childs": [] },
+                                                                                { "name": "Xusniya", "gender": "female", "childs": [] },
+                                                                                { "name": "Sirojidd", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Sarviniso", "gender": "female", "childs": [] },
+                                                                                        { "name": "Asomiddin", "gender": "male", "childs": [] },
+                                                                                        { "name": "Dovron", "gender": "male", "childs": [] },
+                                                                                        { "name": "Azim", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Ilxom", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Nurmamma", "gender": "female", "childs": [] },
+                                                                                        { "name": "Ruziboy", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Samaridd", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Bibisora", "gender": "female", "childs": [] },
+                                                                                        { "name": "Baxora", "gender": "female", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Yusuf", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Baxtigul", "gender": "female", "childs": [] },
+                                                                                { "name": "Gayrat", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Shoxnoza", "gender": "female", "childs": [] },
+                                                                                        { "name": "Dilshod", "gender": "male", "childs": [] },
+                                                                                        { "name": "Bekzod", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Shuxrat", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Qadir", "gender": "male", "childs": [] },
+                                                                                        { "name": "Maxmut", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Kilichboy", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Jamshid", "gender": "male", "childs": 
+                                                                                    [                                                                                        
+                                                                                        { "name": "Dilbek", "gender": "male", "childs": [] },
+                                                                                        { "name": "Mirkomil", "gender": "male", "childs": [] },
+                                                                                        { "name": "Sarvarbek", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Rashid", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Malika", "gender": "female", "childs": [] },
+                                                                                        { "name": "Saidali", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Xurshid", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Odinaxon", "gender": "female", "childs": [] },
+                                                                                        { "name": "Usmonali", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Obidjon", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Bibinur", "gender": "female", "childs": [] }
+                                                                                    ] 
+                                                                                }                                                                                
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Axtam", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Maxsuda", "gender": "female", "childs": [] },
+                                                                                { "name": "Gulsinoy", "gender": "female", "childs": [] },
+                                                                                { "name": "Quvondiq", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Oqila", "gender": "female", "childs": [] },
+                                                                                        { "name": "Guldona", "gender": "female", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Nurjon", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        },
+                                                        { "name": "Shermat", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Abdulla", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Oyrajab", "gender": "female", "childs": [] },
+                                                                        { "name": "Mingboy", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Feruza", "gender": "female", "childs": [] },
+                                                                                { "name": "Xafriza", "gender": "female", "childs": [] },
+                                                                                { "name": "Iris", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilfuza", "gender": "female", "childs": [] },
+                                                                                { "name": "Muzaffar", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Sevara", "gender": "female", "childs": [] },
+                                                                                        { "name": "Nigora", "gender": "female", "childs": [] },
+                                                                                        { "name": "Shavkat", "gender": "male", "childs": [] },
+                                                                                        { "name": "Shuxrat", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Akbar", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Zubaydul", "gender": "male", "childs": [] },
+                                                                                        { "name": "Goybull", "gender": "male", "childs": [] },
+                                                                                        { "name": "Xabibull", "gender": "male", "childs": [] },
+                                                                                        { "name": "Asatull", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Faxriddin", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Ismatillo", "gender": "male", "childs": [] },
+                                                                                        { "name": "Fazliddin", "gender": "male", "childs": [] },
+                                                                                        { "name": "Madina", "gender": "female", "childs": [] }
+                                                                                    ] 
+                                                                                }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Tilov", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Zulfiya", "gender": "female", "childs": [] },
+                                                                                { "name": "Mutabar", "gender": "female", "childs": [] },
+                                                                                { "name": "Kuldosh", "gender": "male", "childs": [] },
+                                                                                { "name": "Bektosh", "gender": "male", "childs": [] },
+                                                                                { "name": "Zayni", "gender": "male", "childs": [] },
+                                                                                { "name": "Ergash", "gender": "male", "childs": [] },
+                                                                                { "name": "Yuldosh", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Abduaxad", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Baxodir", "gender": "male", "childs": [] }
+                                                                            ] 
+                                                                        }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        }
+                                                    ]
+                                                },
+                                                { "name": "Eshatboy", "gender": "male", "childs": 
+                                                    [
+                                                        { "name": "Usmon", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Xudoyberdi", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Fotima", "gender": "female", "childs": [] },
+                                                                        { "name": "Tulkin", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Umidjon", "gender": "male", "childs": [] }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Voxob", "gender": "male", "childs": [] },
+                                                                        { "name": "Soxob", "gender": "male", "childs": [] },
+                                                                        { "name": "Otabek", "gender": "male", "childs": [] },
+                                                                        { "name": "Erkaboy", "gender": "male", "childs": [] },
+                                                                        { "name": "Xusan", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Oyshaxar", "gender": "female", "childs": [] }
+                                                            ] 
+                                                        },
+                                                        { "name": "Ermat", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Xasan", "gender": "male", "childs": [] },
+                                                                { "name": "Munavvar", "gender": "female", "childs": [] }
+                                                            ] 
+                                                        },
+                                                        { "name": "Suyun", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Ruqiya", "gender": "female", "childs": [] },
+                                                                { "name": "Xursan", "gender": "female", "childs": [] },
+                                                                { "name": "Salomat", "gender": "fmale", "childs": [] },
+                                                                { "name": "Xamra", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Oybuvi", "gender": "female", "childs": [] },
+                                                                        { "name": "Xoshim", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Nodira", "gender": "female", "childs": [] },
+                                                                                { "name": "Nigora", "gender": "female", "childs": [] },
+                                                                                { "name": "Utkir", "gender": "male", "childs": [] },
+                                                                                { "name": "Bobur", "gender": "male", "childs": [] },
+                                                                                { "name": "Ali", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Xulkar", "gender": "female", "childs": [] },
+                                                                                        { "name": "Dildora", "gender": "female", "childs": [] },
+                                                                                        { "name": "Erkin", "gender": "male", "childs": 
+                                                                                            [
+                                                                                                { "name": "Jaloliddin", "gender": "male", "childs": [] }
+                                                                                            ] 
+                                                                                        }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Vali", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Ezoza", "gender": "female", "childs": [] },
+                                                                                        { "name": "Shodiyor", "gender": "male", "childs": [] },
+                                                                                        { "name": "Shaxriyer", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Gani", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Soboxat", "gender": "female", "childs": [] },
+                                                                                        { "name": "Dilshod", "gender": "male", "childs": [] },
+                                                                                        { "name": "Elbek", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Abdurashit", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Ruxsora", "gender": "female", "childs": [] },
+                                                                                { "name": "Azamat", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Shaxrizoda", "gender": "female", "childs": [] },
+                                                                                        { "name": "Davron", "gender": "male", "childs": [] },
+                                                                                        { "name": "Davlat", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Burxon", "gender": "male", "childs": [] },
+                                                                                { "name": "Shuxrat", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Shaxrizoda", "gender": "female", "childs": [] },
+                                                                                        { "name": "Davron", "gender": "male", "childs": [] },
+                                                                                        { "name": "Davlat", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Xusan", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Mavjuda", "gender": "female", "childs": [] },
+                                                                                { "name": "Maxsuda", "gender": "female", "childs": [] },
+                                                                                { "name": "Uktam", "gender": "male", "childs": [] },
+                                                                                { "name": "Abror", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Yunus", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Sayyora", "gender": "female", "childs": [] },
+                                                                                { "name": "Yulduz", "gender": "female", "childs": [] },
+                                                                                { "name": "Farxod", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Akobir", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Abbos", "gender": "male", "childs": [] },
+                                                                                { "name": "Asror", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Toir", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Suraye", "gender": "female", "childs": [] },
+                                                                                { "name": "Muxaye", "gender": "female", "childs": [] },
+                                                                                { "name": "Suxrob", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Sulton", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        },
+                                                        { "name": "Zoir", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Qo`shmurod", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Sharifa", "gender": "female", "childs": [] },
+                                                                        { "name": "Rayxon", "gender": "female", "childs": [] },
+                                                                        { "name": "Norsuluv", "gender": "female", "childs": [] },
+                                                                        { "name": "Gofur", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Suraye", "gender": "female", "childs": [] },
+                                                                                { "name": "Laylo", "gender": "female", "childs": [] },
+                                                                                { "name": "Nurali", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Durdona", "gender": "female", "childs": [] },
+                                                                                        { "name": "Shamshod", "gender": "male", "childs": [] }
+                                                                                    ]
+                                                                                },
+                                                                                { "name": "Samariddin", "gender": "male", "childs": [] },
+                                                                                { "name": "Sherzod", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Muxlisa", "gender": "female", "childs": [] },
+                                                                                        { "name": "Suxrob", "gender": "male", "childs": [] },
+                                                                                        { "name": "Samandar", "gender": "male", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Sherali", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Choros", "gender": "female", "childs": [] },
+                                                                                        { "name": "Nodira", "gender": "female", "childs": [] }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Kushbok", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Zilola", "gender": "female", "childs": [] },
+                                                                                { "name": "Shoxnoza", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilafruz", "gender": "female", "childs": [] },
+                                                                                { "name": "Utkir", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Shahzoda", "gender": "female", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Islom", "gender": "male", "childs": [] },
+                                                                                { "name": "Ilyos", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Egamberdi", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Nasiba", "gender": "female", "childs": [] },
+                                                                                { "name": "Sanjar", "gender": "male", "childs": [] },
+                                                                                { "name": "Olloyer", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Kamron", "gender": "male", "childs": [] } 
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Diyorbek", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Govhar", "gender": "female", "childs": [] },
+                                                                { "name": "Shodi", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Iskandar", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Matluba", "gender": "female", "childs": [] },
+                                                                                { "name": "Munira", "gender": "female", "childs": [] },
+                                                                                { "name": "Saida", "gender": "female", "childs": [] },
+                                                                                { "name": "Ilxom", "gender": "male", "childs": 
+                                                                                    [
+                                                                                        { "name": "Odina", "gender": "female", "childs": [] }
+                                                                                    ] 
+                                                                                },
+                                                                                { "name": "Islom", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        },
+                                                        { "name": "Duvlo", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Shapaat", "gender": "female", "childs": [] },
+                                                                { "name": "Tuymaxol", "gender": "female", "childs": [] },
+                                                                { "name": "Guljaxon", "gender": "female", "childs": [] },
+                                                                { "name": "Mustafo", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Orzigul", "gender": "female", "childs": [] },
+                                                                        { "name": "Gulchexra", "gender": "female", "childs": [] },
+                                                                        { "name": "Aziz", "gender": "male", "childs": [] },
+                                                                        { "name": "Raxmon", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Munosib", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Muborak", "gender": "female", "childs": [] },
+                                                                        { "name": "Mutabar", "gender": "female", "childs": [] },
+                                                                        { "name": "Matluba", "gender": "female", "childs": [] }, 
+                                                                        { "name": "Ximmat", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        },
+                                                        { "name": "Quvnoq", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Nazokat", "gender": "female", "childs": [] },
+                                                                { "name": "Bonat", "gender": "female", "childs": [] },
+                                                                { "name": "Baxri", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Manzura", "gender": "female", "childs": [] },
+                                                                        { "name": "Marxabo", "gender": "female", "childs": [] },
+                                                                        { "name": "Nasiba", "gender": "female", "childs": [] },
+                                                                        { "name": "Sanobar", "gender": "female", "childs": [] },
+                                                                        { "name": "Shaxlo", "gender": "female", "childs": [] },
+                                                                        { "name": "Saydirasil", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Shoxsana", "gender": "female", "childs": [] },
+                                                                                { "name": "Sevara", "gender": "female", "childs": [] },
+                                                                                { "name": "Shoxzod", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Abdurasul", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Dilafruz", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilshod", "gender": "male", "childs": [] },
+                                                                                { "name": "Bexruz", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Murtoza", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Tilla", "gender": "female", "childs": [] },
+                                                                        { "name": "Javoxir", "gender": "male", "childs": [] },
+                                                                        { "name": "Bobur", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Baxtiyor", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Maftuna", "gender": "female", "childs": [] },
+                                                                        { "name": "Malika", "gender": "female", "childs": [] },
+                                                                        { "name": "Ixtiyor", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Odina", "gender": "female", "childs": [] },
+                                                                                { "name": "Shaxriyer", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Jasur", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Dilnura", "gender": "female", "childs": [] },
+                                                                                { "name": "Visola", "gender": "female", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Muhabbat", "gender": "female", "childs": [] },
+                                                                { "name": "Axror", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Dilorom", "gender": "female", "childs": [] },
+                                                                        { "name": "Laylo", "gender": "female", "childs": [] },
+                                                                        { "name": "Javlon", "gender": "male", "childs": [] },
+                                                                        { "name": "Joxon", "gender": "male", "childs": [] },
+                                                                        { "name": "Shaxriyer", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Dilrobo", "gender": "female", "childs": [] }                                                                
+                                                            ] 
+                                                        },
+                                                        { "name": "Musurmon", "gender": "male", "childs": [] },
+                                                        { "name": "Isroil", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Jondor", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Boymamat", "gender": "male", "childs": [] },
+                                                                        { "name": "Xolmamat", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Mordon", "gender": "male", "childs": [] }
+                                                            ] 
+                                                        }
+                                                    ] 
+                                                },
+                                                { "name": "Kushatboy", "gender": "male", "childs": 
+                                                    [
+                                                        { "name": "Xujanazar", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Berdimurod", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Oyshirin", "gender": "female", "childs": [] },
+                                                                        { "name": "Gulboxor", "gender": "female", "childs": [] },
+                                                                        { "name": "Gulnoza", "gender": "female", "childs": [] },
+                                                                        { "name": "Elmurod", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Soboxat", "gender": "female", "childs": [] },
+                                                                                { "name": "Aziza", "gender": "female", "childs": [] },
+                                                                                { "name": "Ulugbek", "gender": "male", "childs": [] },
+                                                                                { "name": "Nurbek", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Anvar", "gender": "male", "childs": 
+                                                                            [                                                                                
+                                                                                { "name": "Otabek", "gender": "male", "childs": [] },
+                                                                                { "name": "Abror", "gender": "male", "childs": [] },
+                                                                                { "name": "Diyorbek", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Dilmurod", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Orzumrod", "gender": "male", "childs": [] },
+                                                                                { "name": "Nurxaet", "gender": "female", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Adxam", "gender": "male", "childs":                                                                     
+                                                                            [
+                                                                                { "name": "Nasiba", "gender": "female", "childs": [] },
+                                                                                { "name": "Yorqin", "gender": "male", "childs": [] },
+                                                                                { "name": "Ortiq", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Bobomurod", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Charos", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilnavoz", "gender": "female", "childs": [] },
+                                                                                { "name": "Asilbek", "gender": "male", "childs": [] },
+                                                                                { "name": "Asadbek", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Joxongir", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Rayxona", "gender": "female", "childs": [] },
+                                                                                { "name": "Xumoyin", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Izatilla", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Ibroxim", "gender": "male", "childs": [] },
+                                                                                { "name": "Islom", "gender": "male", "childs": [] },
+                                                                                { "name": "Soliha", "gender": "female", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Fazilat", "gender": "female", "childs": [] },
+                                                                { "name": "Oysopor", "gender": "female", "childs": [] },
+                                                                { "name": "Shodoy", "gender": "female", "childs": [] },
+                                                                { "name": "Dustmurod", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Nodira", "gender": "female", "childs": [] },
+                                                                        { "name": "Iroda", "gender": "female", "childs": [] },
+                                                                        { "name": "Begzod", "gender": "male", "childs": [] },
+                                                                        { "name": "Forxod", "gender": "male", "childs": [] },
+                                                                        { "name": "Shuxrat", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        },
+                                                        { "name": "Lokay", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Isoq", "gender": "male", "childs": [] },
+                                                                { "name": "Ramat", "gender": "male", "childs": [] }
+                                                            ] 
+                                                        }
+                                                    ] 
+                                                },
+                                                { "name": "Ermatboy", "gender": "male", "childs": 
+                                                    [
+                                                        { "name": "Boyjigit", "gender": "male", "childs": [] },
+                                                        { "name": "Qirjigit", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Xoljigit", "gender": "male", "childs": 
+                                                                    [ 
+                                                                        { "name": "Mamarasul", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Nargiza", "gender": "female", "childs": [] },
+                                                                                { "name": "Nafisa", "gender": "female", "childs": [] },
+                                                                                { "name": "Manzura", "gender": "female", "childs": [] },
+                                                                                { "name": "Moxidil", "gender": "female", "childs": [] },
+                                                                                { "name": "Madina", "gender": "female", "childs": [] },
+                                                                                { "name": "Otabek", "gender": "male", "childs": [] },
+                                                                                { "name": "Ulugbek", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Buvsara", "gender": "female", "childs": [] },
+                                                                { "name": "Shukur", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Makkamto", "gender": "female", "childs": [] },
+                                                                        { "name": "Shamshi", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Baxtigul", "gender": "female", "childs": [] },
+                                                                                { "name": "Baxtiyer", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Sherali", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Maftuna", "gender": "female", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Begali", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Zafar", "gender": "male", "childs": [] }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Bekmurod", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Azzam", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Dusmurod", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Oyruzi", "gender": "female", "childs": [] },
+                                                                { "name": "Maxammat", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Nasiba", "gender": "female", "childs": [] },
+                                                                        { "name": "Soxida", "gender": "female", "childs": [] },
+                                                                        { "name": "Mavjuda", "gender": "female", "childs": [] },
+                                                                        { "name": "Komil", "gender": "male", "childs": [] },
+                                                                        { "name": "Zoxid", "gender": "male", "childs": [] },
+                                                                        { "name": "Zafar", "gender": "male", "childs": [] },
+                                                                        { "name": "Mansur", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Erxon", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Barno", "gender": "female", "childs": [] },
+                                                                        { "name": "Gulchexra", "gender": "female", "childs": [] },
+                                                                        { "name": "Gulnora", "gender": "female", "childs": [] },
+                                                                        { "name": "Begzod", "gender": "male", "childs": [] },
+                                                                        { "name": "Boxrom", "gender": "male", "childs": [] },
+                                                                        { "name": "Boxodir", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Burxon", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Zebo", "gender": "female", "childs": [] },
+                                                                        { "name": "Sherzod", "gender": "male", "childs": [] },
+                                                                        { "name": "Bunyod", "gender": "male", "childs": [] },
+                                                                        { "name": "Dilshod", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                }
+                                                            ] 
+                                                        }
+                                                    ] 
+                                                },
+                                                { "name": "Nurmatboy", "gender": "male", "childs": 
+                                                    [
+                                                        { "name": "Qodir", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Abdusamat", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Oltin", "gender": "female", "childs": [] },
+                                                                        { "name": "Maxsuda", "gender": "female", "childs": [] },
+                                                                        { "name": "Jamila", "gender": "female", "childs": [] },
+                                                                        { "name": "Okkol", "gender": "female", "childs": [] },
+                                                                        { "name": "Absalom", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Baxtigul", "gender": "female", "childs": [] },
+                                                                                { "name": "Abror", "gender": "male", "childs": [] },
+                                                                                { "name": "Baxtiyer", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Akrom", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Maftuna", "gender": "female", "childs": [] },
+                                                                                { "name": "Abbos", "gender": "male", "childs": [] },
+                                                                                { "name": "Xudoer", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Sopor", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Zafar", "gender": "male", "childs": [] },
+                                                                                { "name": "Sardor", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Askar", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Azzam", "gender": "male", "childs": [] },
+                                                                                { "name": "Begzod", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Akmal", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Umid", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Abdumalik", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Saodat", "gender": "female", "childs": [] },
+                                                                        { "name": "Soxiba", "gender": "female", "childs": [] },
+                                                                        { "name": "Soxida", "gender": "female", "childs": [] },
+                                                                        { "name": "Rayxon", "gender": "female", "childs": [] },
+                                                                        { "name": "Yulduz", "gender": "female", "childs": [] },
+                                                                        { "name": "O`tkir", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Javlon", "gender": "male", "childs": [] },
+                                                                                { "name": "Usmon", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Voxob", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Dildora", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilbar", "gender": "female", "childs": [] },                                                                                 
+                                                                                { "name": "Sharif", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Rustam", "gender": "male", "childs": [] },
+                                                                        { "name": "Jasur", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Temur", "gender": "male", "childs": [] }
+                                                                            ] 
+                                                                        },
+                                                                        { "name": "Sanjar", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Dilzo`z", "gender": "female", "childs": [] }
+                                                                            ] 
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Oysha", "gender": "female", "childs": [] },
+                                                                { "name": "Sayfulla", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Xanifa", "gender": "female", "childs": [] },
+                                                                        { "name": "Nasiba", "gender": "female", "childs": [] },
+                                                                        { "name": "Muborak", "gender": "female", "childs": [] },
+                                                                        { "name": "Oybek", "gender": "male", "childs": [] },
+                                                                        { "name": "Otabek", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Kumush", "gender": "female", "childs": [] }
+                                                            ] 
+                                                        },
+                                                        { "name": "Abdurahmon", "gender": "male", "childs": 
+                                                            [
+                                                                { "name": "Saydazim", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Orzigul", "gender": "female", "childs": [] },
+                                                                        { "name": "Xayriniso", "gender": "female", "childs": [] },
+                                                                        { "name": "Xusniya", "gender": "female", "childs": [] },
+                                                                        { "name": "Nazokat", "gender": "female", "childs": [] },
+                                                                        { "name": "Xumora", "gender": "female", "childs": [] },
+                                                                        { "name": "Abdugani", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Nilufar", "gender": "female", "childs": [] },
+                                                                                { "name": "Laylo", "gender": "female", "childs": [] },
+                                                                                { "name": "Mirzajol", "gender": "male", "childs": [] },
+                                                                                { "name": "Shoxboz", "gender": "male", "childs": [] },
+                                                                                { "name": "Uchqun", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Shuxrat", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Muxoyo", "gender": "female", "childs": [] },
+                                                                                { "name": "Surayo", "gender": "female", "childs": [] },
+                                                                                { "name": "Murod", "gender": "male", "childs": [] },
+                                                                                { "name": "Dilshod", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Shavkat", "gender": "male", "childs": [] },
+                                                                        { "name": "Sanjar", "gender": "male", "childs": [] }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Raziya", "gender": "female", "childs": [] },
+                                                                { "name": "Saydahmat", "gender": "male", "childs": 
+                                                                    [
+                                                                        { "name": "Morxobo", "gender": "female", "childs": [] },
+                                                                        { "name": "Moloxot", "gender": "female", "childs": [] },
+                                                                        { "name": "Matluba", "gender": "female", "childs": [] },
+                                                                        { "name": "Xurshida", "gender": "female", "childs": [] },
+                                                                        { "name": "Shoxida", "gender": "female", "childs": [] },
+                                                                        { "name": "Alisher", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Madina", "gender": "female", "childs": [] },
+                                                                                { "name": "Erkin", "gender": "male", "childs": [] },
+                                                                                { "name": "Voxid", "gender": "male", "childs": [] },
+                                                                                { "name": "Ilyos", "gender": "male", "childs": [] },
+                                                                                { "name": "Xusniddi", "gender": "male", "childs": [] }
+                                                                            ]
+                                                                        },
+                                                                        { "name": "Asliddin", "gender": "male", "childs": 
+                                                                            [
+                                                                                { "name": "Shodiya", "gender": "female", "childs": [] },
+                                                                                { "name": "Sevinch", "gender": "female", "childs": [] },
+                                                                                { "name": "Dilobar", "gender": "female", "childs": [] }
+                                                                            ]
+                                                                        }
+                                                                    ] 
+                                                                },
+                                                                { "name": "Xadicha", "gender": "female", "childs": [] },
+                                                                { "name": "Karima", "gender": "female", "childs": [] }
+                                                            ] 
+                                                        }
+                                                    ] 
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

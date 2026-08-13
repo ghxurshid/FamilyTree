@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // ASP.NET Core Web API — to'liq debugger bilan (breakpoint, hot reload emas).
+      // Port va environment variable'lar Properties/launchSettings.json dan olinadi.
+      "name": "🔵 Backend",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "backend: build",
+      "program": "${workspaceFolder}/backend/FamilyTreeBackend/bin/Debug/net8.0/FamilyTreeBackend.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend/FamilyTreeBackend",
+      "stopAtEntry": false,
+      "console": "internalConsole",
+      "launchSettingsFilePath": "${workspaceFolder}/backend/FamilyTreeBackend/Properties/launchSettings.json",
+      "launchSettingsProfile": "http",
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger"
+      },
+      "presentation": {
+        "group": "1_fullstack",
+        "order": 2
+      }
+    },
+    {
+      // Vite dev server. Alohida integrated terminal'da ishlaydi,
+      // React kodini debug qilish uchun browser DevTools ishlatiladi.
+      "name": "⚛️ Frontend",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}/frontend",
+      "presentation": {
+        "group": "1_fullstack",
+        "order": 3
+      }
+    }
+  ],
+  "compounds": [
+    {
+      // Bitta Start tugmasi: backend (debugger bilan) + frontend (dev server) parallel.
+      // stopAll: biri to'xtatilganda ikkalasi ham to'xtaydi.
+      "name": "🚀 Full Stack",
+      "configurations": ["🔵 Backend", "⚛️ Frontend"],
+      "stopAll": true,
+      "presentation": {
+        "group": "1_fullstack",
+        "order": 1
+      }
+    }
+  ]
+}

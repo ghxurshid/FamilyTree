@@ -1,0 +1,127 @@
+/* Nocturne — dizayn tizimi tokenlari.
+   Manba: _design/v1/_ds/nocturne-.../styles.css va Shajara.dc.html ichidagi
+   mavzu qatlami. Har bir rang, o'lcham va soya shu yerdan olinadi. */
+
+:root {
+  /* — asosiy rollar (tungi mavzu) — */
+  --color-bg: #161826;
+  --color-surface: #232532;
+  --color-text: #e9e9ed;
+  --color-accent: #9184d9;
+  --color-accent-2: #a7a1db;
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+
+  /* — neytral pog'ona — */
+  --color-neutral-100: #f3f5fe;
+  --color-neutral-200: #e4e7f5;
+  --color-neutral-300: #cfd3e5;
+  --color-neutral-400: #b2b6ca;
+  --color-neutral-500: #9397ab;
+  --color-neutral-600: #75798c;
+  --color-neutral-700: #595d6c;
+  --color-neutral-800: #3f424d;
+  --color-neutral-900: #292b31;
+
+  /* — akssent pog'onasi — */
+  --color-accent-100: #f5f4ff;
+  --color-accent-200: #e7e5fe;
+  --color-accent-300: #d2cefd;
+  --color-accent-400: #b5abfc;
+  --color-accent-500: #968ae0;
+  --color-accent-600: #796cbf;
+  --color-accent-700: #5d5294;
+  --color-accent-800: #423a6a;
+  --color-accent-900: #2b2741;
+
+  /* — semantik ranglar — */
+  --color-male: #6ea8e8;
+  --color-female: #e8809e;
+  --color-unknown: #8b90a4;
+  --color-alive: #6fd39a;
+  --color-danger: #e0777f;
+  --color-warn: #e6b980;
+
+  /* — kanvas foni — */
+  --canvas-ink: #0b0d16;
+  --canvas-glow: #1f2440;
+  --hair: color-mix(in srgb, var(--color-text) 22%, transparent);
+  --connector: color-mix(in srgb, #e9e9ed 58%, transparent);
+  --glow-core: var(--color-accent-200);
+  --shadow-node: var(--shadow-md);
+  /* Tanlov tashqarisidagi kartalarning so'nishi — mavzuga qarab. */
+  --dim-person: 0.2;
+  --dim-spouse: 0.12;
+
+  /* — tipografika — */
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-heading-weight: 500;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --fscale: 1;
+
+  /* — bo'shliq (zichlik 0.7×) — */
+  --space-1: 2.8px;
+  --space-2: 5.6px;
+  --space-3: 8.4px;
+  --space-4: 11.2px;
+  --space-6: 16.8px;
+  --space-8: 22.4px;
+
+  /* — radius — */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 20px;
+
+  /* — balandlik — */
+  --shadow-sm: 0 0 0 1px #3f424d;
+  --shadow-md: 0 0 0 1px #595d6c, 0 6px 18px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 0 0 1px #9397ab, 0 16px 40px rgba(0, 0, 0, 0.65);
+
+  /* — o'lchamlar — */
+  --header-h: 56px;
+  --mobile-nav-h: 55px;
+  --panel-w: 392px;
+  --rail-w: 130px;
+
+  /* — z qatlamlar — */
+  --z-canvas: 1;
+  --z-canvas-ui: 20;
+  --z-screen: 50;
+  --z-header: 60;
+  --z-mobile-nav: 70;
+  --z-panel: 80;
+  --z-form: 95;
+  --z-sync: 110;
+  --z-search: 120;
+  --z-auth: 130;
+  --z-toast: 140;
+
+  /* — harakat — */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-fast: 0.2s;
+  --dur-base: 0.32s;
+  --dur-slow: 0.42s;
+}
+
+[data-theme='light'] {
+  --color-bg: #cfd3e5;
+  --color-surface: #f3f5fe;
+  --color-text: #22242f;
+  --color-accent: #5d5294;
+  --color-divider: color-mix(in srgb, #22242f 14%, transparent);
+  --canvas-ink: #b2b6ca;
+  --canvas-glow: #e4e7f5;
+  --hair: color-mix(in srgb, #22242f 20%, transparent);
+  --connector: color-mix(in srgb, #22242f 62%, transparent);
+  --glow-core: var(--color-accent-600);
+  --shadow-node: var(--shadow-sm);
+  --dim-person: 0.38;
+  --dim-spouse: 0.28;
+  --shadow-sm: 0 0 0 1px #b2b6ca;
+  --shadow-md: 0 0 0 1px #9397ab, 0 6px 18px rgba(30, 34, 60, 0.14);
+  --shadow-lg: 0 0 0 1px #75798c, 0 16px 40px rgba(30, 34, 60, 0.2);
+}
+
+[data-contrast='1'] {
+  --hair: color-mix(in srgb, var(--color-text) 34%, transparent);
+}

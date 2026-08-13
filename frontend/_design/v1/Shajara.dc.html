@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-639a66e9-e9ff-4a0c-97ab-d1dda0e4ffc0/styles.css">
+<script src="_ds/nocturne-639a66e9-e9ff-4a0c-97ab-d1dda0e4ffc0/_ds_bundle.js"></script>
+<script src="family-data.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  html, body { height: 100%; margin: 0; overflow: hidden; overscroll-behavior: none; background: var(--color-bg); }
+  :root { --fscale: 1; --canvas-ink: #0b0d16; --canvas-glow: #1f2440; --hair: color-mix(in srgb, var(--color-text) 22%, transparent); }
+  [data-theme="light"] {
+    --color-bg: #cfd3e5; --color-surface: #f3f5fe; --color-text: #22242f;
+    --color-accent: #5d5294; --color-divider: color-mix(in srgb, #22242f 14%, transparent);
+    --canvas-ink: #b2b6ca; --canvas-glow: #e4e7f5; --hair: color-mix(in srgb, #22242f 20%, transparent);
+    --shadow-sm: 0 0 0 1px #b2b6ca; --shadow-md: 0 0 0 1px #9397ab, 0 6px 18px rgba(30,34,60,0.14);
+    --shadow-lg: 0 0 0 1px #75798c, 0 16px 40px rgba(30,34,60,0.2);
+  }
+  [data-contrast="1"] { --hair: color-mix(in srgb, var(--color-text) 34%, transparent); }
+  body { transition: background .35s ease, color .35s ease; }
+  @keyframes nocFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes nocPop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  @keyframes nocSpin { to { transform: rotate(360deg); } }
+  @keyframes nocPulse { 0%,100% { opacity: .35; } 50% { opacity: .9; } }
+  *::-webkit-scrollbar { width: 8px; height: 8px; }
+  *::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--color-text) 16%, transparent); border-radius: 8px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  input, select, textarea, button { font-family: var(--font-body); }
+  a { color: var(--color-accent); }
+  a:hover { color: var(--color-accent-400); }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+</style>
+</helmet>
+
+<div id="noc-root" style="position:fixed;inset:0;display:flex;flex-direction:column;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);-webkit-font-smoothing:antialiased">
+
+  <header style="position:relative;z-index:60;display:flex;align-items:center;gap:14px;padding:9px 14px;background:color-mix(in srgb, var(--color-bg) 88%, transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--hair);flex:0 0 auto">
+    <div onClick="{{ goTree }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;flex:0 0 auto">
+      <svg width="22" height="22" viewBox="0 0 256 256" fill="var(--color-accent)" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg>
+      <div style="min-width:0">
+        <div data-tr style="font-family:var(--font-heading);font-weight:500;font-size:14.5px;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ brandTitle }}</div>
+        <div data-tr style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);white-space:nowrap">{{ brandSub }}</div>
+      </div>
+    </div>
+
+    <nav style="display:{{ dsk }};flex:0 0 auto;align-items:center;gap:2px;margin-left:8px">
+      <button onClick="{{ goTree }}" data-tr style="background:{{ tabTreeBg }};border:0;border-radius:8px;padding:7px 12px;font-size:13px;white-space:nowrap;color:{{ tabTreeFg }};cursor:pointer">Shajara</button>
+      <button onClick="{{ goPeople }}" data-tr style="background:{{ tabPeopleBg }};border:0;border-radius:8px;padding:7px 12px;font-size:13px;white-space:nowrap;color:{{ tabPeopleFg }};cursor:pointer">Odamlar</button>
+      <button onClick="{{ goProfile }}" data-tr style="background:{{ tabProfileBg }};border:0;border-radius:8px;padding:7px 12px;font-size:13px;white-space:nowrap;color:{{ tabProfileFg }};cursor:pointer">Mening oilam</button>
+    </nav>
+
+    <div style="flex:1"></div>
+
+    <button onClick="{{ openSearch }}" style="display:{{ dsk }};flex:1 1 auto;min-width:0;max-width:270px;height:38px;align-items:center;gap:8px;padding:0 10px;border-radius:9px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:color-mix(in srgb, var(--color-text) 64%, transparent);font-size:13px;cursor:pointer;text-align:left" style-hover="border-color:var(--color-accent)">
+      <svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+      <span data-tr style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ism, kasb, shahar yoki yil…</span>
+      <kbd style="font-family:var(--font-body);font-size:10.5px;border:1px solid var(--hair);border-radius:5px;padding:1px 5px">/</kbd>
+    </button>
+
+    <button onClick="{{ openSearch }}" aria-label="Qidirish" style="display:{{ mob }};align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:1px solid var(--hair);background:transparent;color:var(--color-text);cursor:pointer">
+      <svg width="17" height="17" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+    </button>
+
+    <div style="display:{{ alphaShow }};flex:0 0 auto;border:1px solid var(--hair);border-radius:8px;overflow:hidden">
+      <button onClick="{{ setLatin }}" style="background:{{ latBg }};color:{{ latFg }};border:0;padding:7px 9px;font-size:12px;cursor:pointer">Lotin</button>
+      <button onClick="{{ setCyr }}" style="background:{{ cyrBg }};color:{{ cyrFg }};border:0;padding:7px 9px;font-size:12px;cursor:pointer;border-left:1px solid var(--hair)">Кирилл</button>
+    </div>
+
+    <button onClick="{{ cycleTheme }}" aria-label="Mavzu" title="{{ themeTitle }}" style="display:flex;flex:0 0 auto;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:1px solid var(--hair);background:transparent;color:var(--color-text);cursor:pointer">
+      <span style="display:{{ themeAutoShow }}"><svg width="16" height="16" viewBox="0 0 256 256" aria-hidden="true"><circle cx="128" cy="128" r="88" fill="none" stroke="currentColor" stroke-width="16"/><path d="M128 40a88 88 0 0 1 0 176Z" fill="currentColor"/></svg></span><span style="display:{{ themeDarkShow }}"><svg width="16" height="16" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M216 152A96 96 0 0 1 104 40a96 96 0 1 0 112 112Z"/></svg></span><span style="display:{{ themeLightShow }}"><svg width="16" height="16" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="128" cy="128" r="44"/><path d="M128 36V16M128 240v-20M36 128H16M240 128h-20M62 62 48 48M208 208l-14-14M62 194l-14 14M208 48l-14 14"/></svg></span>
+    </button>
+
+    <button onClick="{{ onIdentityClick }}" style="display:flex;flex:0 0 auto;align-items:center;gap:8px;padding:5px 10px 5px 6px;border-radius:20px;border:1px solid {{ idBorder }};background:transparent;color:var(--color-text);cursor:pointer">
+      <span style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;background:{{ idAvatarBg }};color:{{ idAvatarFg }}">{{ idInitials }}</span>
+      <span data-tr style="font-size:12.5px;display:{{ dsk }}">{{ idLabel }}</span>
+    </button>
+  </header>
+
+  <div style="position:relative;flex:1;min-height:0">
+
+    <div id="noc-wrap" role="application" aria-label="Oila daraxti" style="position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab;background:radial-gradient(ellipse 70% 55% at 50% -10%, var(--canvas-glow) 0%, transparent 65%), radial-gradient(ellipse 60% 50% at 15% 110%, var(--canvas-ink) 0%, transparent 60%), var(--color-bg)">
+      <div id="noc-cam" style="position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform">
+
+        <sc-for list="{{ bands }}" as="b" hint-placeholder-count="4">
+          <div style="position:absolute;left:0;top:{{ b.top }};width:{{ b.w }};height:{{ b.h }};background:{{ b.bg }};border-top:1px solid {{ b.line }};pointer-events:none">
+            <span style="position:absolute;left:22px;top:14px;display:{{ b.show }};align-items:center;gap:8px;padding:4px 11px;border-radius:20px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 72%, transparent);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:{{ b.fg }};white-space:nowrap">{{ b.label }}<b style="font-weight:400;letter-spacing:.06em;text-transform:none;color:color-mix(in srgb, var(--color-text) 58%, transparent)">{{ b.sub }}</b></span>
+          </div>
+        </sc-for>
+
+        <svg width="{{ canvasW }}" height="{{ canvasH }}" style="position:absolute;left:0;top:0;overflow:visible;pointer-events:none">
+          <sc-for list="{{ links }}" as="l" hint-placeholder-count="5">
+            <path d="{{ l.d }}" fill="none" stroke="{{ l.stroke }}" stroke-width="{{ l.w }}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="{{ l.dash }}" opacity="{{ l.o }}"></path>
+          </sc-for>
+        </svg>
+
+        <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="8">
+          <div style="position:absolute;left:0;top:0;transform:translate3d({{ n.tx }},{{ n.ty }},0);width:{{ n.w }};height:{{ n.h }};z-index:{{ n.z }};opacity:{{ n.op }};transition:{{ nodeTrans }}">
+            <div role="button" tabindex="0" aria-label="{{ n.aria }}" onClick="{{ n.click }}" onKeyDown="{{ n.key }}" style="position:relative;height:100%;border-radius:12px;background:{{ n.bg }};box-shadow:{{ n.shadow }};cursor:pointer;overflow:hidden;display:flex;align-items:center;gap:11px;padding:0 12px 0 15px;transition:box-shadow .2s ease" style-hover="filter:brightness(1.1)">
+              <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:{{ n.tone }}"></div>
+              <div style="display:{{ n.avatarShow }};flex:0 0 auto;width:{{ n.avSize }};height:{{ n.avSize }};border-radius:50%;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;letter-spacing:.02em;background:{{ n.avBg }};color:{{ n.avFg }};border:1px solid {{ n.tone }}">{{ n.ini }}</div>
+              <div style="min-width:0;flex:1;text-align:{{ n.align }}">
+                <div style="font-family:var(--font-heading);font-weight:{{ n.nameWeight }};font-size:{{ n.nameSize }};line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--color-text)">{{ n.name }}</div>
+                <div style="display:{{ n.metaShow }};font-size:11.5px;margin-top:3px;color:color-mix(in srgb, var(--color-text) 74%, transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.years }}</div>
+                <div style="display:{{ n.relShow }};align-items:center;gap:5px;margin-top:5px">
+                  <span style="width:4px;height:4px;border-radius:50%;background:{{ n.tone }}"></span>
+                  <span style="font-size:11px;color:{{ n.relFg }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.rel }}</span>
+                </div>
+              </div>
+              <div style="position:absolute;top:9px;right:10px;display:{{ n.statusShow }};align-items:center;gap:6px">
+                <span style="display:{{ n.meShow }};font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent);border:1px solid var(--color-accent);border-radius:4px;padding:1px 5px" data-tr>Siz</span>
+                <span style="width:6px;height:6px;border-radius:50%;background:{{ n.statusColor }}"></span>
+              </div>
+              <button onClick="{{ n.add }}" aria-label="Farzand qo'shish" style="position:absolute;right:8px;bottom:8px;display:{{ n.addShow }};align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--color-accent);background:color-mix(in srgb, var(--color-accent) 14%, transparent);color:var(--color-accent);font-size:13px;cursor:pointer;padding:0"><svg width="12" height="12" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M128 56V200M56 128H200"/></svg></button>
+            </div>
+            <button onClick="{{ n.toggle }}" aria-label="Shoxni yig'ish yoki ochish" style="position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);display:{{ n.togShow }};align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:12px;border:1px solid {{ n.togBorder }};background:var(--color-surface);color:{{ n.togFg }};font-size:11px;font-weight:600;cursor:pointer;z-index:3"><span style="display:{{ n.togMinusShow }}"><svg width="11" height="11" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M56 128H200"/></svg></span><span style="display:{{ n.togPlusShow }};align-items:center;gap:2px"><svg width="9" height="9" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M128 56V200M56 128H200"/></svg>{{ n.togLabel }}</span></button>
+          </div>
+        </sc-for>
+
+      </div>
+    </div>
+
+    <div style="position:absolute;left:14px;top:12px;display:{{ crumbShow }};align-items:center;gap:5px;max-width:min(58%, 620px);overflow-x:auto;scrollbar-width:none;padding:5px;border-radius:11px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 90%, transparent);backdrop-filter:blur(12px);box-shadow:var(--shadow-md)">
+      <sc-for list="{{ crumbs }}" as="c" hint-placeholder-count="3">
+        <button onClick="{{ c.go }}" style="display:flex;flex:0 0 auto;align-items:center;gap:7px;padding:5px 10px;border-radius:8px;border:1px solid {{ c.border }};background:transparent;color:{{ c.fg }};font-size:12px;cursor:pointer;white-space:nowrap"><span style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 56%, transparent)">{{ c.rel }}</span>{{ c.name }}</button>
+      </sc-for>
+    </div>
+
+    <div style="position:absolute;left:14px;bottom:14px;display:{{ dsk }};flex-direction:column;gap:8px;align-items:flex-start">
+      <div style="display:flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden;background:color-mix(in srgb, var(--color-bg) 82%, transparent);backdrop-filter:blur(10px)">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <button onClick="{{ f.go }}" data-tr style="background:{{ f.bg }};color:{{ f.fg }};border:0;border-left:1px solid var(--hair);padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap">{{ f.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;padding:8px 13px;border-radius:9px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 82%, transparent);backdrop-filter:blur(10px);font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent)">
+        <span style="display:flex;align-items:center;gap:6px"><i style="width:12px;height:3px;border-radius:2px;background:#6ea8e8;display:block"></i><span data-tr>Erkak</span></span>
+        <span style="display:flex;align-items:center;gap:6px"><i style="width:12px;height:3px;border-radius:2px;background:#e8809e;display:block"></i><span data-tr>Ayol</span></span>
+        <span style="display:{{ nikohShow }};align-items:center;gap:6px"><i style="width:12px;height:0;border-top:1px dashed currentColor;display:block"></i><span data-tr>Nikoh</span></span>
+      </div>
+    </div>
+
+    <div style="position:absolute;right:14px;bottom:{{ ctrlBottom }};display:flex;flex-direction:column;gap:8px;align-items:flex-end;z-index:20">
+      <div style="display:{{ minimapShow }};width:176px;height:104px;border-radius:10px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 88%, transparent);backdrop-filter:blur(10px);position:relative;overflow:hidden" onClick="{{ minimapClick }}" id="noc-mm">
+        <sc-for list="{{ mmDots }}" as="m" hint-placeholder-count="10">
+          <i style="position:absolute;left:{{ m.x }};top:{{ m.y }};width:{{ m.w }};height:{{ m.h }};border-radius:1px;background:{{ m.c }};display:block"></i>
+        </sc-for>
+        <div id="noc-mmvp" style="position:absolute;border:1.5px solid var(--color-accent);background:color-mix(in srgb, var(--color-accent) 10%, transparent);border-radius:2px;pointer-events:none"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;border:1px solid var(--hair);border-radius:10px;overflow:hidden;background:color-mix(in srgb, var(--color-bg) 88%, transparent);backdrop-filter:blur(10px)">
+        <button onClick="{{ zoomIn }}" aria-label="Kattalashtirish" style="width:40px;height:38px;border:0;background:transparent;color:var(--color-text);cursor:pointer"><svg width="15" height="15" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M128 56V200M56 128H200"/></svg></button>
+        <div id="noc-zoom" style="text-align:center;font-size:10.5px;padding:2px 0;color:color-mix(in srgb, var(--color-text) 74%, transparent);border-block:1px solid var(--hair)">100%</div>
+        <button onClick="{{ zoomOut }}" aria-label="Kichraytirish" style="width:40px;height:38px;border:0;background:transparent;color:var(--color-text);cursor:pointer"><svg width="15" height="15" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M56 128H200"/></svg></button>
+      </div>
+      <button onClick="{{ fitAll }}" aria-label="Butun daraxt" title="Butun daraxt (F)" style="width:40px;height:38px;border:1px solid var(--hair);border-radius:10px;background:color-mix(in srgb, var(--color-bg) 88%, transparent);backdrop-filter:blur(10px);color:var(--color-text);cursor:pointer"><svg width="16" height="16" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M168 40h48v48M88 40H40v48M168 216h48v-48M88 216H40v-48"/></svg></button>
+      <button onClick="{{ centerMe }}" aria-label="Menga qaytish" title="Menga qaytish (0)" style="display:flex;align-items:center;gap:7px;padding:0 12px;height:38px;border:1px solid var(--color-accent);border-radius:10px;background:color-mix(in srgb, var(--color-accent) 12%, transparent);backdrop-filter:blur(10px);color:var(--color-accent);cursor:pointer;font-size:12.5px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:currentColor"></span><span style="display:{{ dsk }}">{{ homeLabel }}</span></button>
+    </div>
+
+    <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);max-height:calc(100% - 200px);overflow:hidden;scrollbar-width:none;display:{{ railShow }};flex-direction:column;gap:2px;align-items:stretch;z-index:15;padding:6px;border-radius:11px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 88%, transparent);backdrop-filter:blur(12px)">
+      <sc-for list="{{ rail }}" as="g" hint-placeholder-count="6">
+        <button onClick="{{ g.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 7px;border-radius:6px;border:1px solid {{ g.border }};background:{{ g.bg }};color:{{ g.fg }};font-size:10px;cursor:pointer;white-space:nowrap">{{ g.label }}<i style="display:block;width:{{ g.barW }};height:3px;border-radius:2px;background:{{ g.bar }}"></i></button>
+      </sc-for>
+    </div>
+
+  </div>
+
+  <nav style="display:{{ mob }};position:relative;z-index:70;flex:0 0 auto;align-items:stretch;border-top:1px solid var(--hair);background:color-mix(in srgb, var(--color-bg) 94%, transparent);backdrop-filter:blur(14px);padding-bottom:env(safe-area-inset-bottom)">
+    <button onClick="{{ goTree }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:54px;border:0;background:transparent;color:{{ tabTreeFg }};font-size:10px;cursor:pointer;padding:6px 0"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg><span data-tr>Shajara</span></button>
+    <button onClick="{{ goPeople }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:54px;border:0;background:transparent;color:{{ tabPeopleFg }};font-size:10px;cursor:pointer;padding:6px 0"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M230.92,212c-15.23-26.33-38.7-45.21-66.09-54.16a72,72,0,1,0-73.66,0C63.78,166.78,40.31,185.66,25.08,212a8,8,0,1,0,13.85,8c18.84-32.56,52.14-52,89.07-52s70.23,19.44,89.07,52a8,8,0,1,0,13.85-8ZM72,96a56,56,0,1,1,56,56A56.06,56.06,0,0,1,72,96Z"/></svg><span data-tr>Odamlar</span></button>
+    <button onClick="{{ goProfile }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:54px;border:0;background:transparent;color:{{ tabProfileFg }};font-size:10px;cursor:pointer;padding:6px 0"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z"/></svg><span data-tr>Oilam</span></button>
+    <button onClick="{{ goSettings }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:54px;border:0;background:transparent;color:{{ tabSettingsFg }};font-size:10px;cursor:pointer;padding:6px 0"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"/></svg><span data-tr>Sozlama</span></button>
+  </nav>
+</div>
+
+
+<aside aria-label="Shaxs ma'lumotlari" style="position:fixed;top:{{ panelTop }};right:0;bottom:{{ panelBottom }};left:{{ panelLeft }};width:{{ panelW }};height:{{ panelH }};transform:{{ panelT }};transition:{{ panelTrans }};background:var(--color-surface);border-left:1px solid var(--hair);border-top:1px solid var(--hair);border-radius:{{ panelRadius }};z-index:80;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden">
+  <div style="flex:0 0 auto;padding:16px 18px 14px;border-bottom:1px solid var(--hair);position:relative">
+    <div style="display:{{ mob }};width:38px;height:4px;border-radius:2px;background:var(--hair);margin:0 auto 12px"></div>
+    <button onClick="{{ closePanel }}" aria-label="Yopish" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--hair);background:transparent;color:var(--color-text);cursor:pointer;font-size:13px"><svg width="12" height="12" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M200 56 56 200M56 56 200 200"/></svg></button>
+    <div style="display:flex;align-items:center;gap:13px;padding-right:38px">
+      <div style="width:52px;height:52px;flex:0 0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:600;background:{{ pAvBg }};color:{{ pTone }};border:1px solid {{ pTone }}">{{ pIni }}</div>
+      <div style="min-width:0">
+        <div style="font-family:var(--font-heading);font-size:calc(19px * var(--fscale));line-height:1.15">{{ pName }}</div>
+        <div style="font-size:calc(12.5px * var(--fscale));color:var(--color-accent);margin-top:3px">{{ pRel }}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:7px;margin-top:12px;flex-wrap:wrap">
+      <span style="font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:{{ pStatusBg }};color:{{ pStatusFg }}">{{ pStatus }}</span>
+      <button onClick="{{ pFocus }}" data-tr style="font-size:11px;padding:4px 10px;border-radius:20px;border:1px solid var(--hair);background:transparent;color:color-mix(in srgb, var(--color-text) 74%, transparent);cursor:pointer">Kartaga fokus</button>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:16px 18px 26px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+      <sc-for list="{{ pFacts }}" as="f" hint-placeholder-count="6">
+        <div style="border:1px solid var(--hair);border-radius:8px;padding:8px 10px">
+          <div data-tr style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent)">{{ f.label }}</div>
+          <div style="font-size:calc(13.5px * var(--fscale));margin-top:3px">{{ f.value }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="margin-top:20px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:9px">Biografiya</div>
+      <p style="display:{{ pBioShow }};font-size:calc(13.5px * var(--fscale));line-height:1.6;color:color-mix(in srgb, var(--color-text) 80%, transparent);margin:0">{{ pBio }}</p>
+      <div style="display:{{ pBioEmptyShow }};align-items:center;gap:10px;padding:13px;border:1px dashed var(--hair);border-radius:9px;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 74%, transparent)">
+        <span data-tr>Ma'lumot hali qo'shilmagan. Oila a'zolari to'ldirishi mumkin.</span>
+      </div>
+    </div>
+
+    <sc-for list="{{ pGroups }}" as="g" hint-placeholder-count="3">
+      <div style="margin-top:20px">
+        <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:9px">{{ g.title }}</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="2">
+            <button onClick="{{ p.go }}" style="display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:8px 11px;border:1px solid var(--hair);border-radius:9px;background:transparent;cursor:pointer;color:var(--color-text)" style-hover="background:color-mix(in srgb, var(--color-accent) 8%, transparent)">
+              <span style="width:28px;height:28px;flex:0 0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;background:{{ p.avBg }};color:{{ p.tone }}">{{ p.ini }}</span>
+              <span style="flex:1;min-width:0">
+                <span style="display:block;font-size:calc(13.5px * var(--fscale));white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span>
+                <span style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 60%, transparent)">{{ p.meta }}</span>
+              </span>
+              <span style="display:flex;color:color-mix(in srgb, var(--color-text) 48%, transparent)"><svg width="12" height="12" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></svg></span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+
+    <div style="margin-top:20px;display:flex;gap:7px">
+      <div style="flex:1;border:1px solid var(--hair);border-radius:8px;padding:9px 11px">
+        <div data-tr style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent)">Ajdodlari</div>
+        <div style="font-size:17px;font-family:var(--font-heading)">{{ pAnc }}</div>
+      </div>
+      <div style="flex:1;border:1px solid var(--hair);border-radius:8px;padding:9px 11px">
+        <div data-tr style="font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent)">Avlodlari</div>
+        <div style="font-size:17px;font-family:var(--font-heading)">{{ pDesc }}</div>
+      </div>
+    </div>
+
+    <div style="display:{{ pEditShow }};gap:7px;margin-top:18px;flex-wrap:wrap">
+      <button onClick="{{ pEdit }}" data-tr style="flex:1;min-width:120px;min-height:40px;border:1px solid var(--color-accent);border-radius:8px;background:transparent;color:var(--color-accent);font-size:13px;cursor:pointer">Tahrirlash</button>
+      <button onClick="{{ pAddChild }}" data-tr style="flex:1;min-width:120px;min-height:40px;border:1px solid var(--color-accent);border-radius:8px;background:color-mix(in srgb, var(--color-accent) 12%, transparent);color:var(--color-accent);font-size:13px;cursor:pointer">+ Farzand</button>
+      <button onClick="{{ pAddSpouse }}" data-tr style="flex:1;min-width:120px;min-height:40px;border:1px solid var(--hair);border-radius:8px;background:transparent;color:color-mix(in srgb, var(--color-text) 70%, transparent);font-size:13px;cursor:pointer">+ Turmush o'rtoq</button>
+    </div>
+    <div style="display:{{ pLockShow }};align-items:center;gap:9px;margin-top:18px;padding:11px 13px;border:1px solid var(--hair);border-radius:9px;font-size:12px;color:color-mix(in srgb, var(--color-text) 74%, transparent)">
+      <svg width="14" height="14" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="40" y="96" width="176" height="120" rx="16"/><path d="M92 96V60a36 36 0 0 1 72 0v36"/></svg>
+      <span>{{ pLockText }}</span>
+    </div>
+  </div>
+</aside>
+
+<aside aria-label="Ma'lumot formasi" style="position:fixed;top:{{ panelTop }};right:0;bottom:{{ panelBottom }};left:{{ panelLeft }};width:{{ panelW }};height:{{ panelH }};transform:{{ formShow }};transition:{{ panelTrans }};background:var(--color-surface);border-left:1px solid var(--hair);border-top:1px solid var(--hair);border-radius:{{ panelRadius }};z-index:95;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden;opacity:{{ fBusyOpacity }}">
+  <div style="flex:0 0 auto;padding:16px 18px 14px;border-bottom:1px solid var(--hair)">
+    <div style="display:{{ mob }};width:38px;height:4px;border-radius:2px;background:var(--hair);margin:0 auto 12px"></div>
+    <div style="font-family:var(--font-heading);font-size:17px">{{ formTitle }}</div>
+    <div style="font-size:12px;color:color-mix(in srgb, var(--color-text) 74%, transparent);margin-top:3px">{{ formSub }}</div>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:16px 18px 24px;display:flex;flex-direction:column;gap:14px">
+    <label style="display:block">
+      <span data-tr style="display:block;font-size:11px;letter-spacing:.06em;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">To'liq ism</span>
+      <input value="{{ fName }}" onChange="{{ fOnName }}" placeholder="Masalan: Nodira" style="width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid {{ fNameBorder }};background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      <span style="display:{{ fErrNameShow }};font-size:11.5px;color:#e0777f;margin-top:5px">{{ fErrName }}</span>
+    </label>
+    <div>
+      <span data-tr style="display:block;font-size:11px;letter-spacing:.06em;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Jinsi</span>
+      <div style="display:flex;border:1px solid var(--hair);border-radius:8px;overflow:hidden">
+        <button onClick="{{ fMale }}" data-tr style="flex:1;min-height:40px;border:0;background:{{ fMaleBg }};color:{{ fMaleFg }};font-size:13px;cursor:pointer">Erkak</button>
+        <button onClick="{{ fFemale }}" data-tr style="flex:1;min-height:40px;border:0;border-left:1px solid var(--hair);background:{{ fFemaleBg }};color:{{ fFemaleFg }};font-size:13px;cursor:pointer">Ayol</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <label style="flex:1">
+        <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Tug'ilgan yil</span>
+        <input value="{{ fBirth }}" onChange="{{ fOnBirth }}" inputmode="numeric" placeholder="1998" style="width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      </label>
+      <label style="flex:1">
+        <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Shahar</span>
+        <input value="{{ fCity }}" onChange="{{ fOnCity }}" placeholder="Toshkent" style="width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      </label>
+    </div>
+    <span style="display:{{ fErrBirthShow }};font-size:11.5px;color:#e0777f;margin-top:-8px">{{ fErrBirth }}</span>
+
+    <button onClick="{{ fMore }}" data-tr style="display:{{ fMoreToggleShow }};align-items:center;justify-content:center;gap:7px;min-height:40px;border:1px dashed var(--hair);border-radius:8px;background:transparent;color:color-mix(in srgb, var(--color-text) 60%, transparent);font-size:12.5px;cursor:pointer">+ Qo'shimcha ma'lumot</button>
+
+    <div style="display:{{ fMoreShow }}">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <label style="display:block">
+          <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Kasbi</span>
+          <input value="{{ fProf }}" onChange="{{ fOnProf }}" placeholder="Masalan: o'qituvchi" style="width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+        </label>
+        <label style="display:block">
+          <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Vafot yili (agar bo'lsa)</span>
+          <input value="{{ fDeath }}" onChange="{{ fOnDeath }}" inputmode="numeric" placeholder="—" style="width:100%;min-height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+        </label>
+        <label style="display:block">
+          <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Qisqa biografiya</span>
+          <textarea value="{{ fBio }}" onChange="{{ fOnBio }}" rows="4" placeholder="Hayoti, kasbi, oila haqida bir-ikki jumla…" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px;line-height:1.5;resize:vertical"></textarea>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div style="flex:0 0 auto;display:flex;gap:9px;padding:13px 18px;border-top:1px solid var(--hair);padding-bottom:calc(13px + env(safe-area-inset-bottom))">
+    <button onClick="{{ fCancel }}" data-tr style="flex:0 0 auto;min-height:42px;padding:0 16px;border:1px solid var(--hair);border-radius:8px;background:transparent;color:color-mix(in srgb, var(--color-text) 65%, transparent);font-size:13px;cursor:pointer">Bekor</button>
+    <button onClick="{{ fSave }}" style="flex:1;min-height:42px;border:1px solid var(--color-accent);border-radius:8px;background:color-mix(in srgb, var(--color-accent) 14%, transparent);color:var(--color-accent);font-size:13.5px;cursor:pointer">{{ fSaveLabel }}</button>
+  </div>
+</aside>
+
+<div style="position:fixed;inset:0;z-index:120;display:{{ searchShow }};align-items:flex-start;justify-content:center;padding:9vh 16px 16px;background:color-mix(in srgb, var(--color-bg) 68%, transparent);backdrop-filter:blur(8px)" onClick="{{ closeSearch }}">
+  <div onClick="{{ stopClick }}" style="width:min(560px, 100%);border:1px solid var(--hair);border-radius:14px;background:var(--color-surface);box-shadow:var(--shadow-lg);overflow:hidden;animation:{{ popAnim }}">
+    <div style="display:flex;align-items:center;gap:11px;padding:14px 16px;border-bottom:1px solid var(--hair)">
+      <svg width="17" height="17" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+      <input id="noc-search" value="{{ sQuery }}" onChange="{{ onQ }}" onKeyDown="{{ onQKey }}" placeholder="Ism, kasb, shahar yoki yil…" style="flex:1;border:0;background:transparent;color:var(--color-text);font-size:16px;outline:none">
+      <kbd style="font-size:10.5px;border:1px solid var(--hair);border-radius:5px;padding:2px 6px;color:color-mix(in srgb, var(--color-text) 58%, transparent)">Esc</kbd>
+    </div>
+    <div style="max-height:min(52vh, 420px);overflow-y:auto">
+      <sc-for list="{{ sResults }}" as="r" hint-placeholder-count="4">
+        <button onClick="{{ r.go }}" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 16px;border:0;border-bottom:1px solid var(--hair);background:{{ r.bg }};cursor:pointer;color:var(--color-text)" style-hover="background:color-mix(in srgb, var(--color-accent) 10%, transparent)">
+          <span style="width:32px;height:32px;flex:0 0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:{{ r.avBg }};color:{{ r.tone }}">{{ r.ini }}</span>
+          <span style="flex:1;min-width:0">
+            <span style="display:block;font-size:14px">{{ r.name }}</span>
+            <span style="display:block;font-size:11.5px;color:color-mix(in srgb, var(--color-text) 60%, transparent)">{{ r.years }}</span>
+          </span>
+          <span style="text-align:right">
+            <span style="display:block;font-size:11.5px;color:var(--color-accent)">{{ r.meta }}</span>
+            <span style="display:block;font-size:10.5px;color:color-mix(in srgb, var(--color-text) 40%, transparent)">{{ r.gen }}</span>
+          </span>
+        </button>
+      </sc-for>
+      <div style="display:{{ sEmptyShow }};padding:28px 16px;text-align:center">
+        <div data-tr style="font-family:var(--font-heading);font-size:15px">Hech kim topilmadi</div>
+        <div data-tr style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 74%, transparent);margin-top:5px">Ismning bir qismini, kasbni yoki tug'ilgan yilni yozib ko'ring.</div>
+      </div>
+      <div style="display:{{ sHintShow }};padding:16px;font-size:11.5px;color:color-mix(in srgb, var(--color-text) 56%, transparent);line-height:1.9">
+        <div data-tr>↑ ↓ — tanlash · Enter — kameraga olib borish · Esc — yopish</div>
+        <div data-tr>Masalan: «Karim», «mirob», «Gurlan», «1924»</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;inset:0;z-index:130;display:{{ authShow }};align-items:center;justify-content:center;padding:20px;background:color-mix(in srgb, var(--color-bg) 72%, transparent);backdrop-filter:blur(10px)" onClick="{{ authClose }}">
+  <div onClick="{{ stopClick }}" style="width:min(400px, 100%);border:1px solid var(--hair);border-radius:14px;background:var(--color-surface);box-shadow:var(--shadow-lg);padding:26px 24px;animation:{{ popAnim }}">
+    <svg width="24" height="24" viewBox="0 0 256 256" fill="var(--color-accent)" aria-hidden="true"><path d="M230.91,172A8,8,0,0,1,228,182.91l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,36,169.09l92,53.65,92-53.65A8,8,0,0,1,230.91,172ZM220,121.09l-92,53.65L36,121.09A8,8,0,0,0,28,134.91l96,56a8,8,0,0,0,8.06,0l96-56A8,8,0,1,0,220,121.09ZM24,80a8,8,0,0,1,4-6.91l96-56a8,8,0,0,1,8.06,0l96,56a8,8,0,0,1,0,13.82l-96,56a8,8,0,0,1-8.06,0l-96-56A8,8,0,0,1,24,80Zm23.88,0L128,126.74,208.12,80,128,33.26Z"/></svg>
+    <div style="font-family:var(--font-heading);font-size:22px;margin-top:14px">{{ authTitle }}</div>
+    <div style="font-size:13px;line-height:1.6;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-top:6px">{{ authSub }}</div>
+    <div style="display:{{ authFieldsShow }};margin-top:18px">
+      <label style="display:{{ authNameShow }};margin-bottom:11px">
+        <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Ism familiya</span>
+        <input placeholder="Erkin Yusupov" style="width:100%;min-height:44px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      </label>
+      <label style="display:block;margin-bottom:11px">
+        <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Email</span>
+        <input type="email" placeholder="siz@oila.uz" style="width:100%;min-height:44px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      </label>
+      <label style="display:{{ authPassShow }}">
+        <span data-tr style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 66%, transparent);margin-bottom:6px">Parol</span>
+        <input type="password" placeholder="••••••••" style="width:100%;min-height:44px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:14px">
+      </label>
+    </div>
+    <div style="display:{{ authErrShow }};margin-top:12px;font-size:12px;color:#e0777f">{{ authErr }}</div>
+    <button onClick="{{ authSubmit }}" style="width:100%;min-height:46px;margin-top:18px;border:1px solid var(--color-accent);border-radius:8px;background:color-mix(in srgb, var(--color-accent) 14%, transparent);color:var(--color-accent);font-size:14px;cursor:pointer">{{ authBtn }}</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;font-size:12px">
+      <button onClick="{{ authSwitch }}" style="border:0;background:transparent;color:var(--color-accent);cursor:pointer;padding:0;font-size:12px">{{ authSwitchLabel }}</button>
+      <button onClick="{{ authForgot }}" data-tr style="display:{{ authForgotShow }};border:0;background:transparent;color:color-mix(in srgb, var(--color-text) 74%, transparent);cursor:pointer;padding:0;font-size:12px">Parolni unutdingizmi?</button>
+    </div>
+    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--hair);font-size:11.5px;color:color-mix(in srgb, var(--color-text) 40%, transparent)">{{ authDemo }}</div>
+  </div>
+</div>
+
+<div style="position:fixed;left:0;right:0;top:56px;height:calc(100% - 56px);z-index:50;display:{{ screenPeople }};flex-direction:column;background:var(--color-bg)">
+  <div style="flex:0 0 auto;padding:18px 20px 14px;border-bottom:1px solid var(--hair)">
+    <div data-tr style="font-family:var(--font-heading);font-size:24px">Odamlar</div>
+    <div style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 74%, transparent);margin-top:3px">{{ dirCount }}</div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px">
+      <input value="{{ dirQ }}" onChange="{{ onDirQ }}" placeholder="Qidirish…" style="flex:1;min-width:180px;min-height:40px;padding:0 12px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:13.5px">
+      <select value="{{ dirGen }}" onChange="{{ onDirGen }}" style="min-height:40px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:13px">
+        <sc-for list="{{ dirGenOptions }}" as="o" hint-placeholder-count="3">
+          <option value="{{ o.v }}">{{ o.l }}</option>
+        </sc-for>
+      </select>
+      <div style="display:flex;border:1px solid var(--hair);border-radius:8px;overflow:hidden">
+        <button onClick="{{ dirGenderAll }}" data-tr style="min-height:40px;padding:0 12px;border:0;background:{{ dgAllBg }};color:{{ dgAllFg }};font-size:12.5px;cursor:pointer">Hammasi</button>
+        <button onClick="{{ dirGenderM }}" data-tr style="min-height:40px;padding:0 12px;border:0;border-left:1px solid var(--hair);background:{{ dgMBg }};color:{{ dgMFg }};font-size:12.5px;cursor:pointer">Erkak</button>
+        <button onClick="{{ dirGenderF }}" data-tr style="min-height:40px;padding:0 12px;border:0;border-left:1px solid var(--hair);background:{{ dgFBg }};color:{{ dgFFg }};font-size:12.5px;cursor:pointer">Ayol</button>
+      </div>
+      <select value="{{ dirSort }}" onChange="{{ onDirSort }}" style="min-height:40px;padding:0 10px;border-radius:8px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-text) 4%, transparent);color:var(--color-text);font-size:13px">
+        <option value="gen">Avlod bo'yicha</option>
+        <option value="name">Ism bo'yicha</option>
+        <option value="birth">Yil bo'yicha</option>
+      </select>
+    </div>
+  </div>
+  <div style="flex:1;min-height:0;overflow-y:auto;padding:12px 20px 30px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(268px, 1fr));gap:9px">
+      <sc-for list="{{ dirRows }}" as="r" hint-placeholder-count="8">
+        <button onClick="{{ r.go }}" style="display:flex;align-items:center;gap:12px;text-align:left;padding:11px 13px;border:1px solid var(--hair);border-radius:10px;background:var(--color-surface);cursor:pointer;color:var(--color-text)" style-hover="border-color:var(--color-accent)">
+          <span style="width:36px;height:36px;flex:0 0 auto;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:{{ r.avBg }};color:{{ r.tone }};border:1px solid {{ r.tone }}">{{ r.ini }}</span>
+          <span style="flex:1;min-width:0">
+            <span style="display:block;font-size:calc(14px * var(--fscale));white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
+            <span style="display:block;font-size:11.5px;color:color-mix(in srgb, var(--color-text) 60%, transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.sub }}</span>
+          </span>
+          <span style="text-align:right;flex:0 0 auto">
+            <span style="display:block;font-size:11px;color:var(--color-accent)">{{ r.meta }}</span>
+            <span style="display:block;font-size:10.5px;color:color-mix(in srgb, var(--color-text) 40%, transparent)">{{ r.gen }}</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:{{ dirEmptyShow }};text-align:center;padding:60px 20px">
+      <div data-tr style="font-family:var(--font-heading);font-size:17px">Hech kim topilmadi</div>
+      <div data-tr style="font-size:13px;color:color-mix(in srgb, var(--color-text) 74%, transparent);margin-top:6px">Filtrlarni yumshatib ko'ring yoki boshqa ism kiriting.</div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;left:0;right:0;top:56px;height:calc(100% - 56px);z-index:50;display:{{ screenSettings }};overflow-y:auto;background:var(--color-bg)">
+  <div style="max-width:640px;margin:0 auto;padding:24px 20px 40px">
+    <div data-tr style="font-family:var(--font-heading);font-size:24px">Sozlamalar</div>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Mavzu</div>
+      <div style="display:flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden">
+        <sc-for list="{{ themeOpts }}" as="t" hint-placeholder-count="3">
+          <button onClick="{{ t.go }}" style="flex:1;min-height:44px;border:0;border-left:1px solid var(--hair);background:{{ t.bg }};color:{{ t.fg }};font-size:13px;cursor:pointer">{{ t.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:10px;padding:11px 13px;border:1px solid var(--hair);border-radius:9px">
+        <div>
+          <div data-tr style="font-size:13.5px">Matn kattaligi</div>
+          <div data-tr style="font-size:11.5px;color:color-mix(in srgb, var(--color-text) 58%, transparent)">Panel va ro'yxatlardagi matn</div>
+        </div>
+        <div style="display:flex;border:1px solid var(--hair);border-radius:8px;overflow:hidden">
+          <sc-for list="{{ fontOpts }}" as="o" hint-placeholder-count="3">
+            <button onClick="{{ o.go }}" style="min-width:42px;min-height:36px;border:0;border-left:1px solid var(--hair);background:{{ o.bg }};color:{{ o.fg }};font-size:{{ o.size }};cursor:pointer">{{ o.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <sc-for list="{{ setRows }}" as="s" hint-placeholder-count="2">
+      <div style="margin-top:22px">
+        <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">{{ s.group }}</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <sc-for list="{{ s.items }}" as="i" hint-placeholder-count="3">
+            <button onClick="{{ i.t.go }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;padding:12px 13px;border:1px solid var(--hair);border-radius:9px;background:transparent;cursor:pointer;color:var(--color-text)">
+              <span>
+                <span style="display:block;font-size:calc(13.5px * var(--fscale))">{{ i.label }}</span>
+                <span style="display:block;font-size:11.5px;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-top:2px">{{ i.sub }}</span>
+              </span>
+              <span style="position:relative;flex:0 0 auto;width:38px;height:22px;border-radius:11px;background:{{ i.t.bg }};transition:background .2s">
+                <span style="position:absolute;top:2px;left:{{ i.t.knob }};width:18px;height:18px;border-radius:50%;background:var(--color-surface);transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)"></span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Alifbo</div>
+      <div style="display:flex;border:1px solid var(--hair);border-radius:9px;overflow:hidden">
+        <button onClick="{{ setLatin }}" style="flex:1;min-height:44px;border:0;background:{{ latBg }};color:{{ latFg }};font-size:13px;cursor:pointer">Lotin</button>
+        <button onClick="{{ setCyr }}" style="flex:1;min-height:44px;border:0;border-left:1px solid var(--hair);background:{{ cyrBg }};color:{{ cyrFg }};font-size:13px;cursor:pointer">Кирилл</button>
+      </div>
+    </div>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Daraxt</div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button onClick="{{ expandAll }}" data-tr style="flex:1;min-width:160px;min-height:44px;border:1px solid var(--hair);border-radius:9px;background:transparent;color:var(--color-text);font-size:13px;cursor:pointer">Barcha shoxlarni ochish</button>
+        <button onClick="{{ collapseToLine }}" data-tr style="flex:1;min-width:160px;min-height:44px;border:1px solid var(--hair);border-radius:9px;background:transparent;color:var(--color-text);font-size:13px;cursor:pointer">Faqat mening chizig'im</button>
+      </div>
+    </div>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Hisob</div>
+      <button onClick="{{ logout }}" data-tr style="display:{{ logoutShow }};align-items:center;justify-content:center;width:100%;min-height:44px;border:1px solid var(--hair);border-radius:9px;background:transparent;color:#e0777f;font-size:13px;cursor:pointer">Hisobdan chiqish</button>
+      <button onClick="{{ openLogin }}" data-tr style="display:{{ signInShow }};align-items:center;justify-content:center;width:100%;min-height:44px;border:1px solid var(--color-accent);border-radius:9px;background:transparent;color:var(--color-accent);font-size:13px;cursor:pointer">Tizimga kirish</button>
+      <div data-tr style="font-size:11.5px;color:color-mix(in srgb, var(--color-text) 56%, transparent);margin-top:10px;line-height:1.6">Shajarani hamma ko'ra oladi. Faqat o'zingiz va avlodlaringiz yozuvini tahrirlaysiz.</div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;left:0;right:0;top:56px;height:calc(100% - 56px);z-index:50;display:{{ screenProfile }};overflow-y:auto;background:var(--color-bg)">
+  <div style="max-width:640px;margin:0 auto;padding:24px 20px 40px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:600;background:color-mix(in srgb, var(--color-accent) 18%, transparent);color:var(--color-accent);border:1px solid var(--color-accent)">{{ meIni }}</div>
+      <div>
+        <div style="font-family:var(--font-heading);font-size:22px">{{ meName }}</div>
+        <div style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 74%, transparent);margin-top:3px">{{ meMeta }} · {{ meGen }}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap">
+      <button onClick="{{ meCenter }}" data-tr style="flex:1;min-width:150px;min-height:42px;border:1px solid var(--color-accent);border-radius:9px;background:color-mix(in srgb, var(--color-accent) 12%, transparent);color:var(--color-accent);font-size:13px;cursor:pointer">Daraxtda menga o'tish</button>
+      <button onClick="{{ goSettings }}" data-tr style="flex:1;min-width:150px;min-height:42px;border:1px solid var(--hair);border-radius:9px;background:transparent;color:var(--color-text);font-size:13px;cursor:pointer">Sozlamalar</button>
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;border:1px solid var(--hair);border-radius:9px;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 66%, transparent)">{{ meEditable }}</div>
+
+    <div style="margin-top:24px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Ota-onam</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ meParents }}" as="p" hint-placeholder-count="2">
+          <button onClick="{{ p.go }}" style="display:flex;align-items:center;gap:11px;text-align:left;padding:9px 12px;border:1px solid var(--hair);border-radius:9px;background:transparent;cursor:pointer;color:var(--color-text)">
+            <span style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:{{ p.avBg }};color:{{ p.tone }}">{{ p.ini }}</span>
+            <span style="flex:1"><span style="display:block;font-size:13.5px">{{ p.name }}</span><span style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 58%, transparent)">{{ p.meta }}</span></span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">Farzandlarim</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <sc-for list="{{ meKids }}" as="p" hint-placeholder-count="3">
+          <button onClick="{{ p.go }}" style="display:flex;align-items:center;gap:11px;text-align:left;padding:9px 12px;border:1px solid var(--hair);border-radius:9px;background:transparent;cursor:pointer;color:var(--color-text)">
+            <span style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:{{ p.avBg }};color:{{ p.tone }}">{{ p.ini }}</span>
+            <span style="flex:1"><span style="display:block;font-size:13.5px">{{ p.name }}</span><span style="display:block;font-size:11px;color:color-mix(in srgb, var(--color-text) 58%, transparent)">{{ p.meta }}</span></span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="margin-top:22px">
+      <div data-tr style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 58%, transparent);margin-bottom:10px">To'g'ri chiziq — ajdodlarim</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{ meLine }}" as="p" hint-placeholder-count="6">
+          <button onClick="{{ p.go }}" style="display:flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--hair);border-radius:20px;background:transparent;cursor:pointer;color:var(--color-text);font-size:12.5px">
+            <span style="width:6px;height:6px;border-radius:50%;background:{{ p.tone }}"></span>{{ p.name }}
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:140;display:{{ toastShow }};align-items:center;gap:10px;padding:11px 16px;border-radius:10px;border:1px solid var(--hair);background:var(--color-surface);box-shadow:var(--shadow-lg);font-size:13px;animation:{{ fadeAnim }};max-width:min(92vw, 460px)">
+  <span style="width:7px;height:7px;border-radius:50%;flex:0 0 auto;background:{{ toastTone }}"></span>
+  <span>{{ toastText }}</span>
+</div>
+
+<div style="position:fixed;left:50%;top:66px;transform:translateX(-50%);z-index:110;display:{{ syncShow }};align-items:center;gap:12px;padding:9px 10px 9px 15px;border-radius:24px;border:1px solid var(--hair);background:color-mix(in srgb, var(--color-surface) 92%, transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow-md);font-size:12.5px;animation:{{ fadeAnim }}">
+  <span style="display:flex;color:var(--color-accent);animation:nocPulse 1.8s infinite"><svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"/></svg></span>
+  <span data-tr>Shajara yangilandi — Guzorboy oilasi</span>
+  <button onClick="{{ syncView }}" data-tr style="border:1px solid var(--color-accent);border-radius:16px;background:transparent;color:var(--color-accent);font-size:12px;padding:5px 12px;cursor:pointer">Ko'rish</button>
+  <button onClick="{{ syncDismiss }}" aria-label="Yopish" style="border:0;background:transparent;color:color-mix(in srgb, var(--color-text) 58%, transparent);cursor:pointer;font-size:13px;padding:0 6px"><svg width="12" height="12" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M200 56 56 200M56 56 200 200"/></svg></button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;region&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Xorazm&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Oila&quot;},&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;system&quot;,&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;system&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Ko'rinish&quot;},&quot;defaultView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;me&quot;,&quot;all&quot;],&quot;default&quot;:&quot;me&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Ko'rinish&quot;},&quot;showMinimap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Ko'rinish&quot;},&quot;startSignedIn&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Holat&quot;}}">
+const CARD_W = 216, CARD_H = 94, SP_W = 168, SP_H = 82, GAP_X = 30, ROW = 196, PAD = 130;
+const SP_PEEK = 100; // erining kartasi ortidan ko'rinib turadigan qism
+const MALE = "#6ea8e8", FEMALE = "#e8809e", UNKNOWN = "#8b90a4";
+
+const L2C_D = { "o'": "ў", "g'": "ғ", sh: "ш", ch: "ч", yo: "ё", yu: "ю", ya: "я", ye: "е", ts: "ц" };
+const L2C = { a:"а",b:"б",c:"к",d:"д",e:"е",f:"ф",g:"г",h:"ҳ",i:"и",j:"ж",k:"к",l:"л",m:"м",n:"н",o:"о",p:"п",q:"қ",r:"р",s:"с",t:"т",u:"у",v:"в",w:"в",x:"х",y:"й",z:"з","'":"ъ" };
+function toCyr(text) {
+  if (!text) return text;
+  const s = String(text).replace(/[ʻʼ’‘`]/g, "'");
+  const low = s.toLowerCase(), isL = (c) => /[a-z']/.test(c || "");
+  let out = "", i = 0;
+  while (i < s.length) {
+    const atStart = i === 0 || !isL(low[i - 1]);
+    const two = low.substr(i, 2);
+    let cyr = null, len = 1;
+    if (L2C_D[two]) { cyr = L2C_D[two]; len = 2; }
+    else if (low[i] === "e") cyr = atStart ? "э" : "е";
+    else cyr = low[i] in L2C ? L2C[low[i]] : null;
+    if (cyr === null) { out += s[i]; i += 1; continue; }
+    if (s[i] !== s[i].toLowerCase() && s[i] === s[i].toUpperCase()) cyr = cyr.charAt(0).toUpperCase() + cyr.slice(1);
+    out += cyr; i += len;
+  }
+  return out;
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: "tree", alphabet: "latin", theme: "system", resolved: "dark",
+    authed: false, auth: null, authBusy: false, authErr: "", me: null,
+    sel: null, panel: false,
+    searchOpen: false, q: "", qi: 0,
+    form: null, filter: "all", collapsed: [], density: "full",
+    toast: null, sync: false, mobile: false, tg: false, version: 0, noAnim: false,
+    dirQ: "", dirGen: "all", dirGender: "all", dirSort: "gen",
+    prefs: { genLabels: true, relLabels: true, photos: true, minimap: true, reduceMotion: false, contrast: false, fontScale: 1 }
+  };
+
+  constructor(props) {
+    super(props);
+    const src = (window.FAMILY_DATA || { members: [], meId: null });
+    this.members = src.members.map((m) => Object.assign({}, m));
+    this.meId = src.meId;
+    this.familyName = src.family ? src.family.name : "Oila";
+    this.genCount = src.generations || (Math.max.apply(null, this.members.map((m) => m.gen || 0)) + 1);
+    this.hasSpouses = this.members.some((m) => m.spouseOf);
+    this.reindex();
+    this.cam = { x: 0, y: 0, k: 0.6 };
+    const byId = (id) => ({ get current() { return document.getElementById(id); } });
+    this.wrapRef = byId("noc-wrap");
+    this.camRef = byId("noc-cam");
+    this.zoomRef = byId("noc-zoom");
+    this.mmRef = byId("noc-mm");
+    this.mmVpRef = byId("noc-mmvp");
+    this.searchRef = byId("noc-search");
+    this.pointers = new Map();
+    this.vel = { x: 0, y: 0 };
+    this.bbox = { w: 1000, h: 1000 };
+    const online = {};
+    if (this.meId) { online[this.meId] = 1; this.ancestorsOf(this.meId).forEach((a) => (online[a] = 1)); }
+    this.state.collapsed = Object.keys(this.kids).filter((id) => !online[id]);
+    this.state.theme = props.defaultTheme || "system";
+    this.state.authed = !!props.startSignedIn;
+    this.state.me = props.startSignedIn ? this.meId : null;
+    if (props.showMinimap === false) this.state.prefs.minimap = false;
+  }
+
+  reindex() {
+    this.byId = {};
+    this.kids = {};
+    this.spouseOf = {};
+    this.members.forEach((m) => { this.byId[m.id] = m; });
+    this.members.forEach((m) => {
+      if (m.spouseOf) { this.spouseOf[m.spouseOf] = m.id; return; }
+      if (m.father) (this.kids[m.father] || (this.kids[m.father] = [])).push(m.id);
+    });
+    Object.keys(this.kids).forEach((k) => this.kids[k].sort((a, b) => (this.byId[a].birth || 0) - (this.byId[b].birth || 0)));
+    this.rootId = (this.members.find((m) => !m.father && !m.spouseOf) || this.members[0]).id;
+  }
+
+  /* ── naming / language ─────────────────────────────── */
+  cy() { return this.state.alphabet === "cyrillic"; }
+  nm(m) { return !m ? "" : this.cy() ? (m.nameCyr || toCyr(m.name)) : m.name; }
+  tr(s) { return this.cy() ? toCyr(s) : s; }
+  ini(m) { return (this.nm(m) || "?").trim().charAt(0).toUpperCase(); }
+  years(m) {
+    if (!m.birth) return "";
+    return m.death ? m.birth + " – " + m.death : m.birth + " – " + this.tr("hozir");
+  }
+
+  /* ── genealogy ─────────────────────────────────────── */
+  carrierOf(id) { const m = this.byId[id]; return m && m.spouseOf ? m.spouseOf : id; }
+  ancestorsOf(id) {
+    const out = []; let cur = this.byId[this.carrierOf(id)];
+    while (cur && cur.father) { out.push(cur.father); cur = this.byId[cur.father]; }
+    return out;
+  }
+  isDesc(anc, id) { return this.ancestorsOf(id).indexOf(anc) >= 0; }
+  descCount(id) {
+    let n = 0;
+    (this.kids[id] || []).forEach((c) => { n += 1 + this.descCount(c); });
+    return n;
+  }
+  relation(id) {
+    const me = this.state.me || this.meId;
+    if (!me || !this.byId[id]) return "";
+    const m = this.byId[id];
+    if (id === me) return "Siz";
+    if (m.spouseOf) {
+      if (m.spouseOf === me) return "Turmush o'rtog'ingiz";
+      const up = this.ancestorsOf(me).indexOf(m.spouseOf);
+      if (up === 0) return "Onangiz";
+      if (up === 1) return "Buvingiz";
+      if (up === 2) return "Katta buvingiz";
+      if (up > 2) return up + 1 + "-avlod yuqorida · buvingiz";
+      return this.relation(m.spouseOf) + " — rafiqasi";
+    }
+    const upList = this.ancestorsOf(me), d = upList.indexOf(id);
+    if (d >= 0) {
+      const t = ["Otangiz", "Bobongiz", "Katta bobongiz", "Bobongizning bobosi"][d];
+      return t || d + 1 + "-avlod yuqorida · bobokalon";
+    }
+    const down = this.ancestorsOf(id).indexOf(me);
+    if (down >= 0) {
+      const dd = down + 1, f = m.gender === "female";
+      if (dd === 1) return f ? "Qizingiz" : "O'g'lingiz";
+      if (dd === 2) return "Nabirangiz";
+      if (dd === 3) return "Evarangiz";
+      if (dd === 4) return "Chevarangiz";
+      return dd + "-avlod pastda · avlodingiz";
+    }
+    const meM = this.byId[me];
+    if (meM.father && m.father === meM.father) {
+      const older = (m.birth || 0) < (meM.birth || 0);
+      return m.gender === "female" ? (older ? "Opangiz" : "Singlingiz") : older ? "Akangiz" : "Ukangiz";
+    }
+    const mine = [me].concat(this.ancestorsOf(me)), theirs = [id].concat(this.ancestorsOf(id));
+    let a = -1, b = -1;
+    for (let i = 0; i < mine.length && a < 0; i++) {
+      const j = theirs.indexOf(mine[i]);
+      if (j >= 0) { a = i; b = j; }
+    }
+    if (a < 0) return "Qarindosh";
+    if (a === 2 && b === 1) return m.gender === "female" ? "Ammangiz" : "Amakingiz";
+    if (a === 2 && b === 2) return "Amakivachchangiz";
+    if (a === 1 && b === 2) return "Jiyaningiz";
+    if (a === 3 && b === 2) return "Otangizning amakivachchasi";
+    if (a === 3 && b === 3) return "Ikkinchi amakivachcha";
+    if (b === 1) return a + "-avlod · amaki tomondan";
+    return "Uzoq qarindosh · " + (a + b) + " pog'ona";
+  }
+  relOrMeta(id) {
+    const m = this.byId[id];
+    if (this.state.authed) return this.relation(id);
+    return m.prof || m.city || (m.gen || 0) + "-avlod";
+  }
+  canEdit(id) {
+    const me = this.state.me;
+    if (!this.state.authed || !me) return false;
+    const c = this.carrierOf(id);
+    return c === me || this.isDesc(me, c);
+  }
+
+  /* ── layout ────────────────────────────────────────── */
+  visibleKids(id) { return this.state.collapsed.indexOf(id) >= 0 ? [] : (this.kids[id] || []); }
+  layoutRoots() {
+    const me = this.state.me || this.meId, f = this.state.filter;
+    if (f === "ancestors" && me) return { chain: [me].concat(this.ancestorsOf(me)).reverse() };
+    if (f === "descendants" && me) return { root: me };
+    if (f === "branch") {
+      const sel = this.state.sel ? this.carrierOf(this.state.sel) : me;
+      const line = [sel].concat(this.ancestorsOf(sel));
+      const branch = line.find((x) => (this.byId[x].gen || 0) === 6) || line[line.length - 1];
+      return { root: branch };
+    }
+    return { root: this.rootId };
+  }
+  computeLayout() {
+    const pos = {}, nextX = {}, spec = this.layoutRoots();
+    const self = this;
+    const rightPad = (id) => CARD_W / 2 + (self.spouseOf[id] ? SP_PEEK + GAP_X : 0);
+    const shift = (id, dx, depth) => {
+      pos[id].x += dx;
+      nextX[depth] = Math.max(nextX[depth] || 0, pos[id].x + rightPad(id) + GAP_X);
+      (spec.chain ? [] : self.visibleKids(id)).forEach((c) => shift(c, dx, depth + 1));
+    };
+    const place = (id, depth) => {
+      const kids = spec.chain ? [] : self.visibleKids(id);
+      const min = (nextX[depth] || 0) + CARD_W / 2;
+      let x;
+      if (!kids.length) x = min;
+      else {
+        kids.forEach((c) => place(c, depth + 1));
+        const cs = kids.map((c) => pos[c].x), center = (Math.min.apply(null, cs) + Math.max.apply(null, cs)) / 2;
+        x = Math.max(center, min);
+        if (x - center > 0.5) kids.forEach((c) => shift(c, x - center, depth + 1));
+      }
+      pos[id] = { x, y: depth * ROW, depth };
+      nextX[depth] = x + rightPad(id) + GAP_X;
+    };
+    if (spec.chain) spec.chain.forEach((id, i) => place(id, i));
+    else place(spec.root, 0);
+
+    let minX = Infinity, maxX = -Infinity, maxY = 0;
+    Object.keys(pos).forEach((id) => {
+      const p = pos[id];
+      minX = Math.min(minX, p.x - CARD_W / 2); maxX = Math.max(maxX, p.x + rightPad(id));
+      maxY = Math.max(maxY, p.y);
+    });
+    const dx = PAD - minX;
+    Object.keys(pos).forEach((id) => { pos[id].x += dx; pos[id].y += PAD; });
+    this.bbox = { w: maxX - minX + PAD * 2, h: maxY + ROW + PAD };
+    return pos;
+  }
+
+  /* ── camera ────────────────────────────────────────── */
+  reduced() { return this.state.noAnim || this.state.prefs.reduceMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  probeAnim() {
+    this._rafLive = false;
+    requestAnimationFrame(() => { this._rafLive = true; });
+    setTimeout(() => { if (!this._rafLive && !this.unmounted) this.setState({ noAnim: true }); }, 160);
+  }
+  applyCam() {
+    const el = this.camRef.current;
+    if (el) el.style.transform = "translate3d(" + this.cam.x + "px," + this.cam.y + "px,0) scale(" + this.cam.k + ")";
+    if (this.zoomRef.current) this.zoomRef.current.textContent = Math.round(this.cam.k * 100) + "%";
+    this.updateMinimap();
+    const b = this.cam.k < 0.4 ? "min" : this.cam.k < 0.62 ? "mid" : "full";
+    if (b !== this.state.density) this.setState({ density: b });
+  }
+  clamp() {
+    const r = this.wrapRef.current ? this.wrapRef.current.getBoundingClientRect() : { width: 1200, height: 800 };
+    const w = this.bbox.w * this.cam.k, h = this.bbox.h * this.cam.k, m = 160;
+    this.cam.x = Math.min(r.width - m, Math.max(m - w, this.cam.x));
+    this.cam.y = Math.min(r.height - m, Math.max(m - h, this.cam.y));
+  }
+  updateMinimap() {
+    const mm = this.mmRef.current, vp = this.mmVpRef.current, wr = this.wrapRef.current;
+    if (!mm || !vp || !wr) return;
+    const s = Math.min(mm.clientWidth / this.bbox.w, mm.clientHeight / this.bbox.h);
+    const ox = (mm.clientWidth - this.bbox.w * s) / 2, oy = (mm.clientHeight - this.bbox.h * s) / 2;
+    this.mmScale = { s, ox, oy };
+    const r = wr.getBoundingClientRect();
+    vp.style.left = Math.max(0, ox + (-this.cam.x / this.cam.k) * s) + "px";
+    vp.style.top = Math.max(0, oy + (-this.cam.y / this.cam.k) * s) + "px";
+    vp.style.width = Math.min(mm.clientWidth, (r.width / this.cam.k) * s) + "px";
+    vp.style.height = Math.min(mm.clientHeight, (r.height / this.cam.k) * s) + "px";
+  }
+  raf(fn) { return setTimeout(() => fn(performance.now()), 16); }
+  craf(id) { clearTimeout(id); }
+  flyTo(x, y, k, dur) {
+    if (this.tween) this.craf(this.tween);
+    const from = { x: this.cam.x, y: this.cam.y, k: this.cam.k }, t0 = performance.now();
+    const d = this.reduced() ? 1 : dur || 620;
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3);
+      this.cam.x = from.x + (x - from.x) * e;
+      this.cam.y = from.y + (y - from.y) * e;
+      this.cam.k = from.k + (k - from.k) * e;
+      this.applyCam();
+      if (p < 1) this.tween = this.raf(step); else this.tween = null;
+    };
+    this.tween = this.raf(step);
+  }
+  viewport() {
+    const r = this.wrapRef.current ? this.wrapRef.current.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+    const mob = this.state.mobile;
+    const panelW = this.state.panel && !mob ? 392 : 0;
+    const panelH = this.state.panel && mob ? r.height * 0.56 : 0;
+    const left = mob ? 0 : 130; // avlod navigatori egallagan chap zona
+    return { w: r.width, h: r.height, cx: left + (r.width - left - panelW) / 2, cy: (r.height - panelH) / 2 };
+  }
+  fitAll = () => {
+    const v = this.viewport();
+    const k = Math.max(0.16, Math.min((v.w - 120) / this.bbox.w, (v.h - 120) / this.bbox.h, 1));
+    this.flyTo((v.w - this.bbox.w * k) / 2, 60, k, 700);
+  };
+  focusOn(id, zoom) {
+    const p = this.pos && this.pos[this.carrierOf(id)];
+    if (!p) return;
+    const v = this.viewport(), k = zoom || Math.max(this.cam.k, 0.9);
+    let x = p.x;
+    if (this.byId[id] && this.byId[id].spouseOf) x = p.x + (CARD_W + GAP_X + SP_W) / 2 - CARD_W / 2;
+    this.flyTo(v.cx - x * k, v.cy - (p.y + CARD_H / 2) * k, k, 620);
+  }
+  centerMe = () => {
+    const me = this.state.me || this.meId;
+    this.select(me, true);
+  };
+  homeView = () => {
+    const id = this.state.me || this.meId, v = this.viewport();
+    const p = this.pos && this.pos[this.carrierOf(id)];
+    if (!p) return this.fitAll();
+    const k = Math.max(0.44, Math.min(0.92, v.h / (ROW * 3.4)));
+    this.flyTo(v.cx - p.x * k, v.h * 0.62 - (p.y + CARD_H / 2) * k, k, 760);
+  };
+  expandAll = () => this.setState({ collapsed: [] }, () => { this.fitAll(); });
+  collapseToLine = () => {
+    const me = this.state.me || this.meId, online = {};
+    online[me] = 1; this.ancestorsOf(me).forEach((a) => (online[a] = 1));
+    this.setState({ collapsed: Object.keys(this.kids).filter((id) => !online[id]) }, () => { this.homeView(); });
+  };
+  zoomAt(factor, px, py) {
+    const k2 = Math.max(0.16, Math.min(2.4, this.cam.k * factor));
+    const r = this.wrapRef.current.getBoundingClientRect();
+    const cx = px - r.left, cy = py - r.top;
+    this.cam.x = cx - (cx - this.cam.x) * (k2 / this.cam.k);
+    this.cam.y = cy - (cy - this.cam.y) * (k2 / this.cam.k);
+    this.cam.k = k2;
+    this.clamp(); this.applyCam();
+  }
+  zoomIn = () => { const r = this.wrapRef.current.getBoundingClientRect(); this.zoomAt(1.25, r.left + r.width / 2, r.top + r.height / 2); };
+  zoomOut = () => { const r = this.wrapRef.current.getBoundingClientRect(); this.zoomAt(0.8, r.left + r.width / 2, r.top + r.height / 2); };
+
+  bindCanvas() {
+    const wrap = this.wrapRef.current;
+    if (!wrap || wrap._bound) return;
+    wrap._bound = true;
+    const stopInertia = () => { if (this.inertia) this.craf(this.inertia); this.inertia = null; };
+    wrap.addEventListener("pointerdown", (e) => {
+      stopInertia(); if (this.tween) { this.craf(this.tween); this.tween = null; }
+      this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      this.drag = { x: e.clientX, y: e.clientY, dist: 0, t: performance.now() };
+      this.vel = { x: 0, y: 0 };
+      if (this.pointers.size === 2) {
+        const p = [...this.pointers.values()];
+        this.pinch = { d: Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y), cx: (p[0].x + p[1].x) / 2, cy: (p[0].y + p[1].y) / 2 };
+      }
+      this.captured = false;
+      if (this.pointers.size === 2) { try { wrap.setPointerCapture(e.pointerId); this.captured = true; } catch (err) {} }
+      wrap.style.cursor = "grabbing";
+    });
+    wrap.addEventListener("pointermove", (e) => {
+      if (!this.pointers.has(e.pointerId)) return;
+      const prev = this.pointers.get(e.pointerId);
+      this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (this.pointers.size === 2 && this.pinch) {
+        const p = [...this.pointers.values()];
+        const d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+        const cx = (p[0].x + p[1].x) / 2, cy = (p[0].y + p[1].y) / 2;
+        if (this.pinch.d > 0) this.zoomAt(d / this.pinch.d, cx, cy);
+        this.cam.x += cx - this.pinch.cx; this.cam.y += cy - this.pinch.cy;
+        this.pinch = { d, cx, cy };
+        this.clamp(); this.applyCam();
+        return;
+      }
+      const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+      const now = performance.now(), dt = Math.max(1, now - (this.drag.t || now));
+      this.vel = { x: this.vel.x * 0.6 + (dx / dt) * 0.4, y: this.vel.y * 0.6 + (dy / dt) * 0.4 };
+      this.drag.t = now;
+      this.drag.dist += Math.abs(dx) + Math.abs(dy);
+      // pointer'ni faqat haqiqiy surishda ushlaymiz — aks holda click kartaga yetib bormaydi
+      if (!this.captured && this.drag.dist > 6) { try { wrap.setPointerCapture(e.pointerId); this.captured = true; } catch (err) {} }
+      this.cam.x += dx; this.cam.y += dy;
+      this.clamp(); this.applyCam();
+    });
+    const up = (e) => {
+      this.pointers.delete(e.pointerId);
+      if (this.captured) { try { wrap.releasePointerCapture(e.pointerId); } catch (err) {} this.captured = false; }
+      if (this.pointers.size < 2) this.pinch = null;
+      wrap.style.cursor = "grab";
+      if (this.pointers.size === 0 && this.drag && this.drag.dist > 8 && !this.reduced()) {
+        let v = { x: this.vel.x, y: this.vel.y }, last = performance.now();
+        const sp = Math.hypot(v.x, v.y);
+        if (sp > 3.2) { v.x = (v.x / sp) * 3.2; v.y = (v.y / sp) * 3.2; }
+        if (sp > 0.06) {
+          const step = (t) => {
+            const dt = Math.min(32, t - last); last = t;
+            const decay = Math.pow(0.938, dt / 16);
+            v.x *= decay; v.y *= decay;
+            this.cam.x += v.x * dt; this.cam.y += v.y * dt;
+            this.clamp(); this.applyCam();
+            if (Math.hypot(v.x, v.y) > 0.02) this.inertia = this.raf(step); else this.inertia = null;
+          };
+          this.inertia = this.raf(step);
+        }
+      }
+    };
+    wrap.addEventListener("pointerup", up);
+    wrap.addEventListener("pointercancel", up);
+    wrap.addEventListener("wheel", (e) => {
+      e.preventDefault(); stopInertia();
+      const f = Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0022));
+      this.zoomAt(f, e.clientX, e.clientY);
+    }, { passive: false });
+    wrap.addEventListener("dblclick", (e) => { this.zoomAt(1.6, e.clientX, e.clientY); });
+  }
+
+  /* ── selection & panel ─────────────────────────────── */
+  select = (id, fly) => {
+    const hidden = this.state.collapsed.filter((c) => c === id || this.isDesc(c, id));
+    const collapsed = hidden.length ? this.state.collapsed.filter((c) => hidden.indexOf(c) < 0) : this.state.collapsed;
+    this.setState({ sel: id, panel: true, collapsed, screen: "tree", searchOpen: false }, () => {
+      
+      if (fly !== false) this.focusOn(id);
+    });
+  };
+  closePanel = () => this.setState({ panel: false, sel: null });
+  toggleCollapse = (id) => {
+    const c = this.state.collapsed.slice(), i = c.indexOf(id);
+    if (i >= 0) c.splice(i, 1); else c.push(id);
+    this.setState({ collapsed: c });
+  };
+
+  /* ── ui actions ────────────────────────────────────── */
+  goTree = () => this.setState({ screen: "tree" });
+  goPeople = () => this.setState({ screen: "people", panel: false });
+  goProfile = () => (this.state.authed ? this.setState({ screen: "profile", panel: false }) : this.setState({ auth: "login" }));
+  goSettings = () => this.setState({ screen: "settings", panel: false });
+  openSearch = () => this.setState({ searchOpen: true, q: "", qi: 0 }, () => { if (this.searchRef.current) this.searchRef.current.focus(); });
+  closeSearch = () => this.setState({ searchOpen: false });
+  setLatin = () => this.setState({ alphabet: "latin" });
+  setCyr = () => this.setState({ alphabet: "cyrillic" });
+  setFilter = (f) => this.setState({ filter: f }, () => { this.fitAll(); });
+  cycleTheme = () => {
+    const order = ["system", "dark", "light"], next = order[(order.indexOf(this.state.theme) + 1) % 3];
+    this.setState({ theme: next }, this.applyTheme);
+  };
+  applyTheme = () => {
+    const t = this.state.theme;
+    const sysDark = !window.matchMedia("(prefers-color-scheme: light)").matches;
+    const resolved = t === "system" ? (sysDark ? "dark" : "light") : t;
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.dataset.contrast = this.state.prefs.contrast ? "1" : "0";
+    document.documentElement.style.setProperty("--fscale", String(this.state.prefs.fontScale));
+    if (this.state.resolved !== resolved) this.setState({ resolved });
+  };
+  toast = (text, kind) => {
+    this.setState({ toast: { text, kind: kind || "ok" } });
+    clearTimeout(this._toastT);
+    this._toastT = setTimeout(() => this.setState({ toast: null }), 3200);
+  };
+
+  /* ── lifecycle ─────────────────────────────────────── */
+  componentDidMount() {
+    window.__sh = this;
+    this.probeAnim();
+    
+    this.applyTheme();
+    const measure = () => {
+      const root = document.getElementById("noc-root");
+      const w = root ? root.clientWidth : window.innerWidth;
+      const isMob = w <= 780;
+      if (isMob !== this.state.mobile) this.setState({ mobile: isMob }, () => setTimeout(this.homeView, 60));
+    };
+    measure();
+    if (window.ResizeObserver) {
+      this.ro = new ResizeObserver(measure);
+      const root = document.getElementById("noc-root");
+      if (root) this.ro.observe(root);
+    }
+    window.addEventListener("resize", measure);
+    this.onResize = measure;
+    window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", this.applyTheme);
+    this.bindCanvas();
+    setTimeout(() => {
+      if (this.props.defaultView === "all") {
+        this.setState({ collapsed: [] }, () => { this.fitAll(); });
+      } else { this.homeView(); }
+    }, 80);
+    this.onKey = (e) => {
+      const typing = /input|textarea/i.test((e.target && e.target.tagName) || "");
+      if (e.key === "Escape") {
+        if (this.state.searchOpen) return this.closeSearch();
+        if (this.state.form) return this.setState({ form: null });
+        if (this.state.auth) return this.setState({ auth: null });
+        if (this.state.panel) return this.closePanel();
+      }
+      if (typing) return;
+      if (e.key === "/") { e.preventDefault(); this.openSearch(); }
+      if (e.key === "+" || e.key === "=") this.zoomIn();
+      if (e.key === "-") this.zoomOut();
+      if (e.key === "0") this.centerMe();
+      if (e.key.toLowerCase() === "f") this.fitAll();
+      if (this.state.sel && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.key) >= 0) {
+        e.preventDefault();
+        const c = this.carrierOf(this.state.sel), m = this.byId[c];
+        if (e.key === "ArrowUp" && m.father) this.select(m.father);
+        if (e.key === "ArrowDown" && (this.kids[c] || []).length) this.select(this.kids[c][0]);
+        if (m.father) {
+          const sib = this.kids[m.father] || [], i = sib.indexOf(c);
+          if (e.key === "ArrowLeft" && i > 0) this.select(sib[i - 1]);
+          if (e.key === "ArrowRight" && i >= 0 && i < sib.length - 1) this.select(sib[i + 1]);
+        }
+      }
+    };
+    document.addEventListener("keydown", this.onKey);
+    const tg = window.Telegram && window.Telegram.WebApp;
+    const realTg = !!(tg && tg.platform && tg.platform !== "unknown" && tg.initData);
+    if (realTg) {
+      try {
+        tg.ready(); tg.expand();
+        this.setState({ tg: true });
+        tg.onEvent("themeChanged", () => this.syncTg());
+        this.syncTg();
+        if (tg.BackButton && tg.BackButton.onClick) tg.BackButton.onClick(() => {
+          if (this.state.form) this.setState({ form: null });
+          else if (this.state.searchOpen) this.closeSearch();
+          else if (this.state.panel) this.closePanel();
+          else if (this.state.screen !== "tree") this.setState({ screen: "tree" });
+        });
+      } catch (err) { /* oddiy brauzerda o'tkazib yuboriladi */ }
+    }
+    setTimeout(() => { if (!this.unmounted) this.setState({ sync: true }); }, 26000);
+  }
+  syncTg() {
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg || !tg.themeParams) return;
+    const p = tg.themeParams;
+    const dark = (tg.colorScheme || "dark") === "dark";
+    this.setState({ theme: dark ? "dark" : "light" }, this.applyTheme);
+    if (p.bg_color) document.documentElement.style.setProperty("--color-bg", p.bg_color);
+    if (p.secondary_bg_color) document.documentElement.style.setProperty("--color-surface", p.secondary_bg_color);
+    if (p.text_color) document.documentElement.style.setProperty("--color-text", p.text_color);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    this.applyCam();
+    this.applyTr();
+    const tg = window.Telegram && window.Telegram.WebApp;
+    if (tg && this.state.tg) {
+      try {
+        const deep = !!(this.state.form || this.state.panel || this.state.searchOpen || this.state.screen !== "tree");
+        if (deep) tg.BackButton.show(); else tg.BackButton.hide();
+        if (this.state.form) {
+          tg.MainButton.setText(this.state.form.mode === "add" ? "Saqlash va daraxtga qo'shish" : "O'zgarishlarni saqlash");
+          tg.MainButton.show();
+          if (this._mbHandler) tg.MainButton.offClick(this._mbHandler);
+          this._mbHandler = () => this.saveForm();
+          tg.MainButton.onClick(this._mbHandler);
+        } else tg.MainButton.hide();
+      } catch (err) { /* eski Telegram versiyalari */ }
+    }
+  }
+  componentWillUnmount() {
+    this.unmounted = true;
+    document.removeEventListener("keydown", this.onKey);
+    if (this.onResize) window.removeEventListener("resize", this.onResize);
+    if (this.ro) this.ro.disconnect();
+  }
+  applyTr() {
+    const cyr = this.cy();
+    document.querySelectorAll("[data-tr]").forEach((el) => {
+      if (el._orig === undefined) el._orig = el.textContent;
+      const want = cyr ? toCyr(el._orig) : el._orig;
+      if (el.textContent !== want) el.textContent = want;
+    });
+  }
+
+  /* ── forms: add / edit ─────────────────────────────── */
+  startAdd = (parentId, rel) => {
+    if (!this.state.authed) return this.setState({ auth: "login", authErr: "Tahrirlash uchun avval kiring." });
+    if (!this.canEdit(parentId)) return this.toast("Bu shoxni tahrirlash huquqingiz yo'q", "warn");
+    const p = this.byId[parentId];
+    this.setState({
+      form: { mode: "add", parentId, rel: rel || "child", more: false, busy: false, errors: {},
+        data: { name: "", gender: "male", birth: "", death: "", city: p.city || "", prof: "", bio: "" } },
+      panel: true, sel: parentId
+    });
+  };
+  startEdit = (id) => {
+    if (!this.canEdit(id)) return this.toast("Bu odamni tahrirlash huquqingiz yo'q", "warn");
+    const m = this.byId[id];
+    this.setState({ form: { mode: "edit", id, more: !!(m.bio || m.death), busy: false, errors: {},
+      data: { name: m.name, gender: m.gender, birth: m.birth || "", death: m.death || "", city: m.city || "", prof: m.prof || "", bio: m.bio || "" } } });
+  };
+  closeForm = () => this.setState({ form: null });
+  setField = (k, v) => {
+    const f = this.state.form; if (!f) return;
+    const errors = Object.assign({}, f.errors); delete errors[k];
+    this.setState({ form: Object.assign({}, f, { errors, data: Object.assign({}, f.data, { [k]: v }) }) });
+  };
+  saveForm = () => {
+    const f = this.state.form; if (!f || f.busy) return;
+    const d = f.data, errors = {};
+    if (!d.name.trim()) errors.name = "Ism kiritilishi shart";
+    if (d.birth && !/^\d{4}$/.test(String(d.birth))) errors.birth = "To'rt xonali yil (masalan 1998)";
+    if (d.death && d.birth && Number(d.death) < Number(d.birth)) errors.death = "Vafot yili tug'ilgan yildan oldin bo'lolmaydi";
+    if (Object.keys(errors).length) return this.setState({ form: Object.assign({}, f, { errors }) });
+    this.setState({ form: Object.assign({}, f, { busy: true }) });
+    setTimeout(() => {
+      if (f.mode === "edit") {
+        const m = this.byId[f.id];
+        Object.assign(m, { name: d.name.trim(), nameCyr: toCyr(d.name.trim()), gender: d.gender, city: d.city, prof: d.prof, bio: d.bio,
+          birth: d.birth ? Number(d.birth) : null, death: d.death ? Number(d.death) : null });
+        this.setState({ form: null, version: this.state.version + 1 }, () => { this.toast(this.nm(m) + " yangilandi"); });
+      } else {
+        const parent = this.byId[f.parentId];
+        const id = "n" + (this.members.length + 1) + "_" + Date.now().toString().slice(-4);
+        const rec = { id, name: d.name.trim(), nameCyr: toCyr(d.name.trim()), gender: d.gender, gen: (parent.gen || 0) + (f.rel === "spouse" ? 0 : 1),
+          father: f.rel === "spouse" ? null : f.parentId, spouseOf: f.rel === "spouse" ? f.parentId : null,
+          birth: d.birth ? Number(d.birth) : null, death: d.death ? Number(d.death) : null, city: d.city, prof: d.prof, bio: d.bio, isNew: true };
+        this.members.push(rec);
+        this.reindex();
+        const collapsed = this.state.collapsed.filter((c) => c !== f.parentId);
+        this.setState({ form: null, version: this.state.version + 1, collapsed, sel: id, panel: true }, () => {
+          
+          this.focusOn(id);
+          this.toast(this.nm(rec) + " shajaraga qo'shildi");
+        });
+      }
+    }, 700);
+  };
+
+  /* ── auth ──────────────────────────────────────────── */
+  submitAuth = (mode) => {
+    if (this.state.authBusy) return;
+    this.setState({ authBusy: true, authErr: "" });
+    setTimeout(() => {
+      if (mode === "forgot") return this.setState({ authBusy: false, auth: "sent" });
+      this.setState({ authed: true, auth: null, authBusy: false, me: this.meId, screen: "tree", panel: false }, () => {
+        
+        this.collapseToLine();
+        this.toast("Xush kelibsiz, " + this.nm(this.byId[this.meId]) + " — avlodlaringizni tahrirlashingiz mumkin");
+      });
+    }, 800);
+  };
+  logout = () => this.setState({ authed: false, me: null, screen: "tree", panel: false, sel: null }, () => this.toast("Hisobdan chiqdingiz"));
+  setPref = (k, v) => this.setState({ prefs: Object.assign({}, this.state.prefs, { [k]: v }) }, this.applyTheme);
+
+  /* ── panel / overlay values ────────────────────────── */
+  chip(id, extra) {
+    const m = this.byId[id];
+    const tone = m.gender === "female" ? FEMALE : m.gender === "male" ? MALE : UNKNOWN;
+    return { id, ini: this.ini(m), name: this.nm(m), tone,
+      avBg: "color-mix(in srgb, " + tone + " 16%, transparent)",
+      meta: [this.tr(this.relOrMeta(id)), m.birth ? String(m.birth) : ""].filter(Boolean).join(" · "),
+      sub: this.tr(extra || m.prof || m.city || ""), go: () => this.select(id) };
+  }
+  moreVals(st, me, meM, dark) {
+    const v = {};
+    v.stopClick = (e) => e.stopPropagation();
+    const anim = !st.noAnim && !st.prefs.reduceMotion;
+    v.panelTrans = anim ? "transform .42s cubic-bezier(.32,.72,0,1)" : "none";
+    v.nodeTrans = anim ? "opacity .32s ease, transform .5s cubic-bezier(.32,.72,0,1)" : "none";
+    v.fadeAnim = anim ? "nocFade .22s ease" : "none";
+    v.popAnim = anim ? "nocPop .22s ease" : "none";
+    const mob = st.mobile;
+    const m = st.sel ? this.byId[st.sel] : null;
+
+    /* detail panel */
+    v.panelTop = mob ? "auto" : "0"; v.panelLeft = mob ? "0" : "auto";
+    v.panelW = mob ? "auto" : "392px"; v.panelH = mob ? "min(78vh, 620px)" : "100%";
+    v.panelRadius = mob ? "18px 18px 0 0" : "0";
+    v.panelBottom = mob ? "calc(55px + env(safe-area-inset-bottom))" : "0";
+    v.alphaShow = mob ? "none" : "flex";
+    v.panelT = st.panel ? "none" : mob ? "translateY(105%)" : "translateX(105%)";
+    v.closePanel = this.closePanel;
+    if (m) {
+      const tone = m.gender === "female" ? FEMALE : m.gender === "male" ? MALE : UNKNOWN;
+      const carrier = this.carrierOf(m.id);
+      const editable = this.canEdit(m.id);
+      const age = m.birth ? (m.death || new Date().getFullYear()) - m.birth : null;
+      v.pIni = this.ini(m); v.pName = this.nm(m); v.pTone = tone;
+      v.pAvBg = "color-mix(in srgb, " + tone + " 18%, transparent)";
+      v.pRel = st.authed ? this.tr(this.relation(m.id)) : [this.tr((m.gen || 0) + "-avlod"), this.tr(m.prof || m.city || "")].filter(Boolean).join(" · ");
+      v.pStatus = this.tr(m.death ? "Vafot etgan" : "Tirik");
+      v.pStatusFg = m.death ? "color-mix(in srgb, var(--color-text) 66%, transparent)" : "#6fd39a";
+      v.pStatusBg = m.death ? "color-mix(in srgb, var(--color-text) 8%, transparent)" : "color-mix(in srgb, #6fd39a 14%, transparent)";
+      v.pFacts = [
+        { label: "Tug'ilgan", value: m.birth ? String(m.birth) : "—" },
+        { label: m.death ? "Vafot etgan" : "Yoshi", value: m.death ? String(m.death) : age ? this.tr(age + " yosh") : "—" },
+        { label: "Shahar", value: this.tr(m.city || "—") },
+        { label: "Kasbi", value: this.tr(m.prof || "—") },
+        { label: "Avlod", value: this.tr((m.gen || 0) + "-avlod") },
+        { label: "Sizga nisbatan", value: this.tr(st.authed ? this.relation(m.id) : "Kirsangiz ko'rinadi") }
+      ];
+      v.pBio = this.tr(m.bio || "");
+      v.pBioShow = m.bio ? "block" : "none";
+      v.pBioEmptyShow = m.bio ? "none" : "flex";
+      const groups = [];
+      const father = m.father || null;                       // o'z otasi (kelin/kuyovda odatda yo'q)
+      const inLawFather = !m.father && m.spouseOf ? (this.byId[carrier] || {}).father : null;
+      if (father) groups.push({ title: this.tr("Otasi"), items: [this.chip(father)] });
+      const motherId = father ? this.spouseOf[father] : null;
+      if (motherId) groups.push({ title: this.tr("Onasi"), items: [this.chip(motherId)] });
+      if (inLawFather) groups.push({ title: this.tr("Qaynotasi"), items: [this.chip(inLawFather)] });
+      const inLawMother = inLawFather ? this.spouseOf[inLawFather] : null;
+      if (inLawMother) groups.push({ title: this.tr("Qaynonasi"), items: [this.chip(inLawMother)] });
+      const spId = m.spouseOf ? m.spouseOf : this.spouseOf[m.id];
+      if (spId) groups.push({ title: this.tr("Turmush o'rtog'i"), items: [this.chip(spId)] });
+      const kids = this.kids[carrier] || [];
+      if (kids.length) groups.push({ title: this.tr("Farzandlari — " + kids.length), items: kids.map((k) => this.chip(k)) });
+      const sibs = father ? (this.kids[father] || []).filter((s2) => s2 !== m.id) : [];
+      if (sibs.length) groups.push({ title: this.tr("Aka-uka, opa-singil — " + sibs.length), items: sibs.map((s2) => this.chip(s2)) });
+      const inLawSibs = inLawFather ? (this.kids[inLawFather] || []).filter((s2) => s2 !== carrier) : [];
+      if (inLawSibs.length) groups.push({ title: this.tr("Qaynog'a, qaynsingil — " + inLawSibs.length), items: inLawSibs.map((s2) => this.chip(s2)) });
+      v.pGroups = groups;
+      v.pDesc = this.descCount(carrier);
+      v.pAnc = this.ancestorsOf(m.id).length;
+      v.pEditShow = editable ? "flex" : "none";
+      v.pLockShow = editable ? "none" : "flex";
+      v.pLockText = st.authed ? this.tr("Faqat o'zingiz va avlodlaringizni tahrirlaysiz") : this.tr("Tahrirlash uchun tizimga kiring");
+      v.pEdit = () => this.startEdit(m.id);
+      v.pAddChild = () => this.startAdd(carrier, "child");
+      v.pAddSpouse = () => this.startAdd(carrier, "spouse");
+      v.pFocus = () => this.focusOn(m.id, 1.05);
+    } else {
+      v.pGroups = []; v.pFacts = []; v.pName = ""; v.pRel = ""; v.pIni = ""; v.pBioShow = "none"; v.pBioEmptyShow = "none";
+      v.pEditShow = "none"; v.pLockShow = "none"; v.pDesc = 0; v.pAnc = 0;
+      v.pStatus = ""; v.pBio = ""; v.pLockText = ""; v.pTone = "var(--hair)"; v.pAvBg = "transparent";
+      v.pStatusFg = "transparent"; v.pStatusBg = "transparent";
+      v.pEdit = v.pAddChild = v.pAddSpouse = v.pFocus = () => {};
+    }
+
+    /* search */
+    const res = this.results(st.q, 8);
+    v.searchShow = st.searchOpen ? "flex" : "none";
+    v.searchRef = this.searchRef;
+    v.q = st.q;
+    v.onQ = (e) => this.setState({ q: e.target.value, qi: 0 });
+    v.onQKey = (e) => {
+      if (e.key === "ArrowDown") { e.preventDefault(); this.setState({ qi: Math.min(this.state.qi + 1, res.length - 1) }); }
+      if (e.key === "ArrowUp") { e.preventDefault(); this.setState({ qi: Math.max(0, this.state.qi - 1) }); }
+      if (e.key === "Enter" && res[this.state.qi]) this.select(res[this.state.qi].id);
+    };
+    v.closeSearch = this.closeSearch;
+    v.sResults = res.map((r, i) => Object.assign(this.chip(r.id), {
+      years: [this.years(r), this.tr(r.city || ""), this.tr(r.prof || "")].filter(Boolean).join(" · ") || this.tr((r.gen || 0) + "-avlod"),
+      gen: this.tr((r.gen || 0) + "-avlod"),
+      meta: st.authed ? this.tr(this.relation(r.id)) : "",
+      bg: i === st.qi ? "color-mix(in srgb, var(--color-accent) 12%, transparent)" : "transparent",
+      go: () => this.select(r.id)
+    }));
+    v.sEmptyShow = st.q.trim() && !res.length ? "block" : "none";
+    v.sHintShow = st.q.trim() ? "none" : "block";
+    v.sQuery = st.q;
+
+    /* form */
+    const f = st.form;
+    v.formShow = f ? (mob ? "translateY(0)" : "translateX(0)") : mob ? "translateY(105%)" : "translateX(105%)";
+    v.formTitle = f ? this.tr(f.mode === "edit" ? "Ma'lumotni tahrirlash" : f.rel === "spouse" ? "Turmush o'rtog'ini qo'shish" : "Farzand qo'shish") : "";
+    v.formSub = f ? this.tr(f.mode === "edit" ? this.nm(this.byId[f.id]) : (f.rel === "spouse" ? "Juft: " : "Otasi: ") + this.nm(this.byId[f.parentId])) : "";
+    v.fName = f ? f.data.name : ""; v.fBirth = f ? f.data.birth : ""; v.fDeath = f ? f.data.death : "";
+    v.fCity = f ? f.data.city : ""; v.fProf = f ? f.data.prof : ""; v.fBio = f ? f.data.bio : "";
+    v.fOnName = (e) => this.setField("name", e.target.value);
+    v.fOnBirth = (e) => this.setField("birth", e.target.value.replace(/[^\d]/g, "").slice(0, 4));
+    v.fOnDeath = (e) => this.setField("death", e.target.value.replace(/[^\d]/g, "").slice(0, 4));
+    v.fOnCity = (e) => this.setField("city", e.target.value);
+    v.fOnProf = (e) => this.setField("prof", e.target.value);
+    v.fOnBio = (e) => this.setField("bio", e.target.value);
+    v.fMale = () => this.setField("gender", "male");
+    v.fFemale = () => this.setField("gender", "female");
+    const gsel = (g) => (f && f.data.gender === g ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent");
+    const gselFg = (g) => (f && f.data.gender === g ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 60%, transparent)");
+    v.fMaleBg = gsel("male"); v.fMaleFg = gselFg("male"); v.fFemaleBg = gsel("female"); v.fFemaleFg = gselFg("female");
+    v.fErrName = f && f.errors.name ? this.tr(f.errors.name) : "";
+    v.fErrNameShow = f && f.errors.name ? "block" : "none";
+    v.fErrBirth = f && f.errors.birth ? this.tr(f.errors.birth) : (f && f.errors.death ? this.tr(f.errors.death) : "");
+    v.fErrBirthShow = f && (f.errors.birth || f.errors.death) ? "block" : "none";
+    v.fNameBorder = f && f.errors.name ? "#e0777f" : "var(--hair)";
+    v.fMoreShow = f && f.more ? "block" : "none";
+    v.fMoreToggleShow = f && !f.more ? "flex" : "none";
+    v.fMore = () => this.setState({ form: Object.assign({}, f, { more: true }) });
+    v.fSave = this.saveForm;
+    v.fCancel = this.closeForm;
+    v.fSaveLabel = f && f.busy ? this.tr("Saqlanmoqda…") : this.tr(f && f.mode === "edit" ? "Saqlash" : "Qo'shish");
+    v.fBusyOpacity = f && f.busy ? "0.6" : "1";
+
+    /* auth */
+    v.authShow = st.auth ? "flex" : "none";
+    const a = st.auth;
+    v.authTitle = this.tr(a === "register" ? "Oilaga qo'shiling" : a === "forgot" ? "Parolni tiklash" : a === "sent" ? "Havola yuborildi" : "Xush kelibsiz");
+    v.authSub = this.tr(a === "register" ? "Hisob yarating — o'z avlodlaringizni to'ldirasiz" : a === "forgot" ? "Emailingizni kiriting, tiklash havolasini yuboramiz" : a === "sent" ? "Pochtangizni tekshiring va havola orqali yangi parol o'rnating" : "Shajarani ko'rish uchun kirish shart emas. Tahrirlash uchun kiring.");
+    v.authNameShow = a === "register" ? "block" : "none";
+    v.authPassShow = a === "login" || a === "register" ? "block" : "none";
+    v.authFieldsShow = a === "sent" ? "none" : "block";
+    v.authBtn = this.tr(st.authBusy ? "Tekshirilmoqda…" : a === "register" ? "Hisob yaratish" : a === "forgot" ? "Havola yuborish" : a === "sent" ? "Kirishga qaytish" : "Kirish");
+    v.authSubmit = () => (a === "sent" ? this.setState({ auth: "login" }) : this.submitAuth(a));
+    v.authClose = () => this.setState({ auth: null, authErr: "" });
+    v.authSwitch = () => this.setState({ auth: a === "register" ? "login" : "register", authErr: "" });
+    v.authSwitchLabel = this.tr(a === "register" ? "Hisobingiz bormi? Kirish" : "Hisobingiz yo'qmi? Ro'yxatdan o'tish");
+    v.authForgot = () => this.setState({ auth: "forgot" });
+    v.authForgotShow = a === "login" ? "inline" : "none";
+    v.authErrShow = st.authErr ? "block" : "none";
+    v.authErr = this.tr(st.authErr);
+    v.authDemo = this.tr("Demo: istalgan email va parol ishlaydi");
+
+    /* directory */
+    const gens = {};
+    this.members.forEach((p) => (gens[p.gen] = (gens[p.gen] || 0) + 1));
+    let list = this.members.slice();
+    const dq = st.dirQ.trim().toLowerCase();
+    if (dq) list = list.filter((p) => [p.name, p.nameCyr, p.prof, p.city, String(p.birth || "")].join(" ").toLowerCase().indexOf(dq) >= 0);
+    if (st.dirGen !== "all") list = list.filter((p) => String(p.gen) === st.dirGen);
+    if (st.dirGender !== "all") list = list.filter((p) => p.gender === st.dirGender);
+    list.sort((x, y) => st.dirSort === "name" ? x.name.localeCompare(y.name) : st.dirSort === "birth" ? (x.birth || 9999) - (y.birth || 9999) : x.gen - y.gen || x.name.localeCompare(y.name));
+    v.dirRows = (st.screen === "people" ? list : []).map((p) => Object.assign(this.chip(p.id), {
+      sub: [this.years(p), this.tr(p.prof || ""), this.tr(p.city || "")].filter(Boolean).join(" · ") || "—",
+      meta: st.authed ? this.tr(this.relation(p.id)) : "",
+      gen: this.tr((p.gen || 0) + "-avlod"),
+      statusFg: p.death ? "color-mix(in srgb, var(--color-text) 40%, transparent)" : "#6fd39a"
+    }));
+    v.dirCount = this.tr(list.length + " ta natija · jami " + this.members.length);
+    v.dirEmptyShow = list.length ? "none" : "block";
+    v.dirQ = st.dirQ;
+    v.onDirQ = (e) => this.setState({ dirQ: e.target.value });
+    v.dirGenOptions = [{ v: "all", l: this.tr("Barcha avlodlar") }].concat(Object.keys(gens).map(Number).sort((a2, b2) => a2 - b2).map((g) => ({ v: String(g), l: this.tr(g + "-avlod · " + gens[g] + " kishi") })));
+    v.dirGen = st.dirGen;
+    v.onDirGen = (e) => this.setState({ dirGen: e.target.value });
+    v.dirSort = st.dirSort;
+    v.onDirSort = (e) => this.setState({ dirSort: e.target.value });
+    v.dirGenderAll = () => this.setState({ dirGender: "all" });
+    v.dirGenderM = () => this.setState({ dirGender: "male" });
+    v.dirGenderF = () => this.setState({ dirGender: "female" });
+    const dg = (k) => (st.dirGender === k ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent");
+    const dgf = (k) => (st.dirGender === k ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 58%, transparent)");
+    v.dgAllBg = dg("all"); v.dgAllFg = dgf("all"); v.dgMBg = dg("male"); v.dgMFg = dgf("male"); v.dgFBg = dg("female"); v.dgFFg = dgf("female");
+
+    /* screens */
+    v.screenPeople = st.screen === "people" ? "flex" : "none";
+    v.screenSettings = st.screen === "settings" ? "block" : "none";
+    v.screenProfile = st.screen === "profile" ? "block" : "none";
+    v.screenOverlayShow = st.screen === "tree" ? "none" : "block";
+
+    /* settings */
+    const tgl = (k) => ({
+      on: st.prefs[k], bg: st.prefs[k] ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 18%, transparent)",
+      knob: st.prefs[k] ? "18px" : "2px", go: () => this.setPref(k, !st.prefs[k])
+    });
+    v.setRows = [
+      { group: this.tr("Ko'rinish"), items: [
+        { label: this.tr("Avlod belgilari"), sub: this.tr("Kanvasda avlod nomlari va chiziqlari"), t: tgl("genLabels") },
+        { label: this.tr("Qarindoshlik yozuvi"), sub: this.tr("Kartada \"Otangiz\", \"Nabirangiz\"…"), t: tgl("relLabels") },
+        { label: this.tr("Avatarlar"), sub: this.tr("Kartalarda bosh harf doirasi"), t: tgl("photos") },
+        { label: this.tr("Mini xarita"), sub: this.tr("O'ng pastdagi umumiy ko'rinish"), t: tgl("minimap") } ] },
+      { group: this.tr("Qulaylik"), items: [
+        { label: this.tr("Animatsiyani kamaytirish"), sub: this.tr("Kamera va kartalar bir zumda harakatlanadi"), t: tgl("reduceMotion") },
+        { label: this.tr("Yuqori kontrast"), sub: this.tr("Chegaralar quyuqroq ko'rinadi"), t: tgl("contrast") } ] }
+    ];
+    v.themeOpts = ["system", "dark", "light"].map((t) => ({
+      label: this.tr(t === "system" ? "Tizim" : t === "dark" ? "Tungi" : "Yorug'"),
+      go: () => this.setState({ theme: t }, this.applyTheme),
+      bg: st.theme === t ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent",
+      fg: st.theme === t ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 58%, transparent)"
+    }));
+    v.fontOpts = [{ l: "A", s: 0.92 }, { l: "A", s: 1 }, { l: "A", s: 1.14 }].map((o) => ({
+      label: o.l, size: 11 + o.s * 4 + "px",
+      go: () => this.setPref("fontScale", o.s),
+      bg: st.prefs.fontScale === o.s ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent",
+      fg: st.prefs.fontScale === o.s ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 58%, transparent)"
+    }));
+    v.expandAll = this.expandAll; v.collapseToLine = this.collapseToLine;
+    v.logout = this.logout;
+    v.logoutShow = st.authed ? "flex" : "none";
+    v.signInShow = st.authed ? "none" : "flex";
+    v.openLogin = () => this.setState({ auth: "login" });
+
+    /* profile */
+    if (meM && st.authed) {
+      v.meName = this.nm(meM); v.meIni = this.ini(meM);
+      v.meMeta = this.tr((meM.prof || "") + (meM.city ? " · " + meM.city : ""));
+      v.meGen = this.tr((meM.gen || 0) + "-avlod");
+      v.meKids = (this.kids[me] || []).map((k) => this.chip(k));
+      v.meParents = [meM.father, meM.father ? this.spouseOf[meM.father] : null].filter(Boolean).map((p) => this.chip(p));
+      v.meLine = [me].concat(this.ancestorsOf(me)).reverse().map((id) => this.chip(id));
+      v.meEditable = this.tr(1 + this.descCount(me) + " ta yozuvni tahrirlay olasiz");
+      v.meCenter = this.centerMe;
+    } else {
+      v.meName = this.tr("Mehmon"); v.meIni = "?"; v.meMeta = ""; v.meGen = "";
+      v.meKids = []; v.meParents = []; v.meLine = []; v.meEditable = this.tr("Tahrirlash uchun kiring"); v.meCenter = this.centerMe;
+    }
+
+    /* toast + sync */
+    v.toastShow = st.toast ? "flex" : "none";
+    v.toastText = st.toast ? this.tr(st.toast.text) : "";
+    v.toastTone = st.toast && st.toast.kind === "warn" ? "#e6b980" : "var(--color-accent)";
+    v.syncShow = st.sync ? "flex" : "none";
+    v.syncDismiss = () => this.setState({ sync: false });
+    v.syncView = () => this.setState({ sync: false }, () => { this.select("59"); this.toast("Dildora ma'lumotlari yangilandi"); });
+    return v;
+  }
+
+  /* ── search ────────────────────────────────────────── */
+  results(q, limit) {
+    const s = (q || "").trim().toLowerCase();
+    if (!s) return [];
+    const hit = this.members.filter((m) => {
+      const hay = [m.name, m.nameCyr, m.prof, m.city, String(m.birth || ""), String(m.death || "")].join(" ").toLowerCase();
+      return hay.indexOf(s) >= 0;
+    });
+    hit.sort((a, b) => (a.name.toLowerCase().indexOf(s) === 0 ? -1 : 0) - (b.name.toLowerCase().indexOf(s) === 0 ? -1 : 0) || a.gen - b.gen);
+    return hit.slice(0, limit || 8);
+  }
+
+  renderVals() {
+    const st = this.state, dark = st.resolved !== "light";
+    const me = st.authed ? (st.me || this.meId) : null;
+    const layoutKey = [st.collapsed.join(","), st.filter, st.version, me].join("|");
+    if (this._layoutKey !== layoutKey || !this.pos) { this.pos = this.computeLayout(); this._layoutKey = layoutKey; }
+    const pos = this.pos;
+    const surface = "var(--color-surface)";
+    const sel = st.sel, selCarrier = sel ? this.carrierOf(sel) : null;
+    const lineage = {};
+    if (selCarrier) { lineage[selCarrier] = 1; this.ancestorsOf(selCarrier).forEach((a) => (lineage[a] = 1)); }
+    const dens = st.density;
+
+    /* nodes */
+    const nodes = [];
+    Object.keys(pos).forEach((id) => {
+      const m = this.byId[id], p = pos[id];
+      if (!m) return;
+      const push = (mm, x, y, w, h, isSpouse, spActive) => {
+        const tone = mm.gender === "female" ? FEMALE : mm.gender === "male" ? MALE : UNKNOWN;
+        const isSel = sel === mm.id;
+        const onPath = !isSel && !isSpouse && !!lineage[this.carrierOf(mm.id)];
+        const related = !sel || lineage[this.carrierOf(mm.id)] || this.carrierOf(mm.id) === selCarrier || (this.byId[selCarrier] && (this.kids[selCarrier] || []).indexOf(this.carrierOf(mm.id)) >= 0);
+        const kidsN = (this.kids[mm.id] || []).length;
+        const coll = st.collapsed.indexOf(mm.id) >= 0;
+        const editable = this.canEdit(mm.id);
+        nodes.push({
+          id: mm.id,
+          tx: Math.round(x - w / 2) + "px", ty: Math.round(y - h / 2) + "px",
+          w: w + "px", h: h + "px", z: isSel ? 40 : isSpouse ? (spActive ? 40 : 3) : 6,
+          op: sel && !related ? (isSpouse ? (dark ? "0.12" : "0.28") : dark ? "0.2" : "0.38") : isSpouse && !spActive ? "0.9" : "1",
+          bg: isSel ? "color-mix(in srgb, var(--color-accent) 22%, " + surface + ")" : onPath ? "color-mix(in srgb, var(--color-accent) 11%, " + surface + ")" : surface,
+          shadow: isSel ? "0 0 0 2.5px var(--color-accent-400), 0 0 34px color-mix(in srgb, var(--color-accent) 60%, transparent), 0 16px 38px rgba(0,0,0,.5)"
+            : onPath ? "0 0 0 2px var(--color-accent), 0 0 18px color-mix(in srgb, var(--color-accent) 28%, transparent), 0 10px 26px rgba(0,0,0,.42)"
+            : isSpouse ? (spActive ? "0 0 0 2px var(--color-accent-400), 0 18px 42px rgba(0,0,0,.55)" : "0 0 0 1px var(--hair)") : dark ? "var(--shadow-md)" : "var(--shadow-sm)",
+          tone: isSel || onPath ? "var(--color-accent)" : mm.id === me ? "var(--color-accent)" : tone,
+          ini: this.ini(mm),
+          name: this.nm(mm),
+          years: [this.years(mm), this.tr(mm.city || "")].filter(Boolean).join(" · "),
+          rel: st.prefs.relLabels ? this.tr(this.relOrMeta(mm.id)) : this.tr(mm.prof || ""),
+          relFg: mm.id === me ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 74%, transparent)",
+          aria: this.nm(mm) + ", " + this.tr(this.relOrMeta(mm.id)),
+          avSize: (isSpouse ? 30 : 34) + "px",
+          avBg: "color-mix(in srgb, " + tone + " 16%, transparent)",
+          avFg: dark ? tone : "color-mix(in srgb, " + tone + " 70%, #1a1c28)",
+          avatarShow: isSpouse ? (spActive && dens !== "min" ? "flex" : "none") : st.prefs.photos && dens !== "min" ? "flex" : "none",
+          metaShow: (isSpouse && !spActive) ? "none" : dens === "full" && (mm.birth || mm.death || mm.city) ? "block" : "none",
+          relShow: (isSpouse && !spActive) ? "none" : dens === "min" ? "none" : "flex",
+          nameSize: (dens === "min" ? 17 : isSpouse ? 13 : 14.5) + "px",
+          align: isSpouse && !spActive ? "right" : "left",
+          nameWeight: isSpouse ? "400" : "500",
+          statusShow: (isSpouse && !spActive) ? "none" : dens === "min" ? "none" : "flex",
+          meShow: mm.id === me ? "inline-flex" : "none",
+          statusColor: mm.death ? "color-mix(in srgb, var(--color-text) 28%, transparent)" : "#6fd39a",
+          addShow: editable && isSel && !isSpouse ? "flex" : "none",
+          togShow: kidsN && !isSpouse && dens !== "min" ? "flex" : "none",
+          togLabel: coll ? String(this.descCount(mm.id)) : "",
+          togMinusShow: coll ? "none" : "flex",
+          togPlusShow: coll ? "inline-flex" : "none",
+          togBorder: coll ? "var(--color-accent)" : "var(--hair)",
+          togFg: coll ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 66%, transparent)",
+          click: (e) => { e.stopPropagation(); if (this.drag && this.drag.dist > 8) return; this.select(mm.id); },
+          key: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.select(mm.id); } },
+          add: (e) => { e.stopPropagation(); this.startAdd(mm.id); },
+          toggle: (e) => { e.stopPropagation(); this.toggleCollapse(mm.id); }
+        });
+      };
+      push(m, p.x, p.y + CARD_H / 2, CARD_W, CARD_H, false);
+      const sp = this.spouseOf[id];
+      if (sp && this.byId[sp]) {
+        const act = sel === sp;
+        push(this.byId[sp], p.x + (act ? 104 : 124), p.y + CARD_H / 2 + (act ? -18 : 12), SP_W, SP_H, true, act);
+      }
+    });
+
+    /* connectors */
+    const links = [], glow = [];
+    const hair = dark ? "color-mix(in srgb, #e9e9ed 58%, transparent)" : "color-mix(in srgb, #22242f 62%, transparent)";
+    Object.keys(pos).forEach((id) => {
+      const p = pos[id], kids = this.visibleKids(id).filter((c) => pos[c]);
+      const sp = this.spouseOf[id];
+      // juft kartasi erining kartasi ortida turadi — bog'lovchi chiziq kerak emas
+      if (!kids.length) return;
+      const bus = p.y + CARD_H + (ROW - CARD_H) * 0.44;
+      const xs = kids.map((c) => pos[c].x);
+      let d = "M" + p.x + "," + (p.y + CARD_H) + " V" + bus;
+      d += " M" + Math.min.apply(null, xs.concat([p.x])) + "," + bus + " H" + Math.max.apply(null, xs.concat([p.x]));
+      kids.forEach((c) => { d += " M" + pos[c].x + "," + bus + " V" + pos[c].y; });
+      links.push({ d, stroke: hair, w: 2.2, o: sel ? "0.22" : "1", dash: "0" });
+      // tanlangan odamgacha bo'lgan yo'l — faqat shu bo'g'inlar yoritiladi
+      const step = lineage[id] ? kids.find((c) => lineage[c]) : null;
+      if (step) {
+        const cx = pos[step].x, lo = Math.min(p.x, cx), hi = Math.max(p.x, cx);
+        const dl = "M" + p.x + "," + (p.y + CARD_H) + " V" + bus + " M" + lo + "," + bus + " H" + hi + " M" + cx + "," + bus + " V" + pos[step].y;
+        glow.push({ d: dl, stroke: "var(--color-accent)", w: 18, o: "0.24", dash: "0" });
+        glow.push({ d: dl, stroke: "var(--color-accent-400)", w: 9, o: "0.55", dash: "0" });
+        glow.push({ d: dl, stroke: dark ? "var(--color-accent-200)" : "var(--color-accent-600)", w: 4.2, o: "1", dash: "0" });
+      }
+    });
+    glow.forEach((g) => links.push(g));
+
+    /* generation bands */
+    const bands = [];
+    const depths = {};
+    Object.keys(pos).forEach((id) => { depths[pos[id].depth] = pos[id].y; });
+    Object.keys(depths).map(Number).sort((a, b) => a - b).forEach((d, i) => {
+      const anyId = Object.keys(pos).find((id) => pos[id].depth === d);
+      const gen = anyId ? this.byId[anyId].gen : d;
+      bands.push({
+        top: depths[d] - (ROW - CARD_H) / 2 + "px", h: ROW + "px", w: this.bbox.w + "px",
+        bg: i % 2 ? "color-mix(in srgb, var(--color-text) 3%, transparent)" : "transparent",
+        line: i ? "var(--hair)" : "transparent",
+        show: st.prefs.genLabels && dens !== "min" ? "inline-flex" : "none",
+        fg: "color-mix(in srgb, var(--color-text) 74%, transparent)",
+        label: this.tr(gen + "-avlod"),
+        sub: this.tr(gen === (this.byId[me] ? this.byId[me].gen : -1) ? "sizning avlodingiz" : "")
+      });
+    });
+
+    /* generation rail */
+    const rail = [];
+    Object.keys(depths).map(Number).sort((a, b) => a - b).forEach((d) => {
+      const ids = Object.keys(pos).filter((id) => pos[id].depth === d);
+      const gen = ids.length ? this.byId[ids[0]].gen : d;
+      const mine = this.byId[me] && this.byId[me].gen === gen;
+      rail.push({
+        label: this.tr(gen + "-avlod"),
+        barW: Math.max(8, Math.min(40, ids.length * 4)) + "px",
+        bar: mine ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 28%, transparent)",
+        border: mine ? "var(--color-accent)" : "transparent",
+        bg: mine ? "color-mix(in srgb, var(--color-accent) 12%, transparent)" : "color-mix(in srgb, var(--color-bg) 70%, transparent)",
+        fg: mine ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 66%, transparent)",
+        go: () => {
+          const v = this.viewport(), k = Math.max(0.35, Math.min(this.cam.k, 0.7));
+          const xs = ids.map((i) => pos[i].x);
+          this.flyTo(v.cx - ((Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2) * k, v.cy - depths[d] * k, k, 640);
+        }
+      });
+    });
+
+    /* breadcrumbs */
+    const crumbs = [];
+    if (selCarrier) {
+      const chain = [selCarrier].concat(this.ancestorsOf(selCarrier)).reverse().slice(-5);
+      chain.forEach((id) => {
+        crumbs.push({
+          name: this.nm(this.byId[id]),
+          rel: this.tr(st.authed ? this.relation(id) : ""),
+          fg: id === selCarrier ? "var(--color-text)" : "color-mix(in srgb, var(--color-text) 70%, transparent)",
+          border: id === selCarrier ? "var(--color-accent)" : "var(--hair)",
+          go: () => this.select(id)
+        });
+      });
+    }
+
+    /* minimap dots */
+    const mmDots = [];
+    const mm = this.mmRef.current;
+    if (mm && st.prefs.minimap) {
+      const s = Math.min(mm.clientWidth / this.bbox.w, mm.clientHeight / this.bbox.h);
+      const ox = (mm.clientWidth - this.bbox.w * s) / 2, oy = (mm.clientHeight - this.bbox.h * s) / 2;
+      Object.keys(pos).forEach((id) => {
+        const m2 = this.byId[id];
+        mmDots.push({
+          x: ox + (pos[id].x - CARD_W / 2) * s + "px", y: oy + pos[id].y * s + "px",
+          w: Math.max(2, CARD_W * s) + "px", h: Math.max(1.5, CARD_H * s) + "px",
+          c: id === me ? "var(--color-accent)" : m2.gender === "female" ? FEMALE : MALE
+        });
+      });
+    }
+
+    const filters = [
+      { key: "all", label: "Butun oila" },
+      { key: "ancestors", label: "To'g'ri ajdodlar" },
+      { key: "descendants", label: "Mening avlodlarim" },
+      { key: "branch", label: "Shox" }
+    ].map((f) => ({
+      label: f.label, go: () => this.setFilter(f.key),
+      bg: st.filter === f.key ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent",
+      fg: st.filter === f.key ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 74%, transparent)"
+    }));
+
+    const tab = (k) => (st.screen === k ? "color-mix(in srgb, var(--color-accent) 14%, transparent)" : "transparent");
+    const tabFg = (k) => (st.screen === k ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 74%, transparent)");
+    const meM = this.byId[me];
+
+    return {
+      brandTitle: this.tr(this.familyName + "lar shajarasi"),
+      brandSub: this.tr((this.props.region || "Xorazm") + " · " + this.members.length + " a'zo · " + this.genCount + " avlod"),
+      dsk: st.mobile ? "none" : "flex", mob: st.mobile ? "flex" : "none",
+      goTree: this.goTree, goPeople: this.goPeople, goProfile: this.goProfile, goSettings: this.goSettings,
+      tabTreeBg: tab("tree"), tabTreeFg: tabFg("tree"),
+      tabPeopleBg: tab("people"), tabPeopleFg: tabFg("people"),
+      tabProfileBg: tab("profile"), tabProfileFg: tabFg("profile"),
+      openSearch: this.openSearch,
+      setLatin: this.setLatin, setCyr: this.setCyr,
+      latBg: st.alphabet === "latin" ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent",
+      latFg: st.alphabet === "latin" ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 66%, transparent)",
+      cyrBg: st.alphabet === "cyrillic" ? "color-mix(in srgb, var(--color-accent) 16%, transparent)" : "transparent",
+      cyrFg: st.alphabet === "cyrillic" ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 66%, transparent)",
+      cycleTheme: this.cycleTheme,
+      themeAutoShow: st.theme === "system" ? "flex" : "none",
+      themeDarkShow: st.theme === "dark" ? "flex" : "none",
+      themeLightShow: st.theme === "light" ? "flex" : "none",
+      themeTitle: st.theme === "system" ? "Tizim" : st.theme === "dark" ? "Tungi" : "Yorug'",
+      onIdentityClick: () => (st.authed ? this.goProfile() : this.setState({ auth: "login" })),
+      idInitials: st.authed && meM ? this.ini(meM) : "?",
+      idLabel: st.authed && meM ? this.nm(meM) : "Kirish",
+      idBorder: st.authed ? "var(--hair)" : "var(--color-accent)",
+      idAvatarBg: st.authed ? "color-mix(in srgb, var(--color-accent) 20%, transparent)" : "transparent",
+      idAvatarFg: st.authed ? "var(--color-accent)" : "color-mix(in srgb, var(--color-text) 74%, transparent)",
+      wrapRef: this.wrapRef, camRef: this.camRef, zoomRef: this.zoomRef, mmRef: this.mmRef, mmVpRef: this.mmVpRef,
+      canvasW: Math.round(this.bbox.w), canvasH: Math.round(this.bbox.h),
+      nodes, links, bands, rail, crumbs, mmDots, filters,
+      crumbShow: selCarrier && !st.mobile ? "flex" : "none",
+      railShow: st.mobile || st.screen !== "tree" ? "none" : "flex",
+      minimapShow: st.prefs.minimap && !st.mobile ? "block" : "none",
+      ctrlBottom: st.mobile && st.panel ? "60%" : "14px",
+      zoomIn: this.zoomIn, zoomOut: this.zoomOut, fitAll: this.fitAll, centerMe: this.centerMe,
+      homeLabel: this.tr(st.authed ? "Menga" : "Markaz"),
+      nikohShow: this.hasSpouses ? "flex" : "none",
+      minimapClick: (e) => {
+        const r = this.mmRef.current.getBoundingClientRect(), sc = this.mmScale;
+        if (!sc) return;
+        const cx = (e.clientX - r.left - sc.ox) / sc.s, cy = (e.clientY - r.top - sc.oy) / sc.s;
+        const v = this.viewport();
+        this.flyTo(v.cx - cx * this.cam.k, v.cy - cy * this.cam.k, this.cam.k, 420);
+      },
+      ...this.moreVals(st, me, meM, dark),
+      tabSettingsFg: tabFg("settings")
+    };
+  }
+}
+
+</script>
+</body>
+</html>

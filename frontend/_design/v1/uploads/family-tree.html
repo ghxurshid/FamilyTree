@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Oila Daraxti — Yusupov Sulolasi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b07;
+    --gold: #d4b35c;
+    --gold-light: #f0d488;
+    --gold-dim: #9a7a38;
+    --cream: #f4e8d2;
+    --cream-dim: #c4ac86;
+    --text: #ece0cc;
+    /* a11y: brightened for AA contrast on dark bg */
+    --text-dim: #9aa6b2;
+    --male-bg1: #0e1e2d;
+    --male-bg2: #173049;
+    --male-border: #4684a6;
+    --male-accent: #5aa0c8;
+    --male-text: #84c0e2;
+    --female-bg1: #20102a;
+    --female-bg2: #341a3c;
+    --female-border: #a8447a;
+    --female-accent: #c85a9c;
+    --female-text: #e88ac0;
+    --line: #b89a52;
+    --line-glow: #f0d488;
+    --card-w: 204px;
+    --card-h: 116px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #2c1c09 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 18% 82%, #1b0e05 0%, transparent 60%),
+      radial-gradient(ellipse 55% 55% at 82% 48%, #0a1825 0%, transparent 62%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ─── Header ─── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 14px 24px;
+    background: linear-gradient(180deg, rgba(10,8,4,0.97) 0%, rgba(10,8,4,0.0) 100%);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 18px; min-width: 0; }
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; font-weight: 800;
+    color: var(--gold-light); letter-spacing: 0.03em;
+    display: flex; align-items: center; gap: 11px;
+  }
+  .logo-icon { font-size: 26px; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); }
+  .logo-sub {
+    font-size: 11px; font-weight: 400; color: var(--cream-dim);
+    letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-top: -1px;
+  }
+  .stats { display: flex; gap: 8px; }
+  .stat {
+    background: rgba(212,179,92,0.08);
+    border: 1px solid rgba(212,179,92,0.22);
+    border-radius: 6px; padding: 5px 11px; text-align: center; line-height: 1.1;
+  }
+  .stat b { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--gold-light); display: block; }
+  .stat span { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+
+  .controls { display: flex; gap: 9px; align-items: center; }
+  .btn {
+    background: rgba(212,179,92,0.1);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold-light);
+    font-family: 'Crimson Pro', serif; font-size: 14px;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer;
+    transition: background .18s, border-color .18s, transform .1s;
+    letter-spacing: 0.04em; white-space: nowrap;
+  }
+  .btn:hover { background: rgba(212,179,92,0.22); border-color: var(--gold); }
+  .btn:active { transform: translateY(1px); }
+  .btn.active { background: rgba(212,179,92,0.3); border-color: var(--gold-light); }
+  .btn:focus-visible, .node:focus-visible, .rel-chip:focus-visible, .search-item:focus-visible {
+    outline: 2px solid var(--gold-light); outline-offset: 2px;
+  }
+  .icon-btn { padding: 8px 12px; font-size: 16px; }
+  .alpha-toggle { display: flex; border: 1px solid var(--gold-dim); border-radius: 6px; overflow: hidden; }
+  .alpha-btn {
+    background: transparent; border: none; color: var(--cream-dim);
+    font-family: 'Crimson Pro', serif; font-size: 13.5px; padding: 8px 13px;
+    cursor: pointer; letter-spacing: 0.03em; transition: background .15s, color .15s;
+  }
+  .alpha-btn + .alpha-btn { border-left: 1px solid var(--gold-dim); }
+  .alpha-btn.active { background: rgba(212,179,92,0.26); color: var(--gold-light); }
+  .alpha-btn:hover:not(.active) { background: rgba(212,179,92,0.1); }
+  .zoom-info { font-size: 12.5px; color: var(--cream-dim); letter-spacing: 0.08em; min-width: 46px; text-align: center; }
+
+  /* ─── Canvas ─── */
+  #canvas-wrap { position: fixed; inset: 0; overflow: hidden; cursor: grab; touch-action: none; z-index: 1; }
+  #canvas-wrap.grabbing { cursor: grabbing; }
+  #canvas { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  #lines-svg { position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible; }
+
+  .line-parent { stroke: var(--line); stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0.55; transition: stroke .25s, opacity .25s, stroke-width .25s; }
+  .line-parent.lineage { stroke: var(--line-glow); stroke-width: 2.6; opacity: 1; filter: drop-shadow(0 0 4px rgba(240,212,136,0.7)); }
+  .line-couple { stroke: var(--gold); stroke-width: 1.5; stroke-dasharray: 5 3; fill: none; stroke-linecap: round; opacity: 0.65; }
+
+  /* ─── Node cards ─── */
+  .node {
+    position: absolute; width: var(--card-w); height: var(--card-h);
+    border-radius: 11px; cursor: pointer;
+    transition: transform .22s cubic-bezier(.34,1.56,.64,1), filter .2s, opacity .4s;
+    transform-origin: center; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.55));
+  }
+  .node:hover { transform: translateY(-5px) scale(1.045); filter: drop-shadow(0 14px 30px rgba(0,0,0,0.7)); z-index: 10; }
+  .node.selected { z-index: 20; }
+  .node.dim { opacity: 0.32; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5)) grayscale(0.3); }
+
+  .node-inner {
+    width: 100%; height: 100%; border-radius: 11px;
+    display: flex; flex-direction: column; position: relative; overflow: hidden;
+  }
+  .node-inner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 11px 11px 0 0; z-index: 2; }
+  .node-inner::after  { content: ''; position: absolute; top: 3px; left: 0; bottom: 0; width: 3px; z-index: 2; }
+
+  .node.male .node-inner {
+    background: linear-gradient(145deg, var(--male-bg1) 0%, var(--male-bg2) 100%);
+    border: 1px solid var(--male-border);
+    box-shadow: inset 0 1px 0 rgba(90,160,200,0.2);
+  }
+  .node.male .node-inner::before { background: var(--male-accent); opacity: 0.7; }
+  .node.male .node-inner::after  { background: var(--male-accent); opacity: 0.5; }
+  .node.male.selected .node-inner { border-color: var(--male-accent); box-shadow: 0 0 0 2px var(--male-accent), inset 0 1px 0 rgba(90,160,200,0.35); }
+
+  .node.female .node-inner {
+    background: linear-gradient(145deg, var(--female-bg1) 0%, var(--female-bg2) 100%);
+    border: 1px solid var(--female-border);
+    box-shadow: inset 0 1px 0 rgba(200,90,156,0.2);
+  }
+  .node.female .node-inner::before { background: var(--female-accent); opacity: 0.7; }
+  .node.female .node-inner::after  { background: var(--female-accent); opacity: 0.5; }
+  .node.female.selected .node-inner { border-color: var(--female-accent); box-shadow: 0 0 0 2px var(--female-accent), inset 0 1px 0 rgba(200,90,156,0.35); }
+
+  .node-content { display: flex; align-items: center; height: 100%; padding: 11px 12px 11px 15px; }
+  .node-text { flex: 1; min-width: 0; }
+  .node-badge {
+    display: inline-flex; align-items: center; font-size: 10px; letter-spacing: 0.16em;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; font-weight: 600;
+  }
+  .node.male .node-badge { background: rgba(90,160,200,0.18); color: var(--male-text); }
+  .node.female .node-badge { background: rgba(200,90,156,0.18); color: var(--female-text); }
+  .node-name {
+    font-family: 'Playfair Display', serif; font-size: 14.5px; font-weight: 700;
+    color: var(--cream); line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .node-meta { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .node-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .node.male .node-dot { background: var(--male-accent); }
+  .node.female .node-dot { background: var(--female-accent); }
+  .node-role { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .node.male .node-role { color: var(--male-text); }
+  .node.female .node-role { color: var(--female-text); }
+  .node-birth { font-size: 11.5px; color: var(--cream-dim); margin-top: 4px; letter-spacing: 0.01em; }
+
+  .node-avatar {
+    width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; font-size: 19px;
+    display: flex; align-items: center; justify-content: center; margin-left: 10px;
+  }
+  .node.male .node-avatar { background: #0a1520; border: 1.5px solid rgba(90,160,200,0.45); }
+  .node.female .node-avatar { background: #160a1a; border: 1.5px solid rgba(200,90,156,0.45); }
+  .node-bar { position: absolute; bottom: 0; left: 0; height: 3px; border-radius: 0 0 11px 11px; opacity: 0.4; }
+  .node.male .node-bar { background: linear-gradient(90deg, var(--male-accent), transparent); }
+  .node.female .node-bar { background: linear-gradient(90deg, var(--female-accent), transparent); }
+
+  /* Unknown gender (none) — neutral gold-grey */
+  .node.none .node-inner {
+    background: linear-gradient(145deg, #1a1814 0%, #262219 100%);
+    border: 1px solid #6a6253;
+    box-shadow: inset 0 1px 0 rgba(180,170,140,0.16);
+  }
+  .node.none .node-inner::before { background: #9a8f72; opacity: 0.6; }
+  .node.none .node-inner::after  { background: #9a8f72; opacity: 0.45; }
+  .node.none.selected .node-inner { border-color: #b8a87a; box-shadow: 0 0 0 2px #9a8f72, inset 0 1px 0 rgba(180,170,140,0.3); }
+  .node.none .node-badge { background: rgba(154,143,114,0.2); color: #cbbd97; }
+  .node.none .node-dot { background: #b8a87a; }
+  .node.none .node-role { color: #cbbd97; }
+  .node.none .node-avatar { background: #16140f; border: 1.5px solid rgba(184,168,122,0.4); }
+  .node.none .node-bar { background: linear-gradient(90deg, #9a8f72, transparent); }
+  .panel-avatar.none { background: radial-gradient(circle at 30% 30%, #3a3528, #16140f); border: 2px solid rgba(184,168,122,0.5); }
+  .rel-chip.none-chip::before { background: #9a8f72; }
+
+  /* Status dot on card (alive/deceased) */
+  .node-status { position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border-radius: 50%; z-index: 3; }
+  .node-status.alive { background: #3fbf6a; box-shadow: 0 0 6px rgba(63,191,106,0.7); }
+  .node-status.deceased { background: #8a7040; }
+
+  /* ── Bloodline hierarchy: carrier = primary, married-in spouse = secondary ── */
+  .node.spouse {
+    transform: scale(0.88);
+    opacity: 0.5;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.45)) grayscale(0.45);
+    z-index: 1;
+  }
+  .node.spouse .node-inner { border-style: dashed; }
+  .node.spouse .node-status { display: none; }
+  .node.spouse .node-tag {
+    position: absolute; top: -16px; left: 0; right: 0; text-align: center;
+    font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--text-dim); opacity: 0; transition: opacity 0.22s; pointer-events: none; font-weight: 600;
+  }
+  .node.spouse.dim {
+    opacity: 0.28;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)) grayscale(0.65);
+  }
+  /* …comes to focus on intent (hover / keyboard focus / select / partner-peek) */
+  .node.spouse:hover, .node.spouse:focus-visible, .node.spouse.selected, .node.spouse.peek {
+    transform: scale(1.015) translateY(-4px);
+    opacity: 1;
+    filter: drop-shadow(0 16px 32px rgba(0,0,0,0.72));
+    z-index: 16;
+  }
+  .node.spouse:hover .node-inner, .node.spouse:focus-visible .node-inner,
+  .node.spouse.selected .node-inner, .node.spouse.peek .node-inner { border-style: solid; }
+  .node.spouse:hover .node-tag, .node.spouse:focus-visible .node-tag,
+  .node.spouse.selected .node-tag, .node.spouse.peek .node-tag { opacity: 1; }
+
+  /* Collapse / expand toggle */
+  .toggle {
+    position: absolute; width: 26px; height: 26px; border-radius: 50%;
+    background: #161008; border: 1.5px solid var(--gold-dim); color: var(--gold-light);
+    font-family: 'Crimson Pro', serif; font-size: 13px; font-weight: 700; line-height: 1;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    transform: translate(-50%, -50%); z-index: 15; transition: background .15s, border-color .15s, transform .12s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+  }
+  .toggle:hover { background: #221808; border-color: var(--gold); transform: translate(-50%,-50%) scale(1.12); }
+  .toggle.collapsed { background: rgba(212,179,92,0.18); }
+  .toggle small { font-size: 10px; margin-left: 1px; }
+
+  /* ─── Generation bands & separators ─── */
+  .gen-band {
+    position: absolute; left: 0; pointer-events: none;
+  }
+  .gen-band.alt {
+    background: linear-gradient(90deg, rgba(212,179,92,0.05) 0%, rgba(212,179,92,0.018) 45%, transparent 85%);
+  }
+  .gen-sep {
+    position: absolute; left: 0; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent 0%, rgba(212,179,92,0.32) 10%, rgba(212,179,92,0.32) 90%, transparent 100%);
+  }
+  .gen-sep::after {
+    content: ''; position: absolute; left: 50%; top: 50%;
+    width: 6px; height: 6px; transform: translate(-50%, -50%) rotate(45deg);
+    background: var(--gold-dim); opacity: 0.5;
+  }
+  .gen-band-label {
+    position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600;
+    color: var(--gold); white-space: nowrap;
+    background: rgba(12,9,4,0.55); border: 1px solid rgba(212,179,92,0.2);
+    padding: 5px 13px; border-radius: 20px; backdrop-filter: blur(2px);
+  }
+  .gen-band-label b {
+    color: var(--cream-dim); font-weight: 400; margin-left: 7px; letter-spacing: 0.1em; opacity: 0.85;
+  }
+
+  /* ─── Detail panel ─── */
+  #detail-panel {
+    position: fixed; right: 0; top: 0; bottom: 0; width: 360px;
+    background: #0c0a05; border-left: 1px solid #281d0c; z-index: 200;
+    transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.5);
+  }
+  #detail-panel.open { transform: translateX(0); }
+  .panel-header { padding: 54px 24px 20px; border-bottom: 1px solid #211808; position: relative; background: linear-gradient(180deg, #120f08 0%, #0c0a05 100%); }
+  .panel-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+  .panel-close {
+    position: absolute; top: 14px; right: 16px; background: rgba(212,179,92,0.1);
+    border: 1px solid rgba(212,179,92,0.25); color: var(--gold); font-size: 14px; cursor: pointer;
+    width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background .2s;
+  }
+  .panel-close:hover { background: rgba(212,179,92,0.25); }
+  .panel-top { display: flex; align-items: center; gap: 16px; margin-bottom: 6px; }
+  .panel-avatar { width: 64px; height: 64px; border-radius: 50%; font-size: 30px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .panel-avatar.male { background: radial-gradient(circle at 30% 30%, #1c3a58, #0a1520); border: 2px solid rgba(90,160,200,0.55); }
+  .panel-avatar.female { background: radial-gradient(circle at 30% 30%, #3e1846, #160a1a); border: 2px solid rgba(200,90,156,0.55); }
+  .panel-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--cream); line-height: 1.2; }
+  .panel-role-tag { font-family: 'Crimson Pro', serif; font-size: 13px; font-style: italic; color: var(--gold); margin-top: 5px; }
+  .panel-status { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; padding: 4px 11px; border-radius: 20px; margin-top: 10px; }
+  .panel-status.alive { background: rgba(63,191,106,0.13); color: #5fd089; border: 1px solid rgba(63,191,106,0.3); }
+  .panel-status.deceased { background: rgba(150,120,72,0.13); color: #b89a62; border: 1px solid rgba(150,120,72,0.3); }
+  .panel-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .panel-body { flex: 1; overflow-y: auto; padding: 20px 24px 30px; scrollbar-width: thin; scrollbar-color: #2f2310 transparent; }
+  .panel-section { margin-bottom: 22px; }
+  .panel-section-title { font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 11px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .panel-section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, #34270f, transparent); }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+  .info-cell { background: rgba(255,255,255,0.025); border: 1px solid #241a0a; border-radius: 6px; padding: 9px 11px; }
+  .info-cell-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+  .info-cell-value { font-size: 14.5px; color: var(--cream); font-weight: 600; }
+  .info-cell.wide { grid-column: 1 / -1; }
+  .rel-chip { display: flex; align-items: center; gap: 11px; padding: 9px 13px; background: rgba(255,255,255,0.03); border: 1px solid #241a0a; border-radius: 7px; margin-bottom: 7px; cursor: pointer; transition: background .15s, border-color .15s; position: relative; overflow: hidden; }
+  .rel-chip::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; border-radius: 7px 0 0 7px; }
+  .rel-chip.male-chip::before { background: var(--male-accent); }
+  .rel-chip.female-chip::before { background: var(--female-accent); }
+  .rel-chip:hover { background: rgba(212,179,92,0.07); border-color: #3a2b12; }
+  .rel-chip-icon { font-size: 18px; }
+  .rel-chip-name { color: var(--cream); flex: 1; font-weight: 600; font-size: 14px; }
+  .rel-chip-meta { font-size: 11px; color: var(--text-dim); text-align: right; line-height: 1.45; }
+
+  /* ─── Legend ─── */
+  #legend { position: fixed; bottom: 20px; left: 22px; z-index: 100; background: rgba(10,8,4,0.92); border: 1px solid #2f2310; border-radius: 8px; padding: 11px 16px; font-size: 11.5px; display: flex; gap: 16px; align-items: center; letter-spacing: 0.04em; backdrop-filter: blur(4px); }
+  .leg-item { display: flex; align-items: center; gap: 7px; color: var(--cream-dim); }
+  .leg-box { width: 15px; height: 11px; border-radius: 3px; border: 1.5px solid; }
+  .leg-male { background: rgba(90,160,200,0.22); border-color: var(--male-border); }
+  .leg-female { background: rgba(200,90,156,0.22); border-color: var(--female-border); }
+  .leg-line { width: 20px; height: 2px; background: var(--line); }
+  .leg-dash { width: 20px; height: 0; border-top: 2px dashed var(--gold); }
+
+  /* ─── Mini-map ─── */
+  #minimap { position: fixed; bottom: 20px; right: 20px; width: 168px; height: 100px; background: rgba(10,8,4,0.92); border: 1px solid #2f2310; border-radius: 6px; overflow: hidden; z-index: 100; cursor: pointer; }
+  #minimap canvas { position: absolute; inset: 0; }
+  #minimap-viewport { position: absolute; border: 1.5px solid var(--gold-light); background: rgba(212,179,92,0.08); pointer-events: none; }
+
+  /* ─── Search ─── */
+  #search-wrap { position: fixed; top: 64px; left: 50%; transform: translateX(-50%); z-index: 101; width: 320px; display: none; }
+  #search-wrap.open { display: block; }
+  #search-input { width: 100%; background: rgba(16,12,6,0.98); border: 1px solid var(--gold-dim); color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 15px; padding: 11px 16px; border-radius: 7px; outline: none; }
+  #search-input::placeholder { color: var(--text-dim); }
+  #search-input:focus { border-color: var(--gold-light); }
+  #search-results { background: rgba(13,10,5,0.99); border: 1px solid #2f2310; border-top: none; border-radius: 0 0 7px 7px; max-height: 240px; overflow-y: auto; }
+  .search-item { padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid #1c1409; font-size: 14px; }
+  .search-item:hover, .search-item.active { background: rgba(212,179,92,0.1); }
+  .search-item-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .si-male { background: var(--male-border); } .si-female { background: var(--female-border); }
+  .search-meta { color: var(--text-dim); margin-left: auto; font-size: 12px; }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 720px) {
+    header { flex-wrap: wrap; padding: 10px 14px; gap: 8px; }
+    .stats { display: none; }
+    .logo { font-size: 18px; }
+    .btn-label { display: none; }
+    .btn { padding: 8px 12px; }
+    #detail-panel { width: 100%; height: 72vh; top: auto; bottom: 0; border-left: none; border-top: 1px solid #281d0c; border-radius: 18px 18px 0 0; transform: translateY(100%); box-shadow: 0 -12px 40px rgba(0,0,0,0.6); }
+    #detail-panel.open { transform: translateY(0); }
+    .panel-header { padding: 22px 22px 18px; }
+    .panel-header::after { content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; border-radius: 2px; background: #3a2b12; }
+    .panel-close { top: 16px; }
+    #minimap { display: none; }
+    #legend { left: 14px; bottom: 14px; gap: 11px; padding: 9px 12px; font-size: 10.5px; }
+    #search-wrap { width: calc(100% - 28px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">
+      <span class="logo-icon">🌳</span>
+      <div><span id="brand-title" data-tr="Yusupov Sulolasi">Yusupov Sulolasi</span><span class="logo-sub" data-tr="Oila Daraxti · 1868 – Hozirgi Kun">Oila Daraxti · 1868 – Hozirgi Kun</span></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="st-total">—</b><span data-tr="Aʼzo">Aʼzo</span></div>
+      <div class="stat"><b id="st-gen">—</b><span data-tr="Avlod">Avlod</span></div>
+      <div class="stat"><b id="st-alive">—</b><span data-tr="Tirik">Tirik</span></div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="alpha-toggle" role="group" aria-label="Alifbo">
+      <button class="alpha-btn active" data-alpha="latin" onclick="setAlphabet('latin')">Lotin</button>
+      <button class="alpha-btn" data-alpha="cyrillic" onclick="setAlphabet('cyrillic')">Кирилл</button>
+    </div>
+    <div id="search-wrap">
+      <input id="search-input" placeholder="Ism, kasb yoki shahar…" autocomplete="off" aria-label="Qidirish">
+      <div id="search-results" role="listbox"></div>
+    </div>
+    <button class="btn" onclick="toggleSearch()" id="search-btn" aria-label="Qidirish">🔍 <span class="btn-label" data-tr="Qidirish">Qidirish</span></button>
+    <button class="btn icon-btn" onclick="zoomByBtn(0.8)" aria-label="Kichraytirish">−</button>
+    <span class="zoom-info" id="zoom-info">100%</span>
+    <button class="btn icon-btn" onclick="zoomByBtn(1.25)" aria-label="Kattalashtirish">+</button>
+    <button class="btn" onclick="fitView()" aria-label="Markazga">↺ <span class="btn-label" data-tr="Markazga">Markazga</span></button>
+  </div>
+</header>
+
+<div id="canvas-wrap" role="application" aria-label="Oila daraxti">
+  <div id="canvas"><svg id="lines-svg"></svg></div>
+</div>
+
+<aside id="detail-panel" aria-label="Shaxs maʼlumotlari" aria-hidden="true">
+  <div class="panel-header">
+    <button class="panel-close" onclick="closePanel()" aria-label="Yopish">✕</button>
+    <div class="panel-top">
+      <div class="panel-avatar" id="p-avatar"></div>
+      <div>
+        <div class="panel-name" id="p-name"></div>
+        <div class="panel-status" id="p-status"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" id="p-body"></div>
+</aside>
+
+<div id="legend">
+  <div class="leg-item"><div class="leg-box leg-male"></div> <span data-tr="Erkak">Erkak</span></div>
+  <div class="leg-item"><div class="leg-box leg-female"></div> <span data-tr="Ayol">Ayol</span></div>
+  <div class="leg-item"><div class="leg-line"></div> <span data-tr="Ota-ona">Ota-ona</span></div>
+  <div class="leg-item"><div class="leg-dash"></div> <span data-tr="Nikoh">Nikoh</span></div>
+</div>
+
+<div id="minimap" title="Xaritada harakatlanish"><canvas id="mm-canvas"></canvas><div id="minimap-viewport"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════
+//  FAMILY DATA
+// ═══════════════════════════════════════════════════════
+// Shajara — rasmdan o'qildi. name=lotin transliteratsiya, nameCyr=asl kirill.
+// gender taxminiy (noma'lum=none); birth/death/profession/city bo'sh. spouse=null (faqat qon-nasl).
+// ⚠️ Spine (ajdod o'qi) parentligi taxminiy — tasdiqlash kerak.
+// Arxitektura: har bir a'zo OTASINING id'sini saqlaydi (father_id). Ildizning father_id=null.
+// children ro'yxati yuklashda father_id'lardan avtomatik hosil qilinadi (quyiga qarang).
+const M = (id, nameCyr, name, gender, gen, father_id) =>
+  ({ id, name, nameCyr, birth:null, death:null, gender, profession:"", city:"", gen, spouse:null, father_id });
+const familyData = { members: [
+  // id, kirill, lotin, jins, avlod, OTA_id
+  // ── Ajdod o'qi (spine) — parentlik taxminiy, toza zanjir ──
+  M(1,"Шайвали халфа","Shayvali halfa","male",0,null),
+  M(2,"Турсун халфа","Tursun halfa","male",1,1),
+  M(3,"Товошар","Tovoshar","male",2,2),
+  M(4,"Бойабиз","Boyabiz","male",3,3),
+  M(5,"Кулабиз","Kulabiz","male",3,3),
+
+  M(6,"Холмат","Xolmat","male",4,5),
+  M(7,"Карим","Karim","male",4,5),
+  M(8,"Юзбой","Yuzboy","male",4,5),
+  M(9,"Бойбул","Boybul","male",4,5),
+
+  M(10,"Очил","Ochil","male",5,9),
+  M(11,"Рамат","Ramat","male",5,9),
+  M(12,"Асат","Asat","male",5,9),
+  M(13,"Курбон","Qurbon","male",5,9),
+  M(14,"Оллоер","Olloyer","male",5,9),
+
+  // ── 5 asosiy shox (otasi: Бойбул=9) ──
+  M(15,"Ташатбой","Tashatboy","male",6,14),
+  M(16,"Эшатбой","Eshatboy","male",6,14),
+  M(17,"Кушатбой","Kushatboy","male",6,14),
+  M(18,"Ерматбой","Yermatboy","male",6,14),
+  M(19,"Нурматбой","Nurmatboy","male",6,14),
+
+  // ── Ташатбой shoxi ──
+  M(20,"Куйбогар","Quybogar","male",7,15),
+  M(21,"Жумагул","Jumagul","male",7,15),
+  M(22,"Хужмат","Xujmat","male",7,15),
+  M(23,"Шермат","Shermat","male",7,15),
+
+  // ── Эшатбой shoxi ──
+  M(24,"Усмон","Usmon","male",7,16),
+  M(25,"Эрмат","Ermat","male",7,16),
+  M(26,"Суён","Suyon","male",7,16),
+  M(27,"Зоир","Zoir","male",7,16),
+  M(28,"Дувло","Duvlo","none",7,16),
+  M(29,"Кувнок","Quvnoq","none",7,16),
+  M(30,"Мусурмон","Musurmon","male",7,16),
+  M(31,"Исроил","Isroil","male",7,16),
+
+  // ── Кушатбой shoxi ──
+  M(32,"Хужаназар","Xujanazar","male",7,17),
+  M(33,"Локай","Lokay","male",7,17),
+
+   // ── Ерматбой shoxi ──
+  M(34,"Бойжигит","Boyjigit","male",7,18),
+  M(35,"Киржигит","Kirjigit","male",7,18),
+
+  // ── Нурматбой shoxi ──
+  M(36,"Кодир","Qodir","male",7,19),
+  M(37,"Абдурохмон","Abduroxmon","male",7,19),
+
+  // ── Куйбогар (id=20) shoxi — rasmdan o'qildi ──
+  // 8-avlod: Куйбогар farzandlari
+  M(38,"Мамадиор","Mamadior","male",8,20),
+  M(39,"Хилол","Xilol","male",8,20),
+  M(40,"Норой","Noroy","male",8,20),
+  M(41,"Бозорбой","Bozorboy","male",8,20),
+  M(42,"Зайнаб","Zaynab","female",8,20),
+  M(43,"Ойжомол","Oyjomol","male",8,20),
+
+  // 9-avlod
+  M(44,"Гузорбой","Guzorboy","male",9,38),   
+  M(45,"Абдували","Abduvali","male",9,39),   
+  M(46,"Абдуваси","Abduvasi","male",9,39), 
+
+  M(47,"Сала","Sala","male",9,40),           
+  M(48,"Кундуз","Kunduz","female",9,40),
+  M(49,"Туигул","Tuigul","female",9,40), 
+  M(50,"Рохмон","Roxmon","male",9,40),      
+  M(51,"Исмоил","Ismoil","male",9,40),
+  M(52,"Исроил","Isroil","male",9,40),
+
+  M(53,"Санобар","Sanobar","female",9,43),   
+
+  // 10-avlod
+  M(54,"Зебин","Zebin","female",10,44),      
+  M(55,"Гулнора","Gulnora","female",10,44),
+  M(56,"Гулсара","Gulsara","female",10,44),  
+
+  M(57,"Эркин","Erkin","male",10,44),        
+  M(58,"Олим","Olim","male",10,44),
+
+  // 12-avlod
+  M(59,"Дилдора","Dildora","female",11,57),  
+
+  // 13-avlod
+  M(61,"Чингиз","Chingiz","male",11,57),     
+  M(62,"Элдор","Eldor","male",11,57),
+  M(63,"Аззам","Azzam","male",11,57)
+]};
+
+// id'lar butun son — ichki kod satr ishlatadi; father_id'dan children indeksini quramiz.
+const childrenMap = {};
+familyData.members.forEach(m => {
+  m.id = String(m.id);
+  m.father_id = (m.father_id == null) ? null : String(m.father_id);
+  if (m.spouse != null) m.spouse = String(m.spouse);
+});
+familyData.members.forEach(m => {
+  if (m.father_id != null) (childrenMap[m.father_id] || (childrenMap[m.father_id] = [])).push(m.id);
+});
+familyData.members.forEach(m => { m.children = childrenMap[m.id] || []; });
+
+// ═══════════════════════════════════════════════════════
+//  CONSTANTS & SETUP
+// ═══════════════════════════════════════════════════════
+const CARD_W = 204, CARD_H = 116, GAP_X = 36, GAP_Y = 104;
+const NODE_X = CARD_W + GAP_X;        // 240 — horizontal slot
+const NODE_Y = CARD_H + GAP_Y;        // 220 — vertical slot
+const HALF_OFFSET = NODE_X / 2;       // carrier/spouse separation from couple centre
+const ROOT_ID = (familyData.members.find(m => !m.father_id) || familyData.members[0]).id;  // father_id=null bo'lgan a'zo
+const genBadge = g => g === 0 ? 'Ajdod' : 'Avlod ' + g;        // card badge — any depth
+const genLabel = g => g === 0 ? 'Ajdodlar' : g + '-avlod';     // generation band label
+
+const memberMap = {};
+familyData.members.forEach(m => memberMap[m.id] = m);
+
+// "Blood carrier" = anyone listed as someone's child, plus the root.
+// Married-in spouses never appear in a children[] array, so they become
+// visual spouse cards rather than hierarchy nodes (avoids DAG double-counting).
+const bloodSet = new Set([ROOT_ID]);
+familyData.members.forEach(m => (m.children || []).forEach(c => bloodSet.add(c)));
+const carrierIds = new Set();   // members that are real tree nodes (set after layout)
+
+const collapsed = new Set();    // carrier ids whose subtree is hidden
+let selectedId = null;
+let alphabet = 'latin';         // 'latin' | 'cyrillic'
+
+// ═══════════════════════════════════════════════════════
+//  UZBEK LATIN ⇄ CYRILLIC TRANSLITERATOR
+// ═══════════════════════════════════════════════════════
+const L2C_DIGRAPH = { "o'":'ў', "g'":'ғ', "sh":'ш', "ch":'ч', "yo":'ё', "yu":'ю', "ya":'я', "ye":'е', "ts":'ц' };
+const L2C = { a:'а', b:'б', c:'к', d:'д', e:'е', f:'ф', g:'г', h:'ҳ', i:'и', j:'ж', k:'к', l:'л', m:'м',
+              n:'н', o:'о', p:'п', q:'қ', r:'р', s:'с', t:'т', u:'у', v:'в', w:'в', x:'х', y:'й', z:'з', "'":'ъ' };
+
+function toCyrillic(text) {
+  if (!text) return text;
+  const s = String(text).replace(/[ʻʼ’‘`]/g, "'");
+  const low = s.toLowerCase();
+  const isL = ch => /[a-z']/.test(ch);
+  let out = '', i = 0;
+  while (i < s.length) {
+    const atStart = (i === 0) || !isL(low[i - 1]);
+    // keep roman numerals (I, II, IV, V…) intact
+    if (atStart) {
+      const rm = s.slice(i).match(/^[IVXLCDM]+(?=$|[^A-Za-z])/);
+      if (rm) { out += rm[0]; i += rm[0].length; continue; }
+    }
+    const two = low.substr(i, 2);
+    let cyr = null, len = 1;
+    if (L2C_DIGRAPH[two]) { cyr = L2C_DIGRAPH[two]; len = 2; }
+    else if (low[i] === 'e') { cyr = atStart ? 'э' : 'е'; }
+    else cyr = (low[i] in L2C) ? L2C[low[i]] : null;
+
+    if (cyr === null) { out += s[i]; i += 1; continue; }
+    if (s[i] !== s[i].toLowerCase() && s[i] === s[i].toUpperCase())
+      cyr = cyr.charAt(0).toUpperCase() + cyr.slice(1);
+    out += cyr; i += len;
+  }
+  return out;
+}
+
+const C2L = { 'а':'a','б':'b','в':'v','г':'g','ғ':"g'",'д':'d','е':'e','ё':'yo','ж':'j','з':'z','и':'i','й':'y',
+              'к':'k','қ':'q','л':'l','м':'m','н':'n','о':'o','ў':"o'",'п':'p','р':'r','с':'s','т':'t','у':'u',
+              'ф':'f','х':'x','ҳ':'h','ц':'ts','ч':'ch','ш':'sh','ъ':"'",'ь':'','ы':'i','э':'e','ю':'yu','я':'ya' };
+function toLatin(text) {
+  if (!text) return text;
+  let out = '';
+  for (const ch of String(text)) {
+    const low = ch.toLowerCase();
+    let lat = (low in C2L) ? C2L[low] : null;
+    if (lat === null) { out += ch; continue; }
+    if (ch !== low && lat) lat = lat.charAt(0).toUpperCase() + lat.slice(1);
+    out += lat;
+  }
+  return out;
+}
+
+// translate any UI string into the active alphabet (source content is Latin)
+const tr = s => alphabet === 'cyrillic' ? toCyrillic(s) : s;
+// names keep a hand-checked Cyrillic override (accurate for foreign names), else transliterate
+const nameOf = m => alphabet === 'cyrillic' ? (m.nameCyr || toCyrillic(m.name)) : m.name;
+// avatar emoji per gender (none = neutral); kid=true for child icons
+const avatarOf = (g, kid) => g === 'male' ? (kid ? '👦' : '👨') : g === 'female' ? (kid ? '👧' : '👩') : (kid ? '🧒' : '🧑');
+let layout = {};                // id -> { cx, cy }  (card centre, normalized)
+let treeRoot = null;
+let CANVAS_W = 0, CANVAS_H = 0;
+let currentTransform = d3.zoomIdentity;
+
+const wrap = document.getElementById('canvas-wrap');
+const canvasEl = document.getElementById('canvas');
+const svg = document.getElementById('lines-svg');
+
+// ═══════════════════════════════════════════════════════
+//  LAYOUT — d3.tree (Reingold–Tilford) with couple slots
+// ═══════════════════════════════════════════════════════
+function buildNode(id) {
+  const m = memberMap[id];
+  const node = { id, m, hasSpouse: !!(m.spouse && memberMap[m.spouse]) };
+  const kids = m.children || [];
+  node.hasChildren = kids.length > 0;
+  if (kids.length && !collapsed.has(id)) node.children = kids.map(buildNode);
+  return node;
+}
+
+function layoutTree() {
+  treeRoot = d3.hierarchy(buildNode(ROOT_ID));
+
+  d3.tree()
+    .nodeSize([NODE_X, NODE_Y])
+    .separation((a, b) => {
+      // half-width of each node in px (couple = carrier + spouse)
+      const ha = a.data.hasSpouse ? HALF_OFFSET + CARD_W / 2 : CARD_W / 2;
+      const hb = b.data.hasSpouse ? HALF_OFFSET + CARD_W / 2 : CARD_W / 2;
+      const pad = (a.parent === b.parent) ? 30 : 72;
+      return (ha + hb + pad) / NODE_X;
+    })(treeRoot);
+
+  // Resolve member positions from couple centres
+  layout = {};
+  carrierIds.clear();
+  treeRoot.each(n => {
+    carrierIds.add(n.data.id);
+    n.coupleX = n.x;            // couple centre (used for connectors)
+    if (n.data.hasSpouse) {
+      layout[n.data.id]     = { cx: n.x - HALF_OFFSET, cy: n.y };
+      layout[n.data.m.spouse] = { cx: n.x + HALF_OFFSET, cy: n.y };
+    } else {
+      layout[n.data.id] = { cx: n.x, cy: n.y };
+    }
+  });
+
+  // Normalize so all coordinates are positive (clean SVG + minimap origin)
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  Object.values(layout).forEach(p => {
+    minX = Math.min(minX, p.cx - CARD_W / 2); maxX = Math.max(maxX, p.cx + CARD_W / 2);
+    minY = Math.min(minY, p.cy - CARD_H / 2); maxY = Math.max(maxY, p.cy + CARD_H / 2);
+  });
+  const PAD = 70;
+  const shiftX = PAD - minX, shiftY = PAD - minY;
+  Object.values(layout).forEach(p => { p.cx += shiftX; p.cy += shiftY; });
+  treeRoot.each(n => { n.coupleX += shiftX; n.coupleY = n.y + shiftY; });
+
+  // Straighten the bloodline: a lone leaf child sits directly under its parent carrier
+  // (so the descent line reads as parent → child, not parent → couple-midpoint).
+  treeRoot.each(n => {
+    if (n.children && n.children.length === 1) {
+      const c = n.children[0];
+      if ((!c.children || !c.children.length) && !c.data.hasSpouse) {
+        layout[c.data.id].cx = layout[n.data.id].cx;
+      }
+    }
+  });
+
+  CANVAS_W = (maxX - minX) + PAD * 2;
+  CANVAS_H = (maxY - minY) + PAD * 2;
+}
+
+function descendantCount(id) {
+  let n = 0;
+  (memberMap[id].children || []).forEach(c => { n += 1 + descendantCount(c); });
+  return n;
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+function render(animateEntrance = false) {
+  layoutTree();
+  svg.setAttribute('width', CANVAS_W);
+  svg.setAttribute('height', CANVAS_H);
+  canvasEl.style.width = CANVAS_W + 'px';
+  canvasEl.style.height = CANVAS_H + 'px';
+
+  // lineage path: ancestor ids of the selected node (for line highlight)
+  const lineage = new Set();
+  if (selectedId) {
+    const tn = treeNodeFor(selectedId);
+    if (tn) tn.ancestors().forEach(a => lineage.add(a.data.id));
+  }
+
+  renderGenBands();
+  renderLines(lineage);
+  renderNodes(lineage, animateEntrance);
+  drawMinimap();
+  updateMinimapViewport();
+}
+
+function renderLines(lineage) {
+  let h = `<defs></defs>`;
+
+  treeRoot.each(n => {
+    const m = n.data.m;
+    const carrier = layout[m.id];
+
+    // Marriage tie — a soft link from the bloodline carrier to the secondary spouse card
+    if (n.data.hasSpouse) {
+      const sp = layout[m.spouse];
+      const x1 = carrier.cx + CARD_W / 2;
+      const x2 = sp.cx - CARD_W / 2 + 10;   // +10: spouse card is scaled down (0.88)
+      const my = carrier.cy;
+      const mid = (x1 + x2) / 2;
+      h += `<line x1="${x1}" y1="${my}" x2="${mid - 7}" y2="${my}" class="line-couple"/>`;
+      h += `<line x1="${mid + 7}" y1="${my}" x2="${x2}" y2="${my}" class="line-couple"/>`;
+      h += `<circle cx="${mid}" cy="${my}" r="7" fill="#1a1205" stroke="var(--gold)" stroke-width="1.1" opacity="0.85"/>`;
+      h += `<text x="${mid}" y="${my + 3.5}" text-anchor="middle" font-size="9" fill="#d4b35c" opacity="0.85">♥</text>`;
+    }
+
+    // Bloodline descent — originates from the CARRIER, flows down to each child carrier
+    if (n.children && n.children.length) {
+      const ox = carrier.cx, topY = carrier.cy + CARD_H / 2;
+      const busY = topY + GAP_Y * 0.46;
+      const onPath = lineage.has(n.data.id) ? ' lineage' : '';
+      h += `<line x1="${ox}" y1="${topY}" x2="${ox}" y2="${busY}" class="line-parent${onPath}"/>`;
+
+      const childX = n.children.map(c => layout[c.data.id].cx);
+      const lo = Math.min(ox, ...childX), hi = Math.max(ox, ...childX);
+      if (hi - lo > 0.5) {
+        h += `<line x1="${lo}" y1="${busY}" x2="${hi}" y2="${busY}" class="line-parent${onPath}"/>`;
+      }
+      if (n.children.length > 1) {
+        h += `<circle cx="${ox}" cy="${busY}" r="3.5" fill="#7a5e28" stroke="var(--gold)" stroke-width="1"/>`;
+      }
+      n.children.forEach(c => {
+        const tx = layout[c.data.id].cx, ty = layout[c.data.id].cy - CARD_H / 2;
+        const childPath = lineage.has(c.data.id) ? ' lineage' : '';
+        h += `<line x1="${tx}" y1="${busY}" x2="${tx}" y2="${ty}" class="line-parent${childPath}"/>`;
+        h += `<circle cx="${tx}" cy="${ty}" r="2.6" fill="#7a5e28" stroke="var(--gold)" stroke-width="0.8"/>`;
+      });
+    }
+  });
+
+  svg.innerHTML = h;
+}
+
+function renderNodes(lineage, animateEntrance) {
+  canvasEl.querySelectorAll('.node, .toggle, .gen-label').forEach(e => e.remove());
+
+  const hasSelection = !!selectedId;
+  let i = 0;
+  Object.keys(layout).forEach(id => {
+    const m = memberMap[id];
+    const p = layout[id];
+    const dim = hasSelection && !lineage.has(id) && id !== selectedId && !isRelative(id, selectedId);
+
+    const isSpouse = !carrierIds.has(id);
+    const node = document.createElement('div');
+    node.className = `node ${m.gender} ${isSpouse ? 'spouse' : 'carrier'}${selectedId === id ? ' selected' : ''}${dim ? ' dim' : ''}`;
+    node.id = 'node_' + id;
+    if (m.spouse) node.dataset.partner = m.spouse;
+    node.style.left = (p.cx - CARD_W / 2) + 'px';
+    node.style.top  = (p.cy - CARD_H / 2) + 'px';
+    node.tabIndex = 0;
+    node.setAttribute('role', 'button');
+    node.setAttribute('aria-label', `${nameOf(m)}, ${tr(m.profession)}, ${m.birth}-${tr('yil')}${isSpouse ? ', ' + tr("turmush o'rtog'i") : ''}`);
+
+    const yearStr = m.death ? `${m.birth ?? ''} – ${m.death}`
+                  : [m.birth, tr(m.city)].filter(Boolean).join(' · ');
+    const childCount = (m.children || []).length;
+    node.innerHTML = `
+      ${isSpouse ? `<div class="node-tag">${tr("turmush o'rtog'i")}</div>` : ''}
+      <div class="node-inner">
+        <div class="node-status ${m.death ? 'deceased' : 'alive'}" title="${tr(m.death ? 'Vafot etgan' : 'Tirik')}"></div>
+        <div class="node-content">
+          <div class="node-text">
+            <div class="node-badge">${tr(genBadge(m.gen))}</div>
+            <div class="node-name">${nameOf(m)}</div>
+            <div class="node-meta"><div class="node-dot"></div><div class="node-role">${m.profession}</div></div>
+            <div class="node-birth">${yearStr}</div>
+          </div>
+          <div class="node-avatar">${avatarOf(m.gender)}</div>
+        </div>
+        <div class="node-bar" style="width:${Math.min(100, 28 + childCount * 22)}%"></div>
+      </div>`;
+
+    node.addEventListener('click', e => { e.stopPropagation(); openPanel(id); });
+    node.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(id); } });
+    // Hovering either partner reveals (peeks) the other — so the couple reads as a pair
+    node.addEventListener('mouseenter', () => { if (node.dataset.partner) document.getElementById('node_' + node.dataset.partner)?.classList.add('peek'); });
+    node.addEventListener('mouseleave', () => { if (node.dataset.partner) document.getElementById('node_' + node.dataset.partner)?.classList.remove('peek'); });
+    canvasEl.appendChild(node);
+
+    if (animateEntrance) {
+      node.style.opacity = '0';
+      node.style.transform = 'translateY(22px) scale(0.92)';
+      const delay = (i++) * 14;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        node.style.transition = `opacity .45s ${delay}ms, transform .45s ${delay}ms`;
+        node.style.opacity = isSpouse ? '0.5' : '1';
+        node.style.transform = isSpouse ? 'scale(0.88)' : '';
+        // hand control back to CSS once settled, so :hover / .peek states work
+        node.addEventListener('transitionend', () => { node.style.transition = ''; node.style.opacity = ''; node.style.transform = ''; }, { once: true });
+      }));
+    }
+  });
+
+  // Collapse / expand toggles (one per carrier with children, at couple centre)
+  treeRoot.each(n => {
+    if (!n.data.hasChildren) return;
+    const isCollapsed = collapsed.has(n.data.id);
+    const t = document.createElement('button');
+    t.className = `toggle${isCollapsed ? ' collapsed' : ''}`;
+    t.style.left = layout[n.data.id].cx + 'px';
+    t.style.top  = (layout[n.data.id].cy + CARD_H / 2 + 4) + 'px';
+    t.innerHTML = isCollapsed ? `+<small>${descendantCount(n.data.id)}</small>` : '−';
+    t.setAttribute('aria-label', tr(isCollapsed ? 'Avlodni ochish' : "Avlodni yig'ish"));
+    t.title = tr(isCollapsed ? 'Avlodni ochish' : "Avlodni yig'ish");
+    t.addEventListener('click', e => { e.stopPropagation(); toggleCollapse(n.data.id); });
+    canvasEl.appendChild(t);
+  });
+}
+
+function renderGenBands() {
+  canvasEl.querySelectorAll('.gen-band, .gen-sep').forEach(e => e.remove());
+
+  // Each tree depth == one generation; all nodes at a depth share the same y.
+  const depthY = {};
+  treeRoot.each(n => { if (depthY[n.depth] == null) depthY[n.depth] = n.coupleY; });
+  const depths = Object.keys(depthY).map(Number).sort((a, b) => a - b);
+
+  depths.forEach((d, idx) => {
+    const cy = depthY[d];
+
+    // Zebra band spanning the full row (behind the lines & cards)
+    const band = document.createElement('div');
+    band.className = 'gen-band' + (idx % 2 ? ' alt' : '');
+    band.style.top = (cy - NODE_Y / 2) + 'px';
+    band.style.height = NODE_Y + 'px';
+    band.style.width = CANVAS_W + 'px';
+    band.innerHTML = `<span class="gen-band-label">${tr(genLabel(d))}</span>`;
+    canvasEl.insertBefore(band, svg);
+
+    // Hairline separator at the boundary above this generation
+    if (idx > 0) {
+      const prevCy = depthY[depths[idx - 1]];
+      const sep = document.createElement('div');
+      sep.className = 'gen-sep';
+      sep.style.top = ((prevCy + cy) / 2) + 'px';
+      sep.style.width = CANVAS_W + 'px';
+      canvasEl.insertBefore(sep, svg);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  RELATIONSHIP HELPERS
+// ═══════════════════════════════════════════════════════
+function treeNodeFor(id) {
+  let found = null;
+  treeRoot.each(n => { if (!found && n.data.id === id) found = n; });
+  if (found) return found;
+  treeRoot.each(n => { if (!found && n.data.m.spouse === id) found = n; });
+  return found;
+}
+function isRelative(id, toId) {
+  const m = memberMap[toId];
+  if (!m) return false;
+  if (m.spouse === id) return true;
+  if ((m.children || []).includes(id)) return true;
+  if ((memberMap[id].children || []).includes(toId)) return true;
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════
+//  COLLAPSE / EXPAND
+// ═══════════════════════════════════════════════════════
+function toggleCollapse(id) {
+  if (collapsed.has(id)) collapsed.delete(id); else collapsed.add(id);
+  // keep selection only if it stays visible
+  render();
+  if (selectedId && !layout[selectedId]) { selectedId = null; closePanel(); }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAN & ZOOM (d3.zoom → pinch + wheel + drag)
+// ═══════════════════════════════════════════════════════
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// momentum / inertia state
+let isPanning = false, inertiaRAF = null;
+let vx = 0, vy = 0, lastMoveT = 0, lastMoveX = 0, lastMoveY = 0;
+
+function cancelInertia() { if (inertiaRAF) { cancelAnimationFrame(inertiaRAF); inertiaRAF = null; } }
+
+const zoom = d3.zoom()
+  .scaleExtent([0.15, 2.5])
+  .filter(e => !e.target.closest('.node') && !e.target.closest('.toggle') || e.type === 'wheel')
+  .on('start', e => {
+    if (!e.sourceEvent) return;            // ignore programmatic transforms (transitions, inertia)
+    cancelInertia();
+    wrap.classList.add('grabbing');
+    if (['mousedown', 'touchstart', 'pointerdown'].includes(e.sourceEvent.type)) {
+      isPanning = true; vx = vy = 0;
+      lastMoveT = performance.now(); lastMoveX = e.transform.x; lastMoveY = e.transform.y;
+    }
+  })
+  .on('zoom', e => {
+    currentTransform = e.transform;
+    canvasEl.style.transform = `translate(${e.transform.x}px, ${e.transform.y}px) scale(${e.transform.k})`;
+    document.getElementById('zoom-info').textContent = Math.round(e.transform.k * 100) + '%';
+    // sample pointer velocity (px/ms) while the user is actively dragging
+    if (isPanning && e.sourceEvent) {
+      const now = performance.now(), dt = now - lastMoveT;
+      if (dt > 0) {
+        const nvx = (e.transform.x - lastMoveX) / dt;
+        const nvy = (e.transform.y - lastMoveY) / dt;
+        vx = vx * 0.7 + nvx * 0.3;   // light smoothing
+        vy = vy * 0.7 + nvy * 0.3;
+        lastMoveT = now; lastMoveX = e.transform.x; lastMoveY = e.transform.y;
+      }
+    }
+    updateMinimapViewport();
+  })
+  .on('end', e => {
+    if (!e.sourceEvent) return;
+    wrap.classList.remove('grabbing');
+    if (isPanning) { isPanning = false; startInertia(); }
+  });
+
+function startInertia() {
+  if (reduceMotion) return;
+  // no fling if the pointer was held still just before release
+  if (performance.now() - lastMoveT > 90) { vx = vy = 0; }
+  if (Math.hypot(vx, vy) < 0.04) return;
+  // clamp launch speed so a hard flick doesn't rocket off
+  const cap = 4;
+  const sp = Math.hypot(vx, vy);
+  if (sp > cap) { vx = vx / sp * cap; vy = vy / sp * cap; }
+
+  let last = performance.now();
+  const step = () => {
+    const now = performance.now();
+    const dt = Math.min(now - last, 32); last = now;
+    const decay = Math.pow(0.94, dt / 16);   // friction
+    vx *= decay; vy *= decay;
+    const t = currentTransform;
+    zoom.transform(d3.select(wrap), d3.zoomIdentity.translate(t.x + vx * dt, t.y + vy * dt).scale(t.k));
+    if (Math.hypot(vx, vy) > 0.015) inertiaRAF = requestAnimationFrame(step);
+    else inertiaRAF = null;
+  };
+  inertiaRAF = requestAnimationFrame(step);
+}
+
+d3.select(wrap).call(zoom).on('dblclick.zoom', null);
+
+function zoomByBtn(f) { cancelInertia(); d3.select(wrap).transition().duration(220).call(zoom.scaleBy, f); }
+
+function fitView() {
+  cancelInertia();
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const k = Math.max(0.15, Math.min((vw - 120) / CANVAS_W, (vh - 200) / CANVAS_H, 1.1));
+  const tx = (vw - CANVAS_W * k) / 2;
+  const ty = 96;
+  d3.select(wrap).transition().duration(550).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+}
+
+function focusNode(id) {
+  cancelInertia();
+  const p = layout[id]; if (!p) return;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const isMobile = vw <= 720;
+  const panelW = (panelOpen && !isMobile) ? 360 : 0;
+  const panelH = (panelOpen && isMobile) ? vh * 0.72 : 0;
+  const k = Math.max(currentTransform.k, 0.55);
+  const tx = (vw - panelW) / 2 - p.cx * k;
+  const ty = (vh - panelH) / 2 - p.cy * k;
+  d3.select(wrap).transition().duration(450).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+}
+
+// ═══════════════════════════════════════════════════════
+//  DETAIL PANEL
+// ═══════════════════════════════════════════════════════
+let panelOpen = false;
+const panel = document.getElementById('detail-panel');
+
+function openPanel(id, refocus = true) {
+  selectedId = id;
+  render();               // re-render to apply selection highlight + lineage + dimming
+  const m = memberMap[id];
+
+  const av = document.getElementById('p-avatar');
+  av.className = `panel-avatar ${m.gender}`;
+  av.textContent = avatarOf(m.gender);
+
+  document.getElementById('p-name').innerHTML =
+    `${nameOf(m)}<div class="panel-role-tag">✦ ${tr(m.profession)} · ${tr(m.city)}</div>`;
+  const stat = document.getElementById('p-status');
+  stat.className = `panel-status ${m.death ? 'deceased' : 'alive'}`;
+  stat.textContent = tr(m.death ? 'Vafot etgan' : 'Tirik');
+
+  const age = (m.birth == null) ? null : (m.death ? m.death - m.birth : new Date().getFullYear() - m.birth);
+
+  const dash = v => (v == null || v === '') ? '—' : v;
+  const meta = x => [x.birth, tr(x.profession)].filter(Boolean).join(' · ');  // empty when no data
+
+  let body = `
+    <div class="panel-section">
+      <div class="panel-section-title">${tr("Shaxsiy maʼlumotlar")}</div>
+      <div class="info-grid">
+        <div class="info-cell"><div class="info-cell-label">${tr("Tug'ilgan")}</div><div class="info-cell-value">${dash(m.birth)}</div></div>
+        <div class="info-cell"><div class="info-cell-label">${tr(m.death ? 'Vafot' : 'Yoshi')}</div><div class="info-cell-value">${m.death || (age != null ? tr(age + ' yosh') : '—')}</div></div>
+        <div class="info-cell"><div class="info-cell-label">${tr('Shahar')}</div><div class="info-cell-value">${dash(tr(m.city))}</div></div>
+        <div class="info-cell"><div class="info-cell-label">${tr('Avlod')}</div><div class="info-cell-value">${tr(genLabel(m.gen))}</div></div>
+        <div class="info-cell wide"><div class="info-cell-label">${tr('Kasbi')}</div><div class="info-cell-value">${dash(tr(m.profession))}</div></div>
+      </div>
+    </div>`;
+
+  if (m.spouse && memberMap[m.spouse]) {
+    body += sectionChips("Turmush o'rtog'i", [memberMap[m.spouse]], meta);
+  }
+  if (m.children && m.children.length) {
+    body += sectionChips(`Farzandlari — ${m.children.length} nafar`, m.children.map(c => memberMap[c]).filter(Boolean), meta, true);
+  }
+  // father_id arxitekturasi: ota to'g'ridan-to'g'ri, aka-uka — bir xil otalilar
+  const father = m.father_id ? memberMap[m.father_id] : null;
+  if (father) {
+    body += sectionChips('Otasi', [father], x => x.gender === 'female' ? 'Ona' : 'Ota');
+  }
+  const sibs = m.father_id
+    ? familyData.members.filter(s => s.father_id === m.father_id && s.id !== id)
+    : [];
+  if (sibs.length) {
+    body += sectionChips(`Aka-uka / opa-singil — ${sibs.length}`, sibs, meta, true);
+  }
+
+  document.getElementById('p-body').innerHTML = body;
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+  panelOpen = true;
+  // bring the partner forward too, so a selected couple reads together
+  if (m.spouse) document.getElementById('node_' + m.spouse)?.classList.add('peek');
+  if (refocus) focusNode(id);
+}
+
+function applyStaticTr() {
+  document.querySelectorAll('[data-tr]').forEach(el => { el.textContent = tr(el.dataset.tr); });
+  searchInput.placeholder = tr('Ism, kasb yoki shahar…');
+}
+
+function setAlphabet(a) {
+  if (alphabet === a) return;
+  alphabet = a;
+  document.querySelectorAll('.alpha-btn').forEach(b => b.classList.toggle('active', b.dataset.alpha === a));
+  applyStaticTr();                                             // header, legend, stats, placeholder
+  if (panelOpen && selectedId) openPanel(selectedId, false);   // rebuild panel, keep current view
+  else render();                                               // re-render the tree
+}
+
+function sectionChips(title, list, metaFn, kidIcon) {
+  let h = `<div class="panel-section"><div class="panel-section-title">${tr(title)}</div>`;
+  list.forEach(x => {
+    const icon = avatarOf(x.gender, kidIcon);
+    h += `<div class="rel-chip ${x.gender}-chip" tabindex="0" role="button" onclick="openPanel('${x.id}')" onkeydown="if(event.key==='Enter')openPanel('${x.id}')">
+      <span class="rel-chip-icon">${icon}</span>
+      <span class="rel-chip-name">${nameOf(x)}</span>
+      <span class="rel-chip-meta">${tr(metaFn(x))}</span>
+    </div>`;
+  });
+  return h + `</div>`;
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden', 'true');
+  panelOpen = false;
+  selectedId = null;
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════════════════════
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+let searchHits = [], searchActive = -1;
+
+function toggleSearch() {
+  const sw = document.getElementById('search-wrap');
+  const btn = document.getElementById('search-btn');
+  if (sw.classList.toggle('open')) { btn.classList.add('active'); searchInput.focus(); }
+  else { btn.classList.remove('active'); searchResults.innerHTML = ''; searchInput.value = ''; }
+}
+
+searchInput.addEventListener('input', function () {
+  const q = this.value.toLowerCase().trim();
+  searchActive = -1;
+  if (!q) { searchResults.innerHTML = ''; searchHits = []; return; }
+  searchHits = familyData.members.filter(m =>
+    m.name.toLowerCase().includes(q) || (m.nameCyr || '').toLowerCase().includes(q) ||
+    m.profession.toLowerCase().includes(q) || m.city.toLowerCase().includes(q)
+  ).slice(0, 9);
+  searchResults.innerHTML = searchHits.map(m => `
+    <div class="search-item" role="option" onclick="goToSearch('${m.id}')">
+      <div class="search-item-dot ${m.gender === 'male' ? 'si-male' : 'si-female'}"></div>
+      <span>${nameOf(m)}</span><span class="search-meta">${m.birth} · ${tr(m.city)}</span>
+    </div>`).join('') || `<div class="search-item" style="color:var(--text-dim)">${tr('Topilmadi')}</div>`;
+});
+
+searchInput.addEventListener('keydown', e => {
+  if (!searchHits.length) return;
+  const items = [...searchResults.querySelectorAll('.search-item')];
+  if (e.key === 'ArrowDown') { e.preventDefault(); searchActive = Math.min(searchActive + 1, searchHits.length - 1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); searchActive = Math.max(searchActive - 1, 0); }
+  else if (e.key === 'Enter') { e.preventDefault(); goToSearch(searchHits[Math.max(0, searchActive)].id); return; }
+  items.forEach((it, i) => it.classList.toggle('active', i === searchActive));
+});
+
+function goToSearch(id) {
+  // Auto-expand ancestors so the target is visible
+  let tn = treeNodeFor(id);
+  if (!tn) {
+    const m = memberMap[id];
+    [...collapsed].forEach(cid => { if (isAncestorOf(cid, id)) collapsed.delete(cid); });
+    render();
+  }
+  openPanel(id);
+  toggleSearch();
+}
+function isAncestorOf(ancId, descId) {
+  const queue = [...(memberMap[ancId].children || [])];
+  while (queue.length) {
+    const c = queue.shift();
+    if (c === descId) return true;
+    queue.push(...(memberMap[c].children || []));
+  }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MINIMAP
+// ═══════════════════════════════════════════════════════
+const mm = document.getElementById('minimap');
+const mmCanvas = document.getElementById('mm-canvas');
+const mmVp = document.getElementById('minimap-viewport');
+
+function drawMinimap() {
+  const w = mm.offsetWidth, h = mm.offsetHeight;
+  mmCanvas.width = w; mmCanvas.height = h;
+  const s = Math.min(w / CANVAS_W, h / CANVAS_H);
+  const ox = (w - CANVAS_W * s) / 2, oy = (h - CANVAS_H * s) / 2;
+  const ctx = mmCanvas.getContext('2d');
+  ctx.clearRect(0, 0, w, h);
+  Object.keys(layout).forEach(id => {
+    const m = memberMap[id], p = layout[id];
+    ctx.fillStyle = m.gender === 'male' ? '#4684a6' : '#a8447a';
+    const x = ox + (p.cx - CARD_W / 2) * s, y = oy + (p.cy - CARD_H / 2) * s;
+    ctx.fillRect(x, y, Math.max(2, CARD_W * s), Math.max(1.5, CARD_H * s));
+  });
+  mm._s = s; mm._ox = ox; mm._oy = oy;
+}
+
+function updateMinimapViewport() {
+  const w = mm.offsetWidth, h = mm.offsetHeight, s = mm._s || 0, ox = mm._ox || 0, oy = mm._oy || 0;
+  const t = currentTransform;
+  const vx = ox + (-t.x / t.k) * s;
+  const vy = oy + (-t.y / t.k) * s;
+  const vw = (window.innerWidth / t.k) * s;
+  const vh = (window.innerHeight / t.k) * s;
+  mmVp.style.left = Math.max(0, vx) + 'px';
+  mmVp.style.top = Math.max(0, vy) + 'px';
+  mmVp.style.width = Math.min(w, vw) + 'px';
+  mmVp.style.height = Math.min(h, vh) + 'px';
+}
+
+mm.addEventListener('click', e => {
+  cancelInertia();
+  const r = mm.getBoundingClientRect();
+  const s = mm._s, ox = mm._ox, oy = mm._oy;
+  const cx = (e.clientX - r.left - ox) / s;
+  const cy = (e.clientY - r.top - oy) / s;
+  const k = currentTransform.k;
+  const tx = window.innerWidth / 2 - cx * k;
+  const ty = window.innerHeight / 2 - cy * k;
+  d3.select(wrap).transition().duration(300).call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+});
+
+// ═══════════════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (panelOpen) closePanel();
+    if (document.getElementById('search-wrap').classList.contains('open')) toggleSearch();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') { e.preventDefault(); if (!document.getElementById('search-wrap').classList.contains('open')) toggleSearch(); else searchInput.focus(); }
+  if (e.key === '+' || e.key === '=') zoomByBtn(1.25);
+  if (e.key === '-') zoomByBtn(0.8);
+  if (e.key === '0') fitView();
+});
+
+window.addEventListener('resize', () => { drawMinimap(); updateMinimapViewport(); });
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+document.getElementById('st-total').textContent = familyData.members.length;
+document.getElementById('st-gen').textContent = new Set(familyData.members.map(m => m.gen)).size;
+document.getElementById('st-alive').textContent = familyData.members.filter(m => !m.death).length;
+
+render(true);
+// fit once layout/paint settles
+requestAnimationFrame(() => requestAnimationFrame(fitView));
+</script>
+</body>
+</html>

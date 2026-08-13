@@ -1,0 +1,385 @@
+/* Umumiy boshqaruv elementlari — dizayndagi o'lchamlar tokenlar bilan. */
+
+.avatar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: color-mix(in srgb, var(--tone) 16%, transparent);
+  color: var(--tone);
+  overflow: hidden;
+}
+
+.avatarBordered {
+  border: 1px solid var(--tone);
+}
+
+/* — tugmalar — */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 13px;
+  min-height: 40px;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+.btn:hover {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btnPrimary {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+.btnPrimary:hover {
+  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.btnOutline {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btnOutline:hover {
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+}
+
+.btnQuiet {
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+.btnDanger {
+  color: var(--color-danger);
+}
+
+.btnBlock {
+  width: 100%;
+}
+
+.iconBtn {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+.iconBtn:hover {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.closeBtn:hover {
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+/* — segmentli tanlov — */
+.segmented {
+  display: flex;
+  border: 1px solid var(--hair);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.segmentedFull .segment {
+  flex: 1;
+}
+
+.segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.segment + .segment {
+  border-left: 1px solid var(--hair);
+}
+
+.segment:hover {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+.segmentActive,
+.segmentActive:hover {
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  color: var(--color-accent);
+}
+
+/* — forma maydonlari — */
+.field {
+  display: block;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: color-mix(in srgb, var(--color-text) 66%, transparent);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  color: var(--color-text);
+  font-size: 14px;
+  transition: border-color var(--dur-fast) ease;
+}
+
+.input::placeholder {
+  color: color-mix(in srgb, var(--color-text) 38%, transparent);
+}
+
+.input:hover {
+  border-color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.input:focus-visible {
+  border-color: var(--color-accent);
+  outline-offset: 0;
+}
+
+textarea.input {
+  min-height: 96px;
+  padding: 10px 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+select.input {
+  min-height: 40px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.inputInvalid {
+  border-color: var(--color-danger);
+}
+
+.fieldError {
+  display: block;
+  font-size: 11.5px;
+  color: var(--color-danger);
+  margin-top: 5px;
+}
+
+/* — kalit (switch) — */
+.switchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 13px;
+  border: 1px solid var(--hair);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.switchRow:hover {
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+}
+
+.switchLabel {
+  display: block;
+  font-size: calc(13.5px * var(--fscale));
+}
+
+.switchSub {
+  display: block;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  margin-top: 2px;
+}
+
+.switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 22px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+  transition: background var(--dur-fast) ease;
+}
+
+.switchOn {
+  background: var(--color-accent);
+}
+
+.switchKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: left var(--dur-fast) ease;
+}
+
+.switchOn .switchKnob {
+  left: 18px;
+}
+
+/* — bo'sh holat — */
+.empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-size: 17px;
+}
+
+.emptyText {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+  margin-top: 6px;
+}
+
+/* — modal — */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: color-mix(in srgb, var(--color-bg) 72%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.modal {
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  animation: nocPop 0.22s ease;
+}
+
+/* — yuklanish — */
+.spinner {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-top-color: currentColor;
+  animation: nocSpin 0.7s linear infinite;
+}
+
+.skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color-text) 6%, transparent) 0%,
+    color-mix(in srgb, var(--color-text) 12%, transparent) 50%,
+    color-mix(in srgb, var(--color-text) 6%, transparent) 100%
+  );
+  background-size: 280px 100%;
+  animation: nocShimmer 1.2s linear infinite;
+}
+
+/* — bildirishnomalar — */
+.toastStack {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--hair);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  font-size: 13px;
+  max-width: min(92vw, 460px);
+  animation: nocFade 0.22s ease;
+  pointer-events: auto;
+}
+
+.toastDot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.toastWarn .toastDot {
+  background: var(--color-warn);
+}
+
+.toastError .toastDot {
+  background: var(--color-danger);
+}

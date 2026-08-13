@@ -1,0 +1,12 @@
+# Repo'da ham, ishchi nusxada ham LF. Loyiha hozir to'liq LF'da, global core.autocrlf=true
+# esa uni CRLF ga aylantirib yuborardi — eol=lf shuni bloklaydi.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary

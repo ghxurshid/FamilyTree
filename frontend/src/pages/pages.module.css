@@ -1,0 +1,342 @@
+/* — umumiy sarlavha — */
+.pageTitle {
+  font-family: var(--font-heading);
+  font-size: 24px;
+}
+
+.pageSub {
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+  margin-top: 3px;
+}
+
+.groupTitle {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  margin-bottom: 10px;
+}
+
+.narrow {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 20px 40px;
+}
+
+.section {
+  margin-top: 22px;
+}
+
+/* — Odamlar — */
+.directoryHeader {
+  flex: 0 0 auto;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.filterSearch {
+  flex: 1;
+  min-width: 180px;
+  min-height: 40px;
+  font-size: 13.5px;
+}
+
+.directoryBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 20px 30px;
+}
+
+.directoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 9px;
+}
+
+.directoryCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 11px 13px;
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  background: var(--color-surface);
+  cursor: pointer;
+  color: var(--color-text);
+  transition: border-color var(--dur-fast) ease;
+}
+
+.directoryCard:hover {
+  border-color: var(--color-accent);
+}
+
+.directoryBody2 {
+  flex: 1;
+  min-width: 0;
+}
+
+.directoryName {
+  display: block;
+  font-size: calc(14px * var(--fscale));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.directoryMeta {
+  display: block;
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.directorySide {
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.directoryRelation {
+  display: block;
+  font-size: 11px;
+  color: var(--color-accent);
+}
+
+.directoryGen {
+  display: block;
+  font-size: 10.5px;
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.skeletonCard {
+  height: 60px;
+}
+
+/* — Sozlamalar — */
+.settingsRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 10px;
+  padding: 11px 13px;
+  border: 1px solid var(--hair);
+  border-radius: 9px;
+}
+
+.settingsRowTitle {
+  font-size: 13.5px;
+}
+
+.settingsRowSub {
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+}
+
+.fontSizes {
+  display: flex;
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.fontSize {
+  min-width: 42px;
+  min-height: 36px;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  cursor: pointer;
+}
+
+.fontSize + .fontSize {
+  border-left: 1px solid var(--hair);
+}
+
+.fontSizeActive {
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  color: var(--color-accent);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.buttonRow {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.buttonRow > * {
+  flex: 1;
+  min-width: 160px;
+  min-height: 44px;
+}
+
+.note {
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 56%, transparent);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* — Profil — */
+.profileHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.profileName {
+  font-family: var(--font-heading);
+  font-size: 22px;
+}
+
+.profileMeta {
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+  margin-top: 3px;
+}
+
+.profileActions {
+  display: flex;
+  gap: 9px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.profileActions > * {
+  flex: 1;
+  min-width: 150px;
+  min-height: 42px;
+}
+
+.infoBox {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 9px;
+  font-size: 12.5px;
+  color: color-mix(in srgb, var(--color-text) 66%, transparent);
+}
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 12.5px;
+}
+
+.chip:hover {
+  border-color: var(--color-accent);
+}
+
+.chipDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone);
+}
+
+/* — Auth — */
+.authCard {
+  padding: 26px 24px;
+}
+
+.authIcon {
+  color: var(--color-accent);
+}
+
+.authTitle {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  margin-top: 14px;
+}
+
+.authSub {
+  font-size: 13px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--color-text) 66%, transparent);
+  margin-top: 6px;
+}
+
+.authFields {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin-top: 18px;
+}
+
+.authFields input {
+  min-height: 44px;
+}
+
+.authError {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--color-danger);
+}
+
+.authSubmit {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 18px;
+  font-size: 14px;
+}
+
+.authLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 12px;
+}
+
+.authLink {
+  border: 0;
+  background: transparent;
+  color: var(--color-accent);
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.authLinkMuted {
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+}
+
+.authFooter {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hair);
+  font-size: 11.5px;
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}

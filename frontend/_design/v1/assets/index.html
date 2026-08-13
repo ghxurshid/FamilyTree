@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oila Daraxti — Yusupov Sulolasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0b07;
+    --bg2: #13100a;
+    --gold: #c9a84c;
+    --gold-light: #e8ca7a;
+    --gold-dim: #7a5e28;
+    --gold-faint: rgba(201,168,76,0.08);
+    --cream: #f0e0c8;
+    --cream-dim: #a89070;
+    --text: #e8d9c0;
+    --text-dim: #6a7a8a;
+    --male-bg0: #0a1520;
+    --male-bg1: #0e1e2d;
+    --male-bg2: #162840;
+    --male-border: #3a7090;
+    --male-accent: #4a8ab0;
+    --male-text: #5a9ac0;
+    --female-bg0: #140a18;
+    --female-bg1: #1e0f22;
+    --female-bg2: #2a1530;
+    --female-border: #8a3565;
+    --female-accent: #b04a8a;
+    --female-text: #c06090;
+    --line-col: #c9a84c;
+    --shadow: rgba(0,0,0,0.7);
+    --card-w: 190px;
+    --card-h: 104px;
+    --gap-x: 28px;
+    --gap-y: 96px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ─── Background texture ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #2a1a08 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, #1a0d05 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 50%, #0a1520 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ─── Header ─── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 16px 32px;
+    background: linear-gradient(180deg, rgba(10,8,4,0.98) 0%, rgba(10,8,4,0.0) 100%);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logo-icon { font-size: 28px; line-height: 1; }
+  .logo-sub {
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--cream-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: -2px;
+  }
+
+  .controls {
+    display: flex; gap: 12px; align-items: center;
+  }
+  .btn {
+    background: rgba(201,168,76,0.12);
+    border: 1px solid var(--gold-dim);
+    color: var(--gold-light);
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    padding: 7px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .btn:hover { background: rgba(201,168,76,0.25); border-color: var(--gold); }
+  .btn.active { background: rgba(201,168,76,0.3); border-color: var(--gold-light); }
+
+  .zoom-info {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  /* ─── Canvas area ─── */
+  #canvas-wrap {
+    position: fixed; inset: 0;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+  }
+  #canvas-wrap.grabbing { cursor: grabbing; }
+
+  #canvas {
+    position: absolute;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  /* ─── SVG lines ─── */
+  #lines-svg {
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .line-parent { stroke: var(--gold-dim); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .line-couple { stroke: #c9a84c; stroke-width: 1.5; stroke-dasharray: 5 3; fill: none; stroke-linecap: round; opacity: 0.7; }
+
+  /* ─── Node cards ─── */
+  .node {
+    position: absolute;
+    width: var(--card-w);
+    height: var(--card-h);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), filter 0.2s;
+    transform-origin: center center;
+    filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));
+  }
+  .node:hover { transform: translateY(-4px) scale(1.05); filter: drop-shadow(0 12px 28px rgba(0,0,0,0.7)); z-index: 10; }
+  .node.selected { z-index: 20; }
+
+  .node-inner {
+    width: 100%; height: 100%;
+    border-radius: 10px;
+    padding: 0;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Top accent stripe */
+  .node-inner::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 10px 10px 0 0;
+    z-index: 2;
+  }
+  /* Left side stripe */
+  .node-inner::after {
+    content: '';
+    position: absolute; top: 3px; left: 0; bottom: 0;
+    width: 3px;
+    z-index: 2;
+  }
+
+  .node.male .node-inner {
+    background: linear-gradient(145deg, var(--male-bg1) 0%, var(--male-bg2) 100%);
+    border: 1px solid var(--male-border);
+    box-shadow: inset 0 1px 0 rgba(74,138,176,0.18), inset 1px 0 0 rgba(74,138,176,0.1);
+  }
+  .node.male .node-inner::before { background: var(--male-accent); opacity: 0.65; }
+  .node.male .node-inner::after  { background: var(--male-accent); opacity: 0.5; }
+  .node.male.selected .node-inner {
+    border-color: var(--male-accent);
+    box-shadow: 0 0 0 1px var(--male-accent), inset 0 1px 0 rgba(74,138,176,0.3);
+  }
+
+  .node.female .node-inner {
+    background: linear-gradient(145deg, var(--female-bg1) 0%, var(--female-bg2) 100%);
+    border: 1px solid var(--female-border);
+    box-shadow: inset 0 1px 0 rgba(176,74,138,0.18), inset 1px 0 0 rgba(176,74,138,0.1);
+  }
+  .node.female .node-inner::before { background: var(--female-accent); opacity: 0.65; }
+  .node.female .node-inner::after  { background: var(--female-accent); opacity: 0.5; }
+  .node.female.selected .node-inner {
+    border-color: var(--female-accent);
+    box-shadow: 0 0 0 1px var(--female-accent), inset 0 1px 0 rgba(176,74,138,0.3);
+  }
+
+  /* Card content layout */
+  .node-content {
+    display: flex; align-items: center; gap: 0;
+    height: 100%; padding: 10px 10px 10px 14px;
+  }
+  .node-text { flex: 1; min-width: 0; }
+
+  .node-badge {
+    display: inline-flex; align-items: center;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-family: 'Crimson Pro', serif;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .node.male .node-badge { background: rgba(74,138,176,0.15); color: var(--male-text); }
+  .node.female .node-badge { background: rgba(176,74,138,0.15); color: var(--female-text); }
+
+  .node-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .node-meta {
+    display: flex; align-items: center; gap: 5px;
+    margin-top: 5px;
+  }
+  .node-dot {
+    width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  }
+  .node.male .node-dot { background: var(--male-accent); opacity: 0.7; }
+  .node.female .node-dot { background: var(--female-accent); opacity: 0.7; }
+
+  .node-role {
+    font-size: 11px;
+    font-family: 'Crimson Pro', serif;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .node.male .node-role { color: var(--male-text); }
+  .node.female .node-role { color: var(--female-text); }
+
+  .node-birth {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    letter-spacing: 0.02em;
+    font-family: 'Crimson Pro', serif;
+  }
+
+  /* Avatar on right */
+  .node-avatar {
+    width: 38px; height: 38px; flex-shrink: 0;
+    border-radius: 50%;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: 8px;
+  }
+  .node.male .node-avatar {
+    background: var(--male-bg0);
+    border: 1.5px solid rgba(74,138,176,0.4);
+  }
+  .node.female .node-avatar {
+    background: var(--female-bg0);
+    border: 1.5px solid rgba(176,74,138,0.4);
+  }
+
+  /* Farzand count bar at bottom */
+  .node-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0 0 10px 10px;
+    opacity: 0.35;
+  }
+  .node.male .node-bar { background: linear-gradient(90deg, var(--male-accent), transparent); }
+  .node.female .node-bar { background: linear-gradient(90deg, var(--female-accent), transparent); }
+
+  /* ─── Detail panel ─── */
+  #detail-panel {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: 340px;
+    background: #0c0a05;
+    border-left: 1px solid #231a0a;
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #detail-panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 56px 24px 20px;
+    border-bottom: 1px solid #1f1608;
+    position: relative;
+    background: linear-gradient(180deg, #110e07 0%, #0c0a05 100%);
+  }
+
+  /* Gold top line on panel */
+  .panel-header::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    opacity: 0.8;
+  }
+
+  .panel-close {
+    position: absolute; top: 14px; right: 16px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    color: var(--gold-dim); font-size: 14px;
+    cursor: pointer; line-height: 1;
+    transition: all 0.2s;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .panel-close:hover { background: rgba(201,168,76,0.2); color: var(--gold); }
+
+  .panel-top {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 14px;
+  }
+  .panel-avatar {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    font-size: 28px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .panel-avatar.male {
+    background: radial-gradient(circle at 30% 30%, #1a3550, #0a1520);
+    border: 2px solid rgba(74,138,176,0.5);
+  }
+  .panel-avatar.female {
+    background: radial-gradient(circle at 30% 30%, #3a1540, #140a18);
+    border: 2px solid rgba(176,74,138,0.5);
+  }
+
+  .panel-name-wrap {}
+  .panel-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .panel-role-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  /* Alive/deceased badge */
+  .panel-status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+  .panel-status.alive { background: rgba(26,180,80,0.12); color: #3aaa60; border: 1px solid rgba(26,180,80,0.25); }
+  .panel-status.deceased { background: rgba(130,100,60,0.12); color: #8a7040; border: 1px solid rgba(130,100,60,0.25); }
+  .panel-status::before {
+    content: '';
+    width: 5px; height: 5px; border-radius: 50%;
+  }
+  .panel-status.alive::before { background: #3aaa60; }
+  .panel-status.deceased::before { background: #8a7040; }
+
+  .panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    scrollbar-width: thin;
+    scrollbar-color: #2a1f0f transparent;
+  }
+
+  .panel-section {
+    margin-bottom: 22px;
+  }
+  .panel-section-title {
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 10px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #2a1f0f, transparent);
+  }
+
+  .info-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .info-cell {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid #1f1608;
+    border-radius: 5px;
+    padding: 8px 10px;
+  }
+  .info-cell-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+  }
+  .info-cell-value {
+    font-size: 13.5px;
+    font-family: 'Crimson Pro', serif;
+    color: var(--cream);
+    font-weight: 600;
+  }
+  .info-cell.wide { grid-column: 1 / -1; }
+
+  .rel-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid #1f1608;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+    position: relative; overflow: hidden;
+  }
+  .rel-chip::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2.5px;
+    border-radius: 6px 0 0 6px;
+  }
+  .rel-chip.male-chip::before { background: var(--male-accent); }
+  .rel-chip.female-chip::before { background: var(--female-accent); }
+  .rel-chip:hover { background: rgba(201,168,76,0.06); border-color: #2a1f0f; }
+  .rel-chip-icon { font-size: 17px; }
+  .rel-chip-name { color: var(--cream); flex: 1; font-family: 'Crimson Pro', serif; font-weight: 600; font-size: 13.5px; }
+  .rel-chip-meta { font-size: 10.5px; color: var(--text-dim); text-align: right; line-height: 1.4; }
+
+  /* ─── Generation labels ─── */
+  .gen-label {
+    position: absolute;
+    left: 0;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    writing-mode: horizontal-tb;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* ─── Legend ─── */
+  #legend {
+    position: fixed;
+    bottom: 20px; left: 24px;
+    z-index: 100;
+    background: rgba(10,8,4,0.9);
+    border: 1px solid #2a1f0f;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 11px;
+    display: flex; gap: 16px; align-items: center;
+    letter-spacing: 0.05em;
+  }
+  .leg-item { display: flex; align-items: center; gap: 6px; color: var(--text-dim); }
+  .leg-box { width: 14px; height: 10px; border-radius: 2px; border: 1.5px solid; }
+  .leg-male { background: rgba(74,138,176,0.2); border-color: var(--male-border); }
+  .leg-female { background: rgba(176,74,138,0.2); border-color: var(--female-border); }
+  .leg-line { width: 20px; height: 2px; background: var(--gold-dim); }
+  .leg-dash { width: 20px; height: 0; border-top: 2px dashed #6a4a2a; }
+
+  /* ─── Mini-map ─── */
+  #minimap {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    width: 160px; height: 90px;
+    background: rgba(10,8,4,0.9);
+    border: 1px solid #2a1f0f;
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 100;
+  }
+  #minimap-viewport {
+    position: absolute;
+    border: 1px solid var(--gold-dim);
+    background: rgba(201,168,76,0.05);
+    pointer-events: none;
+    transition: all 0.1s;
+  }
+
+  /* Search bar */
+  #search-wrap {
+    position: fixed;
+    top: 64px; left: 50%; transform: translateX(-50%);
+    z-index: 101;
+    width: 300px;
+    display: none;
+  }
+  #search-wrap.open { display: block; }
+  #search-input {
+    width: 100%;
+    background: rgba(15,12,6,0.97);
+    border: 1px solid var(--gold-dim);
+    color: var(--cream);
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    padding: 10px 16px;
+    border-radius: 4px;
+    outline: none;
+    letter-spacing: 0.03em;
+  }
+  #search-input::placeholder { color: var(--text-dim); }
+  #search-results {
+    background: rgba(12,9,4,0.98);
+    border: 1px solid #2a1f0f;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .search-item {
+    padding: 9px 16px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #1a1208;
+    transition: background 0.15s;
+    font-size: 13.5px;
+  }
+  .search-item:hover { background: rgba(201,168,76,0.08); }
+  .search-item-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .si-male { background: var(--male-border); }
+  .si-female { background: var(--female-border); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-icon">🌳</span>
+    <div>
+      Yusupov Sulolasi
+      <span class="logo-sub">Oila Daraxti · 1870 – Hozirgi Kun</span>
+    </div>
+  </div>
+  <div class="controls">
+    <div id="search-wrap">
+      <input id="search-input" placeholder="Ism bo'yicha qidirish…" autocomplete="off">
+      <div id="search-results"></div>
+    </div>
+    <button class="btn" onclick="toggleSearch()" id="search-btn">🔍 Qidirish</button>
+    <button class="btn" onclick="zoomOut()">−</button>
+    <span class="zoom-info" id="zoom-info">100%</span>
+    <button class="btn" onclick="zoomIn()">+</button>
+    <button class="btn" onclick="resetView()">↺ Markazga</button>
+  </div>
+</header>
+
+<div id="canvas-wrap">
+  <div id="canvas">
+    <svg id="lines-svg"></svg>
+  </div>
+</div>
+
+<div id="detail-panel">
+  <div class="panel-header">
+    <button class="panel-close" onclick="closePanel()">✕</button>
+    <div class="panel-top">
+      <div class="panel-avatar" id="p-avatar"></div>
+      <div class="panel-name-wrap">
+        <div class="panel-name" id="p-name"></div>
+        <div class="panel-status" id="p-status"></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body" id="p-body"></div>
+</div>
+
+<div id="legend">
+  <div class="leg-item"><div class="leg-box leg-male"></div> Erkak</div>
+  <div class="leg-item"><div class="leg-box leg-female"></div> Ayol</div>
+  <div class="leg-item"><div class="leg-line"></div> Ota-ona</div>
+  <div class="leg-item"><div class="leg-dash"></div> Nikoh</div>
+</div>
+
+<div id="minimap"><div id="minimap-viewport"></div></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  FAMILY DATA — 50+ members
+// ═══════════════════════════════════════════════════════
+const familyData = {
+  members: [
+    // ── GEN 0: Ajdodlar ──
+    { id: "g0_1",  name: "Yusuf Qoraboyev",   birth: 1868, death: 1945, gender: "male",   profession: "Dehqon", city: "Samarqand", gen: 0, spouse: "g0_2",  children: ["g1_1","g1_3"] },
+    { id: "g0_2",  name: "Bibioysha Nazarova", birth: 1872, death: 1950, gender: "female", profession: "Uy bekasi", city: "Samarqand", gen: 0, spouse: "g0_1", children: ["g1_1","g1_3"] },
+
+    // ── GEN 1 ──
+    { id: "g1_1",  name: "Mahmud Yusupov",     birth: 1895, death: 1972, gender: "male",   profession: "Savdogar", city: "Toshkent",  gen: 1, spouse: "g1_2",  children: ["g2_1","g2_3","g2_5"] },
+    { id: "g1_2",  name: "Xurmo Rahimova",     birth: 1900, death: 1978, gender: "female", profession: "O'qituvchi", city: "Toshkent", gen: 1, spouse: "g1_1", children: ["g2_1","g2_3","g2_5"] },
+    { id: "g1_3",  name: "Saidakbar Yusupov",  birth: 1898, death: 1965, gender: "male",   profession: "Tabib",    city: "Samarqand", gen: 1, spouse: "g1_4",  children: ["g2_7","g2_9"] },
+    { id: "g1_4",  name: "Mohlaroyim Umarova", birth: 1902, death: 1980, gender: "female", profession: "Uy bekasi", city: "Samarqand", gen: 1, spouse: "g1_3", children: ["g2_7","g2_9"] },
+
+    // ── GEN 2 ──
+    { id: "g2_1",  name: "Bahodir Yusupov",    birth: 1925, death: 1993, gender: "male",   profession: "Muhandis",  city: "Toshkent",  gen: 2, spouse: "g2_2",  children: ["g3_1","g3_3","g3_5"] },
+    { id: "g2_2",  name: "Zulfiya Qosimova",   birth: 1928, death: 1999, gender: "female", profession: "Vrach",     city: "Toshkent",  gen: 2, spouse: "g2_1",  children: ["g3_1","g3_3","g3_5"] },
+    { id: "g2_3",  name: "Sarvar Yusupov",     birth: 1928, death: 2005, gender: "male",   profession: "Arxitektor",city: "Andijon",   gen: 2, spouse: "g2_4",  children: ["g3_7","g3_9"] },
+    { id: "g2_4",  name: "Gulnora Toshmatova", birth: 1932, death: 2010, gender: "female", profession: "Musiqa o'qituvchisi", city: "Andijon", gen: 2, spouse: "g2_3", children: ["g3_7","g3_9"] },
+    { id: "g2_5",  name: "Nodira Yusupova",    birth: 1930, death: 2015, gender: "female", profession: "Shoira",    city: "Toshkent",  gen: 2, spouse: "g2_6",  children: ["g3_11"] },
+    { id: "g2_6",  name: "Alisher Mahmudov",   birth: 1927, death: 2008, gender: "male",   profession: "Professor", city: "Toshkent",  gen: 2, spouse: "g2_5",  children: ["g3_11"] },
+    { id: "g2_7",  name: "Hamid Yusupov",      birth: 1927, death: 2001, gender: "male",   profession: "Harbiy",    city: "Samarqand", gen: 2, spouse: "g2_8",  children: ["g3_13","g3_15"] },
+    { id: "g2_8",  name: "Robiya Xoliqova",    birth: 1930, death: 2007, gender: "female", profession: "Uy bekasi", city: "Samarqand", gen: 2, spouse: "g2_7",  children: ["g3_13","g3_15"] },
+    { id: "g2_9",  name: "Dilnoza Yusupova",   birth: 1932, death: 2018, gender: "female", profession: "Aktrisa",   city: "Toshkent",  gen: 2, spouse: "g2_10", children: ["g3_17"] },
+    { id: "g2_10", name: "Javlon Ergashev",    birth: 1929, death: 2011, gender: "male",   profession: "Rejissyor", city: "Toshkent",  gen: 2, spouse: "g2_9",  children: ["g3_17"] },
+
+    // ── GEN 3 ──
+    { id: "g3_1",  name: "Kamol Yusupov",      birth: 1952, death: null, gender: "male",   profession: "Biznesmen",  city: "Toshkent",  gen: 3, spouse: "g3_2",  children: ["g4_1","g4_3"] },
+    { id: "g3_2",  name: "Feruza Karimova",    birth: 1955, death: null, gender: "female", profession: "Iqtisodchi", city: "Toshkent",  gen: 3, spouse: "g3_1",  children: ["g4_1","g4_3"] },
+    { id: "g3_3",  name: "Sherzod Yusupov",    birth: 1955, death: null, gender: "male",   profession: "Advokat",    city: "Toshkent",  gen: 3, spouse: "g3_4",  children: ["g4_5","g4_7"] },
+    { id: "g3_4",  name: "Malika Nazarova",    birth: 1958, death: null, gender: "female", profession: "Vrach",      city: "Toshkent",  gen: 3, spouse: "g3_3",  children: ["g4_5","g4_7"] },
+    { id: "g3_5",  name: "Lola Yusupova",      birth: 1958, death: null, gender: "female", profession: "Diplomat",   city: "Parij",     gen: 3, spouse: "g3_6",  children: ["g4_9"] },
+    { id: "g3_6",  name: "Timur Qodirov",      birth: 1955, death: null, gender: "male",   profession: "Muhandis",   city: "Parij",     gen: 3, spouse: "g3_5",  children: ["g4_9"] },
+    { id: "g3_7",  name: "Ulugbek Yusupov",    birth: 1956, death: null, gender: "male",   profession: "Rassом",     city: "Andijon",   gen: 3, spouse: "g3_8",  children: ["g4_11","g4_13"] },
+    { id: "g3_8",  name: "Nargiza Holmatova",  birth: 1960, death: null, gender: "female", profession: "Dizayner",   city: "Andijon",   gen: 3, spouse: "g3_7",  children: ["g4_11","g4_13"] },
+    { id: "g3_9",  name: "Madina Yusupova",    birth: 1959, death: null, gender: "female", profession: "Jurnalist",  city: "Toshkent",  gen: 3, spouse: "g3_10", children: ["g4_15"] },
+    { id: "g3_10", name: "Bekzod Tursunov",    birth: 1957, death: null, gender: "male",   profession: "Teleoperator",city:"Toshkent", gen: 3, spouse: "g3_9",  children: ["g4_15"] },
+    { id: "g3_11", name: "Jamshid Mahmudov",   birth: 1958, death: null, gender: "male",   profession: "Yozuvchi",   city: "Toshkent",  gen: 3, spouse: "g3_12", children: ["g4_17","g4_19"] },
+    { id: "g3_12", name: "Sabohat Ismoilova",  birth: 1962, death: null, gender: "female", profession: "Kutubxonachi",city:"Toshkent", gen: 3, spouse: "g3_11", children: ["g4_17","g4_19"] },
+    { id: "g3_13", name: "Rustam Yusupov",     birth: 1954, death: null, gender: "male",   profession: "Harbiy ofitser",city:"Samarqand",gen:3, spouse:"g3_14", children:["g4_21","g4_23"] },
+    { id: "g3_14", name: "Mohira Sultonova",   birth: 1957, death: null, gender: "female", profession: "O'qituvchi", city: "Samarqand", gen: 3, spouse: "g3_13", children: ["g4_21","g4_23"] },
+    { id: "g3_15", name: "Barno Yusupova",     birth: 1957, death: null, gender: "female", profession: "Shifokor",   city: "Buxoro",    gen: 3, spouse: "g3_16", children: ["g4_25"] },
+    { id: "g3_16", name: "Otabek Razzaqov",    birth: 1954, death: null, gender: "male",   profession: "Arxitektor", city: "Buxoro",    gen: 3, spouse: "g3_15", children: ["g4_25"] },
+    { id: "g3_17", name: "Zafar Ergashev",     birth: 1960, death: null, gender: "male",   profession: "Kino rejissyor",city:"Toshkent",gen: 3, spouse: "g3_18", children: ["g4_27"] },
+    { id: "g3_18", name: "Dilrabo Mirzayeva",  birth: 1963, death: null, gender: "female", profession: "Aktris",     city: "Toshkent",  gen: 3, spouse: "g3_17", children: ["g4_27"] },
+
+    // ── GEN 4 ──
+    { id: "g4_1",  name: "Amir Yusupov",       birth: 1978, death: null, gender: "male",   profession: "IT muhandis", city: "Toshkent", gen: 4, spouse: "g4_2",  children: ["g5_1","g5_2"] },
+    { id: "g4_2",  name: "Nilufar Hasanova",   birth: 1980, death: null, gender: "female", profession: "UX dizayneri",city: "Toshkent", gen: 4, spouse: "g4_1",  children: ["g5_1","g5_2"] },
+    { id: "g4_3",  name: "Aziza Yusupova",     birth: 1982, death: null, gender: "female", profession: "Moliya mutaxassisi", city: "Dubai", gen: 4, spouse: "g4_4", children: ["g5_3"] },
+    { id: "g4_4",  name: "Omar Al-Rashid",     birth: 1978, death: null, gender: "male",   profession: "Biznesmen",  city: "Dubai",    gen: 4, spouse: "g4_3",  children: ["g5_3"] },
+    { id: "g4_5",  name: "Sanjar Yusupov",     birth: 1982, death: null, gender: "male",   profession: "Advokat",    city: "Toshkent", gen: 4, spouse: "g4_6",  children: ["g5_4"] },
+    { id: "g4_6",  name: "Ziyoda Rahimova",    birth: 1984, death: null, gender: "female", profession: "Psiхolog",   city: "Toshkent", gen: 4, spouse: "g4_5",  children: ["g5_4"] },
+    { id: "g4_7",  name: "Sarvinoz Yusupova",  birth: 1985, death: null, gender: "female", profession: "Tabib",      city: "London",   gen: 4, spouse: null,    children: [] },
+    { id: "g4_9",  name: "Dior Qodirov",       birth: 1985, death: null, gender: "male",   profession: "Meʼmor",     city: "Parij",    gen: 4, spouse: "g4_10", children: ["g5_5"] },
+    { id: "g4_10", name: "Sophie Leclerc",     birth: 1987, death: null, gender: "female", profession: "Fotograf",   city: "Parij",    gen: 4, spouse: "g4_9",  children: ["g5_5"] },
+    { id: "g4_11", name: "Jahongir Yusupov",   birth: 1984, death: null, gender: "male",   profession: "Rassом",     city: "Andijon",  gen: 4, spouse: "g4_12", children: ["g5_6"] },
+    { id: "g4_12", name: "Shahnoza Mirzayeva", birth: 1986, death: null, gender: "female", profession: "Musiqa",     city: "Andijon",  gen: 4, spouse: "g4_11", children: ["g5_6"] },
+    { id: "g4_13", name: "Malika Yusupova",    birth: 1987, death: null, gender: "female", profession: "Blogger",    city: "Toshkent", gen: 4, spouse: null,    children: [] },
+    { id: "g4_15", name: "Bobur Tursunov",     birth: 1985, death: null, gender: "male",   profession: "Jurnalist",  city: "Toshkent", gen: 4, spouse: "g4_16", children: ["g5_7"] },
+    { id: "g4_16", name: "Kamola Ergasheva",   birth: 1987, death: null, gender: "female", profession: "Redaktor",   city: "Toshkent", gen: 4, spouse: "g4_15", children: ["g5_7"] },
+    { id: "g4_17", name: "Temur Mahmudov",     birth: 1986, death: null, gender: "male",   profession: "Yozuvchi",   city: "Toshkent", gen: 4, spouse: "g4_18", children: ["g5_8"] },
+    { id: "g4_18", name: "Oydin Umarova",      birth: 1988, death: null, gender: "female", profession: "Kitobxon",   city: "Toshkent", gen: 4, spouse: "g4_17", children: ["g5_8"] },
+    { id: "g4_19", name: "Munira Mahmudova",   birth: 1989, death: null, gender: "female", profession: "Tarjimon",   city: "Berlin",   gen: 4, spouse: null,    children: [] },
+    { id: "g4_21", name: "Eldor Yusupov",      birth: 1980, death: null, gender: "male",   profession: "Harbiy",     city: "Toshkent", gen: 4, spouse: "g4_22", children: ["g5_9"] },
+    { id: "g4_22", name: "Shahlo Toshpulatova",birth: 1982, death: null, gender: "female", profession: "Iqtisodchi", city: "Toshkent", gen: 4, spouse: "g4_21", children: ["g5_9"] },
+    { id: "g4_23", name: "Maftuna Yusupova",   birth: 1983, death: null, gender: "female", profession: "Pedagog",    city: "Samarqand",gen: 4, spouse: null,    children: [] },
+    { id: "g4_25", name: "Firdavs Razzaqov",   birth: 1982, death: null, gender: "male",   profession: "Meʼmor",     city: "Buxoro",   gen: 4, spouse: "g4_26", children: ["g5_10"] },
+    { id: "g4_26", name: "Nasiba Qosimova",    birth: 1984, death: null, gender: "female", profession: "Dizayner",   city: "Buxoro",   gen: 4, spouse: "g4_25", children: ["g5_10"] },
+    { id: "g4_27", name: "Kamola Ergasheva",   birth: 1988, death: null, gender: "female", profession: "Aktrisa",    city: "Toshkent", gen: 4, spouse: null,    children: [] },
+
+    // ── GEN 5 ──
+    { id: "g5_1",  name: "Rustam Yusupov Jr.", birth: 2005, death: null, gender: "male",   profession: "Talaba", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_2",  name: "Lola Yusupova Jr.",  birth: 2008, death: null, gender: "female", profession: "Maktab o'quvchisi", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_3",  name: "Zaid Al-Rashid",     birth: 2006, death: null, gender: "male",   profession: "Talaba", city: "Dubai", gen: 5, spouse: null, children: [] },
+    { id: "g5_4",  name: "Asel Yusupova",      birth: 2009, death: null, gender: "female", profession: "Maktab o'quvchisi", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_5",  name: "Lea Qodirova",       birth: 2010, death: null, gender: "female", profession: "Maktab o'quvchisi", city: "Parij", gen: 5, spouse: null, children: [] },
+    { id: "g5_6",  name: "Ibrohim Yusupov",    birth: 2007, death: null, gender: "male",   profession: "Talaba", city: "Andijon", gen: 5, spouse: null, children: [] },
+    { id: "g5_7",  name: "Jasur Tursunov",     birth: 2008, death: null, gender: "male",   profession: "Maktab o'quvchisi", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_8",  name: "Umida Mahmudova",    birth: 2010, death: null, gender: "female", profession: "Maktab o'quvchisi", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_9",  name: "Nuriddin Yusupov",   birth: 2006, death: null, gender: "male",   profession: "Talaba", city: "Toshkent", gen: 5, spouse: null, children: [] },
+    { id: "g5_10", name: "Zarina Razzaqova",   birth: 2009, death: null, gender: "female", profession: "Maktab o'quvchisi", city: "Buxoro", gen: 5, spouse: null, children: [] },
+  ]
+};
+
+// ═══════════════════════════════════════════════════════
+//  LAYOUT ENGINE
+// ═══════════════════════════════════════════════════════
+const CARD_W = 190, CARD_H = 104, GAP_X = 28, GAP_Y = 96;
+const GEN_Y = (gen) => 80 + gen * (CARD_H + GAP_Y);
+
+const memberMap = {};
+familyData.members.forEach(m => memberMap[m.id] = m);
+
+// Assign X positions per generation
+function computeLayout() {
+  const gens = {};
+  familyData.members.forEach(m => {
+    if (!gens[m.gen]) gens[m.gen] = [];
+    gens[m.gen].push(m);
+  });
+
+  // For each gen, sort by parent position then assign x
+  const positions = {};
+
+  // GEN 0 first
+  const gen0 = gens[0] || [];
+  const totalW0 = gen0.length * CARD_W + (gen0.length - 1) * GAP_X;
+  gen0.forEach((m, i) => {
+    positions[m.id] = { x: i * (CARD_W + GAP_X), y: GEN_Y(0) };
+  });
+
+  // For subsequent gens, try to center under parents
+  for (let g = 1; g <= 5; g++) {
+    const members = gens[g] || [];
+    if (!members.length) continue;
+
+    // Sort by parent x
+    members.sort((a, b) => {
+      const pxa = getParentX(a, positions);
+      const pxb = getParentX(b, positions);
+      return pxa - pxb;
+    });
+
+    // Group couples together
+    const placed = new Set();
+    let curX = 0;
+    let minX = Infinity;
+
+    // First pass: find min parent x
+    members.forEach(m => {
+      const px = getParentX(m, positions);
+      if (px < minX) minX = px;
+    });
+    curX = Math.max(0, minX);
+
+    members.forEach((m, i) => {
+      if (placed.has(m.id)) return;
+      const spouse = m.spouse ? memberMap[m.spouse] : null;
+      if (spouse && !placed.has(spouse.id) && spouse.gen === g) {
+        // Place couple side by side
+        const px = getParentX(m, positions);
+        positions[m.id] = { x: curX, y: GEN_Y(g) };
+        positions[spouse.id] = { x: curX + CARD_W + GAP_X, y: GEN_Y(g) };
+        placed.add(m.id);
+        placed.add(spouse.id);
+        curX += 2 * (CARD_W + GAP_X) + GAP_X;
+      } else if (!placed.has(m.id)) {
+        const px = getParentX(m, positions);
+        positions[m.id] = { x: Math.max(curX, px - CARD_W/2), y: GEN_Y(g) };
+        placed.add(m.id);
+        curX = positions[m.id].x + CARD_W + GAP_X;
+      }
+    });
+
+    // Spread them properly
+    normalizeGen(members, positions, g);
+  }
+
+  return positions;
+}
+
+function getParentX(member, positions) {
+  const parent = familyData.members.find(m =>
+    m.children && m.children.includes(member.id) && positions[m.id]
+  );
+  return parent ? positions[parent.id].x : 0;
+}
+
+function normalizeGen(members, positions, gen) {
+  // Ensure no overlap
+  const sorted = [...members].filter(m => positions[m.id])
+    .sort((a,b) => positions[a.id].x - positions[b.id].x);
+
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = positions[sorted[i-1].id];
+    const cur  = positions[sorted[i].id];
+    if (cur.x < prev.x + CARD_W + GAP_X) {
+      cur.x = prev.x + CARD_W + GAP_X;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════
+let scale = 1, offsetX = 0, offsetY = 0;
+let isDragging = false, dragStart = {x:0,y:0}, dragOffset = {x:0,y:0};
+let selectedId = null;
+const positions = computeLayout();
+
+// Find canvas bounds
+let maxX = 0, maxY = 0;
+Object.values(positions).forEach(p => {
+  if (p.x + CARD_W > maxX) maxX = p.x + CARD_W;
+  if (p.y + CARD_H > maxY) maxY = p.y + CARD_H;
+});
+const CANVAS_W = maxX + 100;
+const CANVAS_H = maxY + 100;
+
+function render() {
+  const canvas = document.getElementById('canvas');
+  const svg = document.getElementById('lines-svg');
+  svg.setAttribute('width', CANVAS_W);
+  svg.setAttribute('height', CANVAS_H);
+
+  // Draw lines
+  let linesHTML = `<defs>
+    <marker id="lm" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="4" markerHeight="4">
+      <circle cx="3" cy="3" r="2.5" fill="#c9a84c" opacity="0.9"/>
+    </marker>
+  </defs>`;
+
+  // Collect all parent-child pairs per parent-couple
+  const coupleChildren = {};
+  familyData.members.forEach(m => {
+    if (!m.children || !m.children.length) return;
+    const pos = positions[m.id];
+    if (!pos) return;
+    const key = m.id;
+    // For male parents with spouse, use midpoint between couple as drop origin
+    let originX = pos.x + CARD_W/2;
+    if (m.spouse && memberMap[m.spouse]?.gen === m.gen) {
+      const sp_pos = positions[m.spouse];
+      if (sp_pos) originX = (pos.x + CARD_W/2 + sp_pos.x + CARD_W/2) / 2;
+    }
+    coupleChildren[key] = { originX, children: m.children, pos };
+  });
+
+  familyData.members.forEach(m => {
+    const pos = positions[m.id];
+    if (!pos) return;
+
+    // Couple line
+    if (m.spouse) {
+      const sp = memberMap[m.spouse];
+      if (sp && sp.gen === m.gen && m.gender === 'male') {
+        const sp_pos = positions[m.spouse];
+        if (sp_pos) {
+          const x1 = pos.x + CARD_W;
+          const y1 = pos.y + CARD_H/2;
+          const x2 = sp_pos.x;
+          const y2 = sp_pos.y + CARD_H/2;
+          const mx = (x1 + x2) / 2;
+          const my = y1;
+          // Heart/ring connector in center
+          linesHTML += `<line x1="${x1}" y1="${y1}" x2="${mx-7}" y2="${y2}" class="line-couple"/>`;
+          linesHTML += `<line x1="${mx+7}" y1="${y1}" x2="${x2}" y2="${y2}" class="line-couple"/>`;
+          linesHTML += `<circle cx="${mx}" cy="${my}" r="7" fill="#1a1205" stroke="#c9a84c" stroke-width="1.2" opacity="0.95"/>`;
+          linesHTML += `<text x="${mx}" y="${my+4}" text-anchor="middle" font-size="9" fill="#c9a84c" opacity="0.9">♥</text>`;
+        }
+      }
+    }
+
+    // Parent → child lines — use couple midpoint if has spouse
+    if (m.children && m.children.length && m.gender === 'male') {
+      let ox = pos.x + CARD_W/2;
+      const sp = m.spouse ? memberMap[m.spouse] : null;
+      if (sp && sp.gen === m.gen && positions[m.spouse]) {
+        ox = (pos.x + CARD_W/2 + positions[m.spouse].x + CARD_W/2) / 2;
+      }
+      const oy = pos.y + CARD_H;
+      const dropY = oy + GAP_Y * 0.38;
+
+      // Vertical drop from couple
+      linesHTML += `<line x1="${ox}" y1="${oy}" x2="${ox}" y2="${dropY}" class="line-parent"/>`;
+      // Junction dot
+      if (m.children.length > 1) {
+        linesHTML += `<circle cx="${ox}" cy="${dropY}" r="3.5" fill="#7a5e28" stroke="#c9a84c" stroke-width="1" opacity="0.85"/>`;
+        // Horizontal bar
+        const xs = m.children.map(cid => positions[cid] ? positions[cid].x + CARD_W/2 : null).filter(Boolean);
+        if (xs.length > 1) {
+          const barL = Math.min(...xs), barR = Math.max(...xs);
+          linesHTML += `<line x1="${barL}" y1="${dropY}" x2="${barR}" y2="${dropY}" class="line-parent"/>`;
+        }
+      }
+      // Drop to each child
+      m.children.forEach(cid => {
+        const cp = positions[cid];
+        if (!cp) return;
+        const tx = cp.x + CARD_W/2;
+        const ty = cp.y;
+        linesHTML += `<line x1="${tx}" y1="${dropY}" x2="${tx}" y2="${ty}" class="line-parent"/>`;
+        // Small arrow cap at child top
+        linesHTML += `<circle cx="${tx}" cy="${ty}" r="2.5" fill="#7a5e28" stroke="#c9a84c" stroke-width="0.8" opacity="0.7"/>`;
+      });
+    }
+    // Single female parent (no spouse on tree)
+    if (m.children && m.children.length && m.gender === 'female' && !m.spouse) {
+      const ox = pos.x + CARD_W/2;
+      const oy = pos.y + CARD_H;
+      const dropY = oy + GAP_Y * 0.38;
+      linesHTML += `<line x1="${ox}" y1="${oy}" x2="${ox}" y2="${dropY}" class="line-parent"/>`;
+      m.children.forEach(cid => {
+        const cp = positions[cid];
+        if (!cp) return;
+        const tx = cp.x + CARD_W/2, ty = cp.y;
+        if (tx !== ox) linesHTML += `<line x1="${ox}" y1="${dropY}" x2="${tx}" y2="${dropY}" class="line-parent"/>`;
+        linesHTML += `<line x1="${tx}" y1="${dropY}" x2="${tx}" y2="${ty}" class="line-parent"/>`;
+        linesHTML += `<circle cx="${tx}" cy="${ty}" r="2.5" fill="#7a5e28" stroke="#c9a84c" stroke-width="0.8" opacity="0.7"/>`;
+      });
+    }
+  });
+
+  svg.innerHTML = linesHTML;
+
+  // Draw nodes
+  const existing = canvas.querySelectorAll('.node');
+  existing.forEach(e => e.remove());
+
+  familyData.members.forEach(m => {
+    const pos = positions[m.id];
+    if (!pos) return;
+
+    const node = document.createElement('div');
+    node.className = `node ${m.gender}${selectedId===m.id?' selected':''}`;
+    node.id = 'node_' + m.id;
+    node.style.left = pos.x + 'px';
+    node.style.top  = pos.y + 'px';
+    node.dataset.id = m.id;
+
+    const genNames = ['Ajdod','Avlod I','Avlod II','Avlod III','Avlod IV','Avlod V'];
+    const yearStr = m.death ? `${m.birth} – ${m.death}` : `${m.birth} · ${m.city}`;
+    const childCount = m.children ? m.children.length : 0;
+    node.innerHTML = `
+      <div class="node-inner">
+        <div class="node-content">
+          <div class="node-text">
+            <div class="node-badge">${genNames[m.gen]||''}</div>
+            <div class="node-name">${m.name}</div>
+            <div class="node-meta">
+              <div class="node-dot"></div>
+              <div class="node-role">${m.profession}</div>
+            </div>
+            <div class="node-birth">${yearStr}</div>
+          </div>
+          <div class="node-avatar">${m.gender==='male'?'👨':'👩'}</div>
+        </div>
+        <div class="node-bar" style="width:${Math.min(100, 30 + childCount*20)}%"></div>
+      </div>
+    `;
+
+    node.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPanel(m.id);
+    });
+
+    canvas.appendChild(node);
+  });
+
+  // Gen labels on left
+  const genNames = ['Ajdodlar (1860s)','Birinchi avlod (1890s)','Ikkinchi avlod (1920s)','Uchinchi avlod (1950s)','To\'rtinchi avlod (1980s)','Beshinchi avlod (2000s)'];
+  for (let g = 0; g <= 5; g++) {
+    const lbl = document.createElement('div');
+    lbl.className = 'gen-label';
+    lbl.style.top = GEN_Y(g) + CARD_H/2 - 8 + 'px';
+    lbl.style.left = '-10px';
+    lbl.textContent = genNames[g] || '';
+    canvas.appendChild(lbl);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAN & ZOOM
+// ═══════════════════════════════════════════════════════
+function applyTransform() {
+  document.getElementById('canvas').style.transform =
+    `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  document.getElementById('zoom-info').textContent = Math.round(scale*100) + '%';
+  updateMinimap();
+}
+
+function zoomIn()  { scale = Math.min(2.5, scale * 1.2); applyTransform(); }
+function zoomOut() { scale = Math.max(0.2, scale / 1.2); applyTransform(); }
+
+function resetView() {
+  const vw = window.innerWidth, vh = window.innerHeight;
+  scale = Math.min(vw / CANVAS_W, (vh - 80) / CANVAS_H) * 0.85;
+  scale = Math.min(1, Math.max(0.25, scale));
+  offsetX = (vw - CANVAS_W * scale) / 2;
+  offsetY = 80;
+  applyTransform();
+}
+
+const wrap = document.getElementById('canvas-wrap');
+wrap.addEventListener('mousedown', e => {
+  if (e.target.closest('.node')) return;
+  isDragging = true;
+  dragStart = {x: e.clientX - offsetX, y: e.clientY - offsetY};
+  wrap.classList.add('grabbing');
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  offsetX = e.clientX - dragStart.x;
+  offsetY = e.clientY - dragStart.y;
+  applyTransform();
+});
+window.addEventListener('mouseup', () => {
+  isDragging = false;
+  wrap.classList.remove('grabbing');
+});
+wrap.addEventListener('wheel', e => {
+  e.preventDefault();
+  const delta = e.deltaY > 0 ? 0.9 : 1.1;
+  const rect = wrap.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const newScale = Math.min(2.5, Math.max(0.2, scale * delta));
+  offsetX = mx - (mx - offsetX) * (newScale / scale);
+  offsetY = my - (my - offsetY) * (newScale / scale);
+  scale = newScale;
+  applyTransform();
+}, { passive: false });
+
+// Touch support
+let lastTouch = null;
+wrap.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    lastTouch = {x: e.touches[0].clientX - offsetX, y: e.touches[0].clientY - offsetY};
+  }
+});
+wrap.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (e.touches.length === 1 && lastTouch) {
+    offsetX = e.touches[0].clientX - lastTouch.x;
+    offsetY = e.touches[0].clientY - lastTouch.y;
+    applyTransform();
+  }
+}, {passive:false});
+
+// ═══════════════════════════════════════════════════════
+//  DETAIL PANEL
+// ═══════════════════════════════════════════════════════
+function openPanel(id) {
+  if (selectedId) document.getElementById('node_'+selectedId)?.classList.remove('selected');
+  selectedId = id;
+  document.getElementById('node_'+id)?.classList.add('selected');
+
+  const m = memberMap[id];
+  const panel = document.getElementById('detail-panel');
+
+  // Avatar
+  const av = document.getElementById('p-avatar');
+  av.className = `panel-avatar ${m.gender}`;
+  av.textContent = m.gender === 'male' ? '👨' : '👩';
+
+  // Name
+  document.getElementById('p-name').innerHTML =
+    `${m.name}<div class="panel-role-tag">✦ ${m.profession} · ${m.city}</div>`;
+
+  // Status
+  document.getElementById('p-status').className = `panel-status ${m.death ? 'deceased' : 'alive'}`;
+  document.getElementById('p-status').textContent = m.death ? 'Vafot etgan' : 'Tirik';
+
+  const alive = !m.death;
+  const age = m.death ? m.death - m.birth : new Date().getFullYear() - m.birth;
+  const genLabels = ['Ajdod','I avlod','II avlod','III avlod','IV avlod','V avlod'];
+
+  let body = `
+    <div class="panel-section">
+      <div class="panel-section-title">Shaxsiy ma'lumotlar</div>
+      <div class="info-grid">
+        <div class="info-cell">
+          <div class="info-cell-label">Tug'ilgan</div>
+          <div class="info-cell-value">${m.birth}</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-cell-label">${m.death ? 'Vafot etgan' : 'Yoshi'}</div>
+          <div class="info-cell-value">${m.death || age + ' yil'}</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-cell-label">Shahar</div>
+          <div class="info-cell-value">${m.city}</div>
+        </div>
+        <div class="info-cell">
+          <div class="info-cell-label">Avlod</div>
+          <div class="info-cell-value">${genLabels[m.gen]}</div>
+        </div>
+        <div class="info-cell wide">
+          <div class="info-cell-label">Kasbi</div>
+          <div class="info-cell-value">${m.profession}</div>
+        </div>
+      </div>
+    </div>`;
+
+  // Spouse
+  if (m.spouse && memberMap[m.spouse]) {
+    const sp = memberMap[m.spouse];
+    body += `
+      <div class="panel-section">
+        <div class="panel-section-title">Turmush o'rtog'i</div>
+        <div class="rel-chip ${sp.gender}-chip" onclick="openPanel('${sp.id}')">
+          <span class="rel-chip-icon">${sp.gender==='male'?'👨':'👩'}</span>
+          <span class="rel-chip-name">${sp.name}</span>
+          <span class="rel-chip-meta">${sp.birth}<br>${sp.profession}</span>
+        </div>
+      </div>`;
+  }
+
+  // Children
+  if (m.children && m.children.length) {
+    body += `<div class="panel-section"><div class="panel-section-title">Farzandlari — ${m.children.length} nafar</div>`;
+    m.children.forEach(cid => {
+      const c = memberMap[cid];
+      if (!c) return;
+      body += `<div class="rel-chip ${c.gender}-chip" onclick="openPanel('${c.id}')">
+        <span class="rel-chip-icon">${c.gender==='male'?'👦':'👧'}</span>
+        <span class="rel-chip-name">${c.name}</span>
+        <span class="rel-chip-meta">${c.birth}<br>${c.profession}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
+  // Parents
+  const parents = familyData.members.filter(p => p.children && p.children.includes(id));
+  if (parents.length) {
+    body += `<div class="panel-section"><div class="panel-section-title">Ota-onasi</div>`;
+    parents.forEach(p => {
+      body += `<div class="rel-chip ${p.gender}-chip" onclick="openPanel('${p.id}')">
+        <span class="rel-chip-icon">${p.gender==='male'?'👨':'👩'}</span>
+        <span class="rel-chip-name">${p.name}</span>
+        <span class="rel-chip-meta">${p.birth}<br>${p.gender==='male'?'Ota':'Ona'}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
+  // Siblings
+  const siblings = [];
+  parents.forEach(p => {
+    (p.children||[]).forEach(sid => {
+      if (sid !== id && !siblings.find(s=>s.id===sid)) {
+        const sib = memberMap[sid];
+        if (sib) siblings.push(sib);
+      }
+    });
+  });
+  if (siblings.length) {
+    body += `<div class="panel-section"><div class="panel-section-title">Aka-uka / Opa-singillar — ${siblings.length}</div>`;
+    siblings.forEach(s => {
+      body += `<div class="rel-chip ${s.gender}-chip" onclick="openPanel('${s.id}')">
+        <span class="rel-chip-icon">${s.gender==='male'?'👦':'👧'}</span>
+        <span class="rel-chip-name">${s.name}</span>
+        <span class="rel-chip-meta">${s.birth}<br>${s.profession}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
+  document.getElementById('p-body').innerHTML = body;
+  panel.classList.add('open');
+
+  // Center node
+  const pos = positions[id];
+  if (pos) {
+    const vw = window.innerWidth - 340, vh = window.innerHeight;
+    offsetX = vw/2 - (pos.x + CARD_W/2) * scale;
+    offsetY = vh/2 - (pos.y + CARD_H/2) * scale;
+    applyTransform();
+  }
+}
+
+function closePanel() {
+  document.getElementById('detail-panel').classList.remove('open');
+  if (selectedId) document.getElementById('node_'+selectedId)?.classList.remove('selected');
+  selectedId = null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SEARCH
+// ═══════════════════════════════════════════════════════
+function toggleSearch() {
+  const wrap = document.getElementById('search-wrap');
+  const btn  = document.getElementById('search-btn');
+  if (wrap.classList.toggle('open')) {
+    btn.classList.add('active');
+    document.getElementById('search-input').focus();
+  } else {
+    btn.classList.remove('active');
+    document.getElementById('search-results').innerHTML = '';
+  }
+}
+
+document.getElementById('search-input').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  const res = document.getElementById('search-results');
+  if (!q) { res.innerHTML = ''; return; }
+  const hits = familyData.members.filter(m =>
+    m.name.toLowerCase().includes(q) || m.profession.toLowerCase().includes(q) || m.city.toLowerCase().includes(q)
+  ).slice(0, 8);
+  res.innerHTML = hits.map(m => `
+    <div class="search-item" onclick="openPanel('${m.id}');toggleSearch()">
+      <div class="search-item-dot ${m.gender==='male'?'si-male':'si-female'}"></div>
+      <span>${m.name}</span>
+      <span style="color:var(--text-dim);margin-left:auto;font-size:12px">${m.birth}</span>
+    </div>
+  `).join('') || '<div class="search-item" style="color:var(--text-dim)">Topilmadi</div>';
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePanel(); if (document.getElementById('search-wrap').classList.contains('open')) toggleSearch(); }
+  if ((e.ctrlKey||e.metaKey) && e.key==='f') { e.preventDefault(); toggleSearch(); }
+});
+
+// ═══════════════════════════════════════════════════════
+//  MINIMAP
+// ═══════════════════════════════════════════════════════
+function updateMinimap() {
+  const mm = document.getElementById('minimap');
+  const vp = document.getElementById('minimap-viewport');
+  const mw = mm.offsetWidth, mh = mm.offsetHeight;
+  const scaleX = mw / CANVAS_W, scaleY = mh / CANVAS_H;
+
+  const vw = window.innerWidth, vh = window.innerHeight;
+  const vpX = (-offsetX / scale) * scaleX;
+  const vpY = (-offsetY / scale) * scaleY;
+  const vpW = (vw / scale) * scaleX;
+  const vpH = (vh / scale) * scaleY;
+
+  vp.style.left   = Math.max(0, vpX) + 'px';
+  vp.style.top    = Math.max(0, vpY) + 'px';
+  vp.style.width  = Math.min(mw, vpW) + 'px';
+  vp.style.height = Math.min(mh, vpH) + 'px';
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+render();
+resetView();
+
+// Fancy entrance animation
+setTimeout(() => {
+  document.querySelectorAll('.node').forEach((n, i) => {
+    n.style.opacity = '0';
+    n.style.transform = 'translateY(20px) scale(0.9)';
+    n.style.transition = `opacity 0.4s ${i*18}ms, transform 0.4s ${i*18}ms`;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        n.style.opacity = '1';
+        n.style.transform = '';
+      });
+    });
+  });
+}, 50);
+</script>
+</body>
+</html>

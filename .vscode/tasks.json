@@ -1,0 +1,97 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // .NET backend'ni debug qilishdan oldin build qiladi.
+      "label": "backend: build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/backend/FamilyTreeBackend/FamilyTreeBackend.csproj",
+        "-property:GenerateFullPaths=true",
+        "-consoleloggerparameters:NoSummary"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "reveal": "silent",
+        "revealProblems": "onProblem",
+        "panel": "dedicated",
+        "clear": true,
+        "group": "fullstack"
+      }
+    },
+    {
+      // Frontend production build (Terminal > Run Task orqali qo'lda ishlatiladi).
+      "label": "frontend: build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "problemMatcher": "$tsc",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "fullstack"
+      }
+    },
+    {
+      // Yangi clone'dan keyin bir marta: node_modules'ni tiklaydi.
+      "label": "frontend: install",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "fullstack"
+      }
+    },
+    {
+      // Vite dev server'ni debugger'siz, background task sifatida ishga tushirish
+      // (Terminal > Run Task > "frontend: dev server").
+      // "⚛️ Frontend" launch konfiguratsiyasiga alternativa.
+      "label": "frontend: dev server",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "fileLocation": ["relative", "${workspaceFolder}/frontend"],
+        "pattern": {
+          "regexp": "^\\s*(.+?):(\\d+):(\\d+):\\s+(error|warning):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "(?i).*vite\\s+v?\\d.*|.*restarting.*",
+          "endsPattern": "(?i).*(ready in \\d+|Local:\\s+https?://).*"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "fullstack"
+      }
+    }
+  ]
+}

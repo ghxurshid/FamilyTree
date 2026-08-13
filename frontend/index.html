@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uz" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="Shajara — oila daraxti: avlodlarni ko'ring, qidiring va o'z shoxingizni to'ldiring." />
+    <title>Shajara</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <script>
+      /* Mavzuni bo'yashdan oldin qo'llaymiz — noto'g'ri mavzu bir zumga ham ko'rinmasin. */
+      (function () {
+        try {
+          var raw = localStorage.getItem('shajara.preferences');
+          var prefs = raw ? JSON.parse(raw) : null;
+          var theme = (prefs && prefs.theme) || 'system';
+          var resolved =
+            theme === 'system'
+              ? window.matchMedia('(prefers-color-scheme: light)').matches
+                ? 'light'
+                : 'dark'
+              : theme;
+          var root = document.documentElement;
+          root.dataset.theme = resolved;
+          root.dataset.contrast = prefs && prefs.contrast ? '1' : '0';
+          if (prefs && prefs.fontScale) root.style.setProperty('--fscale', String(prefs.fontScale));
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

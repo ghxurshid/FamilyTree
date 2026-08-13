@@ -1,0 +1,4 @@
+{
+  // "coreclr" debug type shu extension bilan keladi — usiz "🔵 Backend" ishlamaydi.
+  "recommendations": ["ms-dotnettools.csharp"]
+}

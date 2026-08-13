@@ -1,0 +1,271 @@
+.shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* — yuqori panel — */
+.header {
+  position: relative;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 14px;
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--hair);
+  flex: 0 0 auto;
+  min-height: var(--header-h);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.brandIcon {
+  color: var(--color-accent);
+  flex: 0 0 auto;
+}
+
+.brandText {
+  min-width: 0;
+}
+
+.brandTitle {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 14.5px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brandSub {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.navLink {
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 7px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.navLink:hover {
+  background: color-mix(in srgb, var(--color-text) 7%, transparent);
+}
+
+.navLinkActive,
+.navLinkActive:hover {
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  color: var(--color-accent);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.searchTrigger {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 270px;
+  height: 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 9px;
+  border: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  color: color-mix(in srgb, var(--color-text) 64%, transparent);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color var(--dur-fast) ease;
+}
+
+.searchTrigger:hover {
+  border-color: var(--color-accent);
+}
+
+.searchTriggerText {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kbd {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  border: 1px solid var(--hair);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.alphabet {
+  display: flex;
+  flex: 0 0 auto;
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.alphabetOption {
+  border: 0;
+  padding: 7px 9px;
+  font-size: 12px;
+  cursor: pointer;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 66%, transparent);
+}
+
+.alphabetOption + .alphabetOption {
+  border-left: 1px solid var(--hair);
+}
+
+.alphabetActive {
+  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  color: var(--color-accent);
+}
+
+.identity {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--hair);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.identityGuest {
+  border-color: var(--color-accent);
+}
+
+.identityAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+  color: var(--color-accent);
+}
+
+.identityGuest .identityAvatar {
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+}
+
+.identityLabel {
+  font-size: 12.5px;
+}
+
+/* — asosiy maydon — */
+.main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/* — mobil pastki navigatsiya — */
+.mobileNav {
+  position: relative;
+  z-index: var(--z-mobile-nav);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid var(--hair);
+  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+  backdrop-filter: blur(14px);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.mobileTab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: var(--mobile-nav-h);
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 74%, transparent);
+  font-size: 10px;
+  cursor: pointer;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.mobileTabActive {
+  color: var(--color-accent);
+}
+
+/* — ekran ustki qatlamlari (Odamlar, Sozlamalar, Profil) — */
+.screen {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: var(--header-h);
+  height: calc(100% - var(--header-h));
+  z-index: var(--z-screen);
+  background: var(--color-bg);
+  animation: nocFade 0.22s ease;
+}
+
+.screenScroll {
+  overflow-y: auto;
+}
+
+.screenColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 780px) {
+  .screen {
+    height: calc(100% - var(--header-h) - var(--mobile-nav-h) - env(safe-area-inset-bottom));
+  }
+}
