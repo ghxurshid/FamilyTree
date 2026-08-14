@@ -6,7 +6,8 @@ import { AppRouter } from '@/app/router/AppRouter';
 import { initTelegram } from '@/services/telegram';
 import '@/styles/base.css';
 
-// Telegram ichida bo'lsak — to'liq ekran va swipe himoyasi renderdan oldin.
+// Telegram ichida bo'lsak — brauzercha to'liq balandlikka yoyiladi va swipe
+// himoyasi yoqiladi; ikkovi ham birinchi renderdan oldin bo'lishi kerak.
 initTelegram();
 
 const container = document.getElementById('root');

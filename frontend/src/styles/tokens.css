@@ -84,16 +84,19 @@
   --rail-w: 130px;
 
   /* — xavfsiz chetlar —
-     Telegram Mini App to'liq ekranda ochilganda mijozning o'z tugmalari
-     ilova ustida turadi; `--tg-inset-*` shu zonani beradi (telegram.ts).
-     Brauzerda ular 0 bo'ladi va `env(...)` qiymati ishlaydi. */
+     Brauzerda qurilma chetlarini `env(...)` beradi. Telegram ichida esa
+     o'lchovni mijozning o'zidan olamiz (`--tg-inset-*`, telegram.ts): mijoz
+     webview'ini allaqachon xavfsiz zonaga joylagan bo'ladi, `env(...)` esa
+     notch qiymatini ustiga qo'shib, tepada ortiqcha bo'shliq qoldiradi. */
   --tg-inset-top: 0px;
   --tg-inset-bottom: 0px;
   --safe-top: max(env(safe-area-inset-top), var(--tg-inset-top));
   --safe-bottom: max(env(safe-area-inset-bottom), var(--tg-inset-bottom));
 
-  /* — pastki varaq (mobil panel) — */
-  --sheet-h: min(78vh, 620px);
+  /* — pastki varaq (mobil panel) —
+     `vh` emas, ko'rinadigan balandlikdan hisoblanadi: Telegram brauzerchasida
+     `100vh` haqiqiy maydondan katta chiqib, varaq ekrandan oshib ketardi. */
+  --sheet-h: min(calc(var(--app-height, 100dvh) * 0.78), 620px);
 
   /* — z qatlamlar — */
   --z-canvas: 1;
@@ -113,6 +116,12 @@
   --dur-fast: 0.2s;
   --dur-base: 0.32s;
   --dur-slow: 0.42s;
+}
+
+/* Telegram ichida chetlar faqat mijozdan keladi — yuqoridagi izohga qarang. */
+[data-tg='1'] {
+  --safe-top: var(--tg-inset-top);
+  --safe-bottom: var(--tg-inset-bottom);
 }
 
 [data-theme='light'] {

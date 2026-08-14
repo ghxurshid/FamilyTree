@@ -1,12 +1,19 @@
 /**
  * Telegram Mini App qobig'i.
  *
- * Ilova Telegram ichida ochilganda: to'liq ekranga chiqadi, pastga swipe bilan
- * yopilib ketishi to'xtatiladi va Telegram interfeysi egallagan zonalar CSS
- * o'zgaruvchilariga uzatiladi. Oddiy brauzerda modul hech nima qilmaydi.
+ * Ilova Telegram ichida ochilganda uchta ish bajariladi:
+ *   1. `expand()` — mijoz brauzerchasi telefon ekranining to'liq balandligiga
+ *      yoyiladi (Telegram uni yarim balandlikda ochadi);
+ *   2. `disableVerticalSwipes()` — pastga swipe qilinganda ilova yopilmaydi;
+ *   3. ko'rinish balandligi `--app-height` ga uzatiladi — HTML sahifa aynan
+ *      brauzercha ko'rsatayotgan maydonni to'ldiradi, ortiq ham, kam ham emas.
  *
- * Mijoz talablari: `disableVerticalSwipes` — Bot API 7.7+, `requestFullscreen`
- * — Bot API 8.0+. Eski mijozlarda `expand()` bilan cheklanamiz.
+ * Bot API 8.0 ning "fullscreen" rejimi ataylab ishlatilmaydi: u mijoz
+ * sarlavhasini ilova ustiga qalqitib qo'yadi va tugmalar kontent bilan
+ * chalkashadi. Ilova shu rejimda ochilgan bo'lsa — oddiy ko'rinishga qaytaramiz.
+ *
+ * Mijoz talabi: `disableVerticalSwipes` — Bot API 7.7+. Eski mijozlarda
+ * `expand()` bilan cheklanamiz. Oddiy brauzerda modul hech nima qilmaydi.
  */
 
 interface TelegramInset {
@@ -27,7 +34,7 @@ interface TelegramWebApp {
   ready(): void;
   expand(): void;
   disableVerticalSwipes?(): void;
-  requestFullscreen?(): void;
+  exitFullscreen?(): void;
   setHeaderColor?(color: string): void;
   setBackgroundColor?(color: string): void;
   setBottomBarColor?(color: string): void;
@@ -78,24 +85,38 @@ export function isTelegram(): boolean {
  * Ko'rinadigan balandlik. Telegramda `window.innerHeight` haqiqiy ko'rinishdan
  * katta bo'lishi mumkin — ikkovidan kichigini olamiz, shunda pastki varaq
  * hech qachon ekrandan chiqib ketmaydi.
+ *
+ * `viewportStableHeight` — klaviatura ochilganda o'zgarmaydigan balandlik;
+ * shuning uchun input'ga bosilganda maket sakramaydi.
  */
 export function viewportHeight(): number {
   const stable = webApp()?.viewportStableHeight ?? 0;
   return stable > 0 ? Math.min(stable, window.innerHeight) : window.innerHeight;
 }
 
-/** Telegram chetlarini (notch + mijoz tugmalari zonasi) CSS'ga uzatadi. */
+/**
+ * Sahifa balandligini mijoz brauzerchasi ko'rsatayotgan maydonga tenglaydi.
+ * `100vh` Telegram webview'ida noto'g'ri qiymat berishi mumkin — o'lchovni
+ * mijozning o'zidan olamiz.
+ */
+function applyViewport(): void {
+  document.documentElement.style.setProperty('--app-height', `${Math.round(viewportHeight())}px`);
+}
+
+/** Telegram chetlarini (notch + mijoz kontent zonasi) CSS'ga uzatadi. */
 function applyInsets(app: TelegramWebApp): void {
   const safe = app.safeAreaInset ?? ZERO_INSET;
   const content = app.contentSafeAreaInset ?? ZERO_INSET;
   const root = document.documentElement;
-  const px = (a?: number, b?: number) => `${Math.max(0, (a ?? 0) + (b ?? 0))}px`;
+  const px = (value: number) => `${Math.max(0, Math.round(value))}px`;
 
-  root.style.setProperty('--tg-inset-top', px(safe.top, content.top));
-  root.style.setProperty('--tg-inset-bottom', px(safe.bottom, content.bottom));
-  root.style.setProperty('--tg-inset-left', px(safe.left, content.left));
-  root.style.setProperty('--tg-inset-right', px(safe.right, content.right));
-  root.dataset.tgFullscreen = app.isFullscreen ? '1' : '0';
+  // Oddiy (fullscreen'siz) rejimda mijoz sarlavhasi tepani o'zi egallaydi va
+  // webview uning ostidan boshlanadi — tepaga qo'shimcha bo'shliq faqat mijoz
+  // kontent zonasini siljitgan holatda kerak, qurilma notch'i uchun emas.
+  root.style.setProperty('--tg-inset-top', px(content.top ?? 0));
+  root.style.setProperty('--tg-inset-bottom', px((safe.bottom ?? 0) + (content.bottom ?? 0)));
+  root.style.setProperty('--tg-inset-left', px((safe.left ?? 0) + (content.left ?? 0)));
+  root.style.setProperty('--tg-inset-right', px((safe.right ?? 0) + (content.right ?? 0)));
 }
 
 /** Telegram chrome'ini ilova mavzusiga moslaydi (mavzu almashganda ham). */
@@ -134,31 +155,41 @@ export function initTelegram(): void {
   document.documentElement.dataset.tg = '1';
 
   quiet(() => app.ready());
-  quiet(() => app.expand());
 
-  // 1-vazifa: pastga swipe qilinganda miniapp yopilib/pastga tushib ketmasin.
-  if (versionAtLeast(app, '7.7')) quiet(() => app.disableVerticalSwipes?.());
+  const swipeGuard = versionAtLeast(app, '7.7');
 
-  // 2-vazifa: to'liq ekran. Qo'llab-quvvatlamasa `expand()` holicha qoladi.
-  if (versionAtLeast(app, '8.0')) quiet(() => app.requestFullscreen?.());
+  /** Ilovani ochiq va to'liq balandlikda ushlab turadi. */
+  const hold = () => {
+    // Telegram brauzerchani yarim balandlikda ochadi — to'liq ekranga yoyamiz.
+    if (app.isExpanded === false) quiet(() => app.expand());
+    // Pastga swipe ilovani yopmasin. Mijoz ba'zi holatlarda (fon → oldinga
+    // qaytish) sozlamani tiklaydi, shuning uchun har sinxronda takrorlaymiz.
+    if (swipeGuard) quiet(() => app.disableVerticalSwipes?.());
+    // Fullscreen rejimida mijoz tugmalari kontent ustida qalqiydi — kerak emas.
+    if (app.isFullscreen) quiet(() => app.exitFullscreen?.());
+  };
 
   const sync = () => {
-    // Eski mijozda swipe baribir ilovani pastga tushirsa — darhol qaytaramiz.
-    if (app.isExpanded === false) quiet(() => app.expand());
+    hold();
+    applyViewport();
     applyInsets(app);
   };
+
+  quiet(() => app.expand());
   sync();
   applyTelegramChrome();
 
   for (const event of [
-    'fullscreenChanged',
+    'viewportChanged',
     'safeAreaChanged',
     'contentSafeAreaChanged',
-    'viewportChanged',
+    'fullscreenChanged',
+    'activated',
   ]) {
     quiet(() => app.onEvent(event, sync));
   }
 
-  // To'liq ekran ochilmasa ham ilova kengaytirilgan holda qolishi kerak.
-  quiet(() => app.onEvent('fullscreenFailed', () => quiet(() => app.expand())));
+  // Aylantirish yoki klaviatura — mijoz hodisasi kelmasa ham balandlik yangilansin.
+  window.addEventListener('resize', applyViewport);
+  window.addEventListener('orientationchange', applyViewport);
 }

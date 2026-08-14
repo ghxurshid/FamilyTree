@@ -1,6 +1,14 @@
 .shell {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Telegramda ilova aynan mijoz brauzerchasi ko'rsatayotgan maydonni oladi
+     (`--app-height`, telegram.ts). Oddiy brauzerda — dinamik viewport, ya'ni
+     mobil manzil paneli yashiringanda/chiqqanda balandlik o'ziga moslashadi. */
+  height: 100%;
+  height: 100dvh;
+  height: var(--app-height, 100dvh);
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
@@ -15,8 +23,8 @@
   align-items: center;
   gap: 14px;
   padding: 9px 14px;
-  /* Telegram to'liq ekranda mijoz tugmalari yuqorida turadi — ular ostiga
-     tushib qolmaslik uchun sarlavha shu zona qadar pastga suriladi. */
+  /* Qurilma notch'i yoki mijoz kontent zonasi tepani egallagan bo'lsa —
+     sarlavha shu zona qadar pastga suriladi. */
   padding-top: calc(9px + var(--safe-top));
   padding-left: calc(14px + var(--tg-inset-left, 0px));
   padding-right: calc(14px + var(--tg-inset-right, 0px));
@@ -262,7 +270,7 @@
   left: 0;
   right: 0;
   top: calc(var(--header-h) + var(--safe-top));
-  height: calc(100% - var(--header-h) - var(--safe-top));
+  height: calc(var(--app-height, 100dvh) - var(--header-h) - var(--safe-top));
   z-index: var(--z-screen);
   background: var(--color-bg);
   animation: nocFade 0.22s ease;
@@ -280,7 +288,8 @@
 @media (max-width: 780px) {
   .screen {
     height: calc(
-      100% - var(--header-h) - var(--safe-top) - var(--mobile-nav-h) - var(--safe-bottom)
+      var(--app-height, 100dvh) - var(--header-h) - var(--safe-top) - var(--mobile-nav-h) -
+        var(--safe-bottom)
     );
   }
 }
