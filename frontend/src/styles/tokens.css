@@ -79,7 +79,8 @@
 
   /* — o'lchamlar — */
   --header-h: 56px;
-  --mobile-nav-h: 55px;
+  /* 7 (padding) + 30 (ikonka zonasi) + 3 (oraliq) + 12 (yozuv) + 8 (padding) */
+  --mobile-nav-h: 60px;
   --panel-w: 392px;
   --rail-w: 130px;
 
@@ -118,10 +119,12 @@
   --dur-slow: 0.42s;
 }
 
-/* Telegram ichida chetlar faqat mijozdan keladi — yuqoridagi izohga qarang. */
+/* Telegram ichida chetlar faqat mijozdan keladi — yuqoridagi izohga qarang.
+   Pastda kamida 6px: mijozning o'z "@bot" paneli darhol ilova ostida turadi
+   va pastki navigatsiya unga yopishib qolmasligi kerak. */
 [data-tg='1'] {
   --safe-top: var(--tg-inset-top);
-  --safe-bottom: var(--tg-inset-bottom);
+  --safe-bottom: max(var(--tg-inset-bottom), 6px);
 }
 
 [data-theme='light'] {

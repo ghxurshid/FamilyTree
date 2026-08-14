@@ -23,6 +23,11 @@ interface TelegramInset {
   right: number;
 }
 
+interface TelegramHapticFeedback {
+  impactOccurred?(style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'): void;
+  selectionChanged?(): void;
+}
+
 interface TelegramWebApp {
   platform?: string;
   version?: string;
@@ -31,6 +36,7 @@ interface TelegramWebApp {
   viewportStableHeight?: number;
   safeAreaInset?: TelegramInset;
   contentSafeAreaInset?: TelegramInset;
+  HapticFeedback?: TelegramHapticFeedback;
   ready(): void;
   expand(): void;
   disableVerticalSwipes?(): void;
@@ -117,6 +123,19 @@ function applyInsets(app: TelegramWebApp): void {
   root.style.setProperty('--tg-inset-bottom', px((safe.bottom ?? 0) + (content.bottom ?? 0)));
   root.style.setProperty('--tg-inset-left', px((safe.left ?? 0) + (content.left ?? 0)));
   root.style.setProperty('--tg-inset-right', px((safe.right ?? 0) + (content.right ?? 0)));
+}
+
+/**
+ * Bo'lim almashganda yengil tebranish (Bot API 6.1+). Telegram tashqarisida —
+ * mavjud bo'lsa — brauzerning `vibrate` API'siga tushadi, bo'lmasa jim o'tadi.
+ */
+export function hapticSelection(): void {
+  const app = webApp();
+  if (app) {
+    if (versionAtLeast(app, '6.1')) quiet(() => app.HapticFeedback?.selectionChanged?.());
+    return;
+  }
+  quiet(() => navigator.vibrate?.(8));
 }
 
 /** Telegram chrome'ini ilova mavzusiga moslaydi (mavzu almashganda ham). */

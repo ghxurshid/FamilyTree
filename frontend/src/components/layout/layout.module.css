@@ -230,38 +230,119 @@
   min-height: 0;
 }
 
-/* — mobil pastki navigatsiya — */
+/* — mobil pastki navigatsiya —
+   Fon `--color-surface`dan olinadi: kanvasdan ham, Telegram mijozining o'z
+   pastki panelidan ham ajralib tursin, aks holda ikkovi bitta quyuq
+   yo'lakka qo'shilib ketadi. */
 .mobileNav {
   position: relative;
   z-index: var(--z-mobile-nav);
   flex: 0 0 auto;
   display: flex;
   align-items: stretch;
-  border-top: 1px solid var(--hair);
-  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--color-surface) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
   padding-bottom: var(--safe-bottom);
 }
 
+/* Yuqori chegara — o'rtada aniq, chetlarga qarab so'nadi. */
+.mobileNav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hair) 16%,
+    var(--hair) 84%,
+    transparent
+  );
+}
+
+/* Faol bo'lim ostidagi tabletka — tablar orasida suriladi. */
+.mobileNavPill {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: calc(100% / var(--nav-count, 4));
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  transform: translateX(calc(var(--nav-active, 0) * 100%));
+  transition: transform var(--dur-base) var(--ease-out), opacity var(--dur-fast) ease;
+}
+
+.mobileNavPill::before {
+  content: '';
+  width: 56px;
+  max-width: 74%;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+/* Hech bir tab mos kelmasa (masalan kirish sahifasi) — tabletka yashirinadi. */
+.mobileNav[data-active='-1'] .mobileNavPill {
+  opacity: 0;
+}
+
 .mobileTab {
+  position: relative;
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   min-height: var(--mobile-nav-h);
+  padding: 7px 2px 8px;
   border: 0;
   background: transparent;
-  color: color-mix(in srgb, var(--color-text) 74%, transparent);
-  font-size: 10px;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
   cursor: pointer;
-  padding: 6px 0;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-fast) ease, transform var(--dur-fast) var(--ease-out);
+}
+
+/* Barmoq tekkanda darhol javob — bosish sezilsin. */
+.mobileTab:active {
+  transform: scale(0.92);
+}
+
+.mobileTabIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.mobileTabLabel {
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobileTabActive {
   color: var(--color-accent);
+}
+
+.mobileTabActive .mobileTabIcon {
+  transform: translateY(-1px) scale(1.08);
+}
+
+.mobileTabActive .mobileTabLabel {
+  font-weight: 600;
 }
 
 /* — ekran ustki qatlamlari (Odamlar, Sozlamalar, Profil) — */
