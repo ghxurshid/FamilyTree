@@ -13,7 +13,7 @@ import type {
   PersonId,
   UpdatePersonInput,
 } from '@/types/person';
-import type { TreeViewMode } from '@/types/ui';
+import type { PanelSnap, TreeViewMode } from '@/types/ui';
 import { createStore, useStore } from './createStore';
 
 export type TreeStatus = 'idle' | 'loading' | 'ready' | 'error';
@@ -36,6 +36,8 @@ interface FamilyTreeState {
   meId: PersonId | null;
   selectedId: PersonId | null;
   panelOpen: boolean;
+  /** Mobil pastki varaqning holati — qisqa ko'rinish yoki to'liq ochiq. */
+  panelSnap: PanelSnap;
   collapsed: ReadonlySet<PersonId>;
   viewMode: TreeViewMode;
   focusRequest: FocusRequest | null;
@@ -55,6 +57,7 @@ const store = createStore<FamilyTreeState>({
   meId: null,
   selectedId: null,
   panelOpen: false,
+  panelSnap: 'peek',
   collapsed: new Set(),
   viewMode: 'all',
   focusRequest: null,
@@ -99,7 +102,7 @@ export const familyTreeStore = {
 
   /** Tanlash: kerak bo'lsa yashiringan shoxni ochadi va kamerani so'raydi. */
   select(id: PersonId | null, options: { fly?: boolean; zoom?: number } = {}) {
-    const { index, collapsed } = store.getState();
+    const { index, collapsed, panelOpen } = store.getState();
     if (!id) {
       store.setState({ selectedId: null, panelOpen: false });
       return;
@@ -119,6 +122,9 @@ export const familyTreeStore = {
     store.setState({
       selectedId: id,
       panelOpen: true,
+      // Yopiq paneldan ochilganda har doim qisqa ko'rinishdan boshlanadi;
+      // ochiq turgan bo'lsa foydalanuvchi tanlagan holat saqlanadi.
+      panelSnap: panelOpen ? store.getState().panelSnap : 'peek',
       collapsed: nextCollapsed,
       focusRequest:
         options.fly === false
@@ -135,6 +141,11 @@ export const familyTreeStore = {
 
   closePanel() {
     store.setState({ panelOpen: false, selectedId: null });
+  },
+
+  /** Pastki varaqni qisqa ko'rinish va to'liq ochiq holat orasida qo'yadi. */
+  setPanelSnap(panelSnap: PanelSnap) {
+    store.setState({ panelSnap });
   },
 
   toggleCollapse(id: PersonId) {

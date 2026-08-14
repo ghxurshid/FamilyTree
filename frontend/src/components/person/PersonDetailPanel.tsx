@@ -10,7 +10,9 @@ import {
 } from '@/features/family-tree/lib/treeIndex';
 import { useCanEdit, useCurrentPersonId } from '@/features/auth/useCurrentPerson';
 import { usePersonActions } from '@/features/people/usePersonActions';
+import { useBottomSheet } from '@/hooks/useBottomSheet';
 import { useFormat } from '@/hooks/useFormat';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import { familyTreeStore, useFamilyTree } from '@/stores/familyTreeStore';
 import { useAuth } from '@/stores/authStore';
 import { PersonRelationRow } from './PersonRelationRow';
@@ -20,19 +22,35 @@ import ui from '@/components/ui/ui.module.css';
 /**
  * Tanlangan odam haqidagi panel — desktopda o'ng yon panel, mobilda pastki
  * varaq. Ma'lumot store'dan olinadi, daraxt bilan bir manba.
+ *
+ * Mobil varaq ikki nuqtada to'xtaydi: `peek` — ekranning pastki ~22% i (faqat
+ * sarlavha ko'rinadi), `full` — hozirgidek katta panel. Tutqichdan sudrash yoki
+ * bosish nuqtalar orasida almashtiradi.
  */
 export function PersonDetailPanel(): JSX.Element {
   const format = useFormat();
   const actions = usePersonActions();
   const canEdit = useCanEdit();
+  const isMobile = useIsMobile();
 
   const open = useFamilyTree((state) => state.panelOpen);
+  const snap = useFamilyTree((state) => state.panelSnap);
   const selectedId = useFamilyTree((state) => state.selectedId);
   const index = useFamilyTree((state) => state.index);
   const meId = useCurrentPersonId();
   const authenticated = useAuth((state) => state.status === 'authenticated');
 
   const person = selectedId ? index.byId[selectedId] ?? null : null;
+  const visible = open && Boolean(person);
+  const peeking = isMobile && snap === 'peek';
+
+  const sheet = useBottomSheet({
+    enabled: isMobile,
+    open: visible,
+    snap,
+    onSnap: familyTreeStore.setPanelSnap,
+    onClose: familyTreeStore.closePanel,
+  });
 
   const groups = useMemo(
     () => (person ? relationGroups(index, person.id) : []),
@@ -70,14 +88,29 @@ export function PersonDetailPanel(): JSX.Element {
 
   return (
     <aside
-      className={[styles.panel, open && person ? styles.panelOpen : ''].filter(Boolean).join(' ')}
+      ref={sheet.ref}
+      {...sheet.rootProps}
+      className={[
+        styles.panel,
+        visible ? styles.panelOpen : '',
+        sheet.dragging ? styles.sheetDragging : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       aria-label={format.t("Shaxs ma'lumotlari")}
-      aria-hidden={!open || !person}
+      aria-hidden={!visible}
     >
       {person ? (
         <>
-          <div className={styles.panelHeader}>
-            <div className={styles.grabber} />
+          <div className={styles.panelHeader} data-sheet-handle>
+            <button
+              type="button"
+              className={styles.grabber}
+              data-sheet-grip
+              aria-label={format.t(peeking ? 'Panelni kengaytirish' : 'Panelni kichraytirish')}
+              aria-expanded={!peeking}
+              onClick={() => familyTreeStore.setPanelSnap(peeking ? 'full' : 'peek')}
+            />
             <button
               type="button"
               className={ui.closeBtn}
@@ -119,7 +152,11 @@ export function PersonDetailPanel(): JSX.Element {
             </div>
           </div>
 
-          <div className={styles.panelBody}>
+          <div
+            className={[styles.panelBody, peeking ? styles.panelBodyPeek : '']
+              .filter(Boolean)
+              .join(' ')}
+          >
             <div className={styles.factGrid}>
               {facts.map((fact) => (
                 <div key={fact.label} className={styles.fact}>

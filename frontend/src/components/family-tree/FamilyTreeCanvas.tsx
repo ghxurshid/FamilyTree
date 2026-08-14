@@ -15,8 +15,10 @@ import { relationLabel } from '@/features/family-tree/lib/relations';
 import { ancestorsOf, carrierOf } from '@/features/family-tree/lib/treeIndex';
 import { useCanEdit, useCurrentPersonId } from '@/features/auth/useCurrentPerson';
 import { usePersonActions } from '@/features/people/usePersonActions';
+import { peekHeight } from '@/hooks/useBottomSheet';
 import { useFormat } from '@/hooks/useFormat';
 import { useIsMobile } from '@/hooks/useMediaQuery';
+import { viewportHeight } from '@/services/telegram';
 import { familyTreeStore, useFamilyTree } from '@/stores/familyTreeStore';
 import { usePreferences } from '@/stores/preferencesStore';
 import type { Person, PersonId } from '@/types/person';
@@ -55,6 +57,7 @@ export function FamilyTreeCanvas(): JSX.Element {
   const index = useFamilyTree((state) => state.index);
   const selectedId = useFamilyTree((state) => state.selectedId);
   const panelOpen = useFamilyTree((state) => state.panelOpen);
+  const panelSnap = useFamilyTree((state) => state.panelSnap);
   const collapsed = useFamilyTree((state) => state.collapsed);
   const viewMode = useFamilyTree((state) => state.viewMode);
   const focusRequest = useFamilyTree((state) => state.focusRequest);
@@ -78,11 +81,18 @@ export function FamilyTreeCanvas(): JSX.Element {
   const reducedMotionRef = useRef(motionReduced);
   reducedMotionRef.current = motionReduced;
 
+  // Pastki varaq qancha joyni yopgan bo'lsa, kamera shuncha yuqoriga qaraydi.
+  const sheetInset = !panelOpen || !isMobile
+    ? 0
+    : panelSnap === 'full'
+      ? viewportHeight() * 0.56
+      : peekHeight();
+
   boundsRef.current = { width: layout.bounds.width, height: layout.bounds.height };
   insetsRef.current = {
     left: isMobile ? 0 : RAIL_GUTTER,
     right: panelOpen && !isMobile ? PANEL_WIDTH : 0,
-    bottom: panelOpen && isMobile ? window.innerHeight * 0.56 : 0,
+    bottom: sheetInset,
   };
 
   const camera = useTreeCamera({
@@ -430,7 +440,7 @@ export function FamilyTreeCanvas(): JSX.Element {
         onCollapseAll={collapseAll}
         canExpandAll={canExpandAll}
         canCollapseAll={canCollapseAll}
-        bottom={isMobile && panelOpen ? '60%' : 14}
+        bottom={sheetInset ? sheetInset + 14 : 14}
         labels={{
           zoomIn: format.t('Kattalashtirish'),
           zoomOut: format.t('Kichraytirish'),

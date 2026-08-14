@@ -83,6 +83,18 @@
   --panel-w: 392px;
   --rail-w: 130px;
 
+  /* — xavfsiz chetlar —
+     Telegram Mini App to'liq ekranda ochilganda mijozning o'z tugmalari
+     ilova ustida turadi; `--tg-inset-*` shu zonani beradi (telegram.ts).
+     Brauzerda ular 0 bo'ladi va `env(...)` qiymati ishlaydi. */
+  --tg-inset-top: 0px;
+  --tg-inset-bottom: 0px;
+  --safe-top: max(env(safe-area-inset-top), var(--tg-inset-top));
+  --safe-bottom: max(env(safe-area-inset-bottom), var(--tg-inset-bottom));
+
+  /* — pastki varaq (mobil panel) — */
+  --sheet-h: min(78vh, 620px);
+
   /* — z qatlamlar — */
   --z-canvas: 1;
   --z-canvas-ui: 20;

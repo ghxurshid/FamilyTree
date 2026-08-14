@@ -8,6 +8,9 @@ export type TreeDensity = 'min' | 'mid' | 'full';
 /** Daraxt ko'rinish rejimlari — dizayndagi pastki chap filtr. */
 export type TreeViewMode = 'all' | 'ancestors' | 'descendants' | 'branch';
 
+/** Mobil pastki varaqning to'xtash nuqtalari: qisqa ko'rinish va to'liq ochiq. */
+export type PanelSnap = 'peek' | 'full';
+
 export type ToastKind = 'ok' | 'warn' | 'error';
 
 export interface Toast {

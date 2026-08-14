@@ -1,4 +1,5 @@
 import { STORAGE_KEYS, storage } from '@/services/storage';
+import { applyTelegramChrome } from '@/services/telegram';
 import type { Preferences, ResolvedTheme, ThemePreference } from '@/types/ui';
 import { createStore, useStore } from './createStore';
 
@@ -53,6 +54,8 @@ function applyToDocument(state: PreferencesState) {
   root.dataset.contrast = state.contrast ? '1' : '0';
   root.dataset.reduceMotion = state.motionReduced ? '1' : '0';
   root.style.setProperty('--fscale', String(state.fontScale));
+  // Telegram ichida mijoz paneli ham ilova mavzusiga bo'yaladi.
+  applyTelegramChrome();
 }
 
 function commit(patch: Partial<Preferences>) {

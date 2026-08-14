@@ -15,11 +15,16 @@
   align-items: center;
   gap: 14px;
   padding: 9px 14px;
+  /* Telegram to'liq ekranda mijoz tugmalari yuqorida turadi — ular ostiga
+     tushib qolmaslik uchun sarlavha shu zona qadar pastga suriladi. */
+  padding-top: calc(9px + var(--safe-top));
+  padding-left: calc(14px + var(--tg-inset-left, 0px));
+  padding-right: calc(14px + var(--tg-inset-right, 0px));
   background: color-mix(in srgb, var(--color-bg) 88%, transparent);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--hair);
   flex: 0 0 auto;
-  min-height: var(--header-h);
+  min-height: calc(var(--header-h) + var(--safe-top));
 }
 
 .brand {
@@ -227,7 +232,7 @@
   border-top: 1px solid var(--hair);
   background: color-mix(in srgb, var(--color-bg) 94%, transparent);
   backdrop-filter: blur(14px);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: var(--safe-bottom);
 }
 
 .mobileTab {
@@ -256,8 +261,8 @@
   position: fixed;
   left: 0;
   right: 0;
-  top: var(--header-h);
-  height: calc(100% - var(--header-h));
+  top: calc(var(--header-h) + var(--safe-top));
+  height: calc(100% - var(--header-h) - var(--safe-top));
   z-index: var(--z-screen);
   background: var(--color-bg);
   animation: nocFade 0.22s ease;
@@ -274,6 +279,8 @@
 
 @media (max-width: 780px) {
   .screen {
-    height: calc(100% - var(--header-h) - var(--mobile-nav-h) - env(safe-area-inset-bottom));
+    height: calc(
+      100% - var(--header-h) - var(--safe-top) - var(--mobile-nav-h) - var(--safe-bottom)
+    );
   }
 }
